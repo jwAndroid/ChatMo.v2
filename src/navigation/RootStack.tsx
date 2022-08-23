@@ -4,13 +4,14 @@ import {
   NativeStackNavigationProp,
 } from '@react-navigation/native-stack';
 
-import { RoomScreen, RoomsScreen, SettingScreen } from './screens';
+import { RoomScreen, RoomsScreen, SettingScreen, ThemeScreen } from './screens';
 import { RoomEntity } from './types';
 
 export type RootStackParamList = {
   Rooms: undefined;
   Setting: undefined;
   Room: RoomEntity | undefined;
+  Theme: undefined;
 };
 
 export type RootStackNavigationProp =
@@ -39,6 +40,13 @@ function RootStack() {
       <Screen
         name="Room"
         component={RoomScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
+      <Screen
+        name="Theme"
+        component={ThemeScreen}
         options={{
           headerShown: false,
         }}

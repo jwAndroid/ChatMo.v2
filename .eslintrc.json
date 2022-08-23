@@ -25,6 +25,10 @@
     "react/jsx-filename-extension": [1, { "extensions": [".ts", "tsx"] }],
     "import/no-unresolved": "off",
     "import/extensions": "off",
-    "no-console": "off"
+    "no-console": "off",
+    "global-require": "off",
+    "comma-dangle": "off",
+    "implicit-arrow-linebreak": "off",
+    "object-curly-newline": "off"
   }
 }
