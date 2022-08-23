@@ -21,6 +21,10 @@
   "plugins": ["react", "@typescript-eslint"],
   "rules": {
     "no-unused-vars": "off",
-    "@typescript-eslint/no-unused-vars": ["error"]
+    "@typescript-eslint/no-unused-vars": ["error"],
+    "react/jsx-filename-extension": [1, { "extensions": [".ts", "tsx"] }],
+    "import/no-unresolved": "off",
+    "import/extensions": "off",
+    "no-console": "off"
   }
 }
