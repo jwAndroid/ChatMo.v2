@@ -19,7 +19,7 @@ const StyledText = styled.Text<IStyledText>(
 );
 
 interface ICommonText {
-  text: string;
+  text: string | undefined;
   fontSize?: number;
   marginLeft?: number;
   marginTop?: number;

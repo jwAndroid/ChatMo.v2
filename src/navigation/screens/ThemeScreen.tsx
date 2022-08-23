@@ -1,22 +1,48 @@
-import React, { memo, useCallback } from 'react';
+import React, { memo, useCallback, useState } from 'react';
+import styled from '@emotion/native';
 import { useNavigation } from '@react-navigation/core';
-import { Text } from 'react-native';
 
 import { RootStackNavigationProp } from '../RootStack';
-import { IconHeader, SafeAreaContainer } from '../../components';
+import {
+  CommonText,
+  IconHeader,
+  SafeAreaContainer,
+  SettingSwitch,
+} from '../../components';
+
+const Container = styled.View(() => ({
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  paddingHorizontal: 20,
+  paddingVertical: 10,
+}));
 
 function ThemeScreen() {
+  const [isEnabled, setIsEnabled] = useState(false);
+
   const navigation = useNavigation<RootStackNavigationProp>();
 
   const onBackPress = useCallback(() => {
     navigation.goBack();
   }, [navigation]);
 
+  const onValueChange = useCallback(() => {
+    setIsEnabled((prev) => !prev);
+  }, []);
+
   return (
     <SafeAreaContainer>
-      <IconHeader title="테마설정" isBackButton onPress={onBackPress} />
+      <IconHeader isBackButton onPress={onBackPress} />
 
-      <Text onPress={() => navigation.pop()}>ThemeScreen onpress</Text>
+      <Container>
+        <CommonText
+          text={isEnabled ? '다크 테마' : '화이트 테마'}
+          fontSize={16}
+        />
+
+        <SettingSwitch onValueChange={onValueChange} isEnabled={isEnabled} />
+      </Container>
     </SafeAreaContainer>
   );
 }

@@ -1,7 +1,8 @@
 import React, { memo, useCallback, useMemo } from 'react';
-import { FlatList, ListRenderItem, Pressable } from 'react-native';
+import { FlatList, ListRenderItem } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 
+import styled from '@emotion/native';
 import { RootStackNavigationProp } from '../RootStack';
 import {
   CommonText,
@@ -10,6 +11,11 @@ import {
   SafeAreaContainer,
 } from '../../components';
 import { SettingEntity } from '../../../types';
+
+const StyledPressable = styled.Pressable(() => ({
+  paddingHorizontal: 20,
+  paddingVertical: 10,
+}));
 
 function SettingScreen() {
   const navigation = useNavigation<RootStackNavigationProp>();
@@ -42,15 +48,9 @@ function SettingScreen() {
 
   const renderItem = useCallback<ListRenderItem<SettingEntity>>(
     ({ item }) => (
-      <Pressable onPress={onPress(item)}>
-        <CommonText
-          text={item.title}
-          fontSize={16}
-          marginBottom={8}
-          marginTop={8}
-          marginLeft={20}
-        />
-      </Pressable>
+      <StyledPressable onPress={onPress(item)}>
+        <CommonText text={item.title} fontSize={16} />
+      </StyledPressable>
     ),
     [onPress]
   );

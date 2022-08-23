@@ -25,7 +25,7 @@ const Icon = styled.Image(({ theme }) => ({
 }));
 
 interface IIconHeader {
-  title: string;
+  title?: string;
   isBackButton?: boolean;
   onPress: () => void;
 }
@@ -55,6 +55,7 @@ function IconHeader({ title, isBackButton, onPress }: IIconHeader) {
 }
 
 IconHeader.defaultProps = {
+  title: '',
   isBackButton: false,
 };
 
