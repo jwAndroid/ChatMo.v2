@@ -5,12 +5,12 @@ import {
 } from '@react-navigation/native-stack';
 
 import { RoomScreen, RoomsScreen, SettingScreen, ThemeScreen } from './screens';
-import { RoomEntity } from './types';
+import { RoomsEntity } from '../../types';
 
 export type RootStackParamList = {
   Rooms: undefined;
   Setting: undefined;
-  Room: RoomEntity | undefined;
+  Room: RoomsEntity | undefined;
   Theme: undefined;
 };
 

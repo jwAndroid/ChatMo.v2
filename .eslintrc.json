@@ -33,6 +33,7 @@
     "import/prefer-default-export": "off",
     "no-param-reassign": "off",
     "no-confusing-arrow": "off",
-    "function-paren-newline": "off"
+    "function-paren-newline": "off",
+    "operator-linebreak": "off"
   }
 }

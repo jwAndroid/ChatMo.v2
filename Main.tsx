@@ -1,6 +1,7 @@
 import React, { memo, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import * as SystemUI from 'expo-system-ui';
+import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
 import { ThemeProvider } from '@emotion/react';
 
@@ -56,6 +57,8 @@ function Main() {
     <ThemeProvider theme={systemTheme ? darkTheme : lightTheme}>
       {isReady ? (
         <NavigationContainer>
+          <StatusBar style={systemTheme ? 'light' : 'dark'} />
+
           <RootStack />
         </NavigationContainer>
       ) : (
