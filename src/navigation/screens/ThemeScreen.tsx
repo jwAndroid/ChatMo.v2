@@ -2,6 +2,7 @@ import React, { memo, useCallback, useState } from 'react';
 import styled from '@emotion/native';
 import { useNavigation } from '@react-navigation/core';
 
+import { useDispatch, useSelector } from 'react-redux';
 import { RootStackNavigationProp } from '../RootStack';
 import {
   CommonText,
@@ -9,6 +10,8 @@ import {
   SafeAreaContainer,
   SettingSwitch,
 } from '../../components';
+import { changeTheme } from '../../redux/system/slice';
+import { RootState } from '../../redux/rootReducer';
 
 const Container = styled.View(() => ({
   flexDirection: 'row',
@@ -19,7 +22,14 @@ const Container = styled.View(() => ({
 }));
 
 function ThemeScreen() {
-  const [isEnabled, setIsEnabled] = useState(false);
+  const dispatch = useDispatch();
+
+  const systemTheme = useSelector((state: RootState) => state.system.isDark);
+
+  const [isDark, setIsDark] = useState(systemTheme);
+
+  // console.log(`isDark: ${isDark}`);
+  // console.log(`systemTheme: ${systemTheme}`);
 
   const navigation = useNavigation<RootStackNavigationProp>();
 
@@ -28,20 +38,25 @@ function ThemeScreen() {
   }, [navigation]);
 
   const onValueChange = useCallback(() => {
-    setIsEnabled((prev) => !prev);
-  }, []);
+    if (isDark) {
+      setIsDark(false);
+
+      dispatch(changeTheme({ isDark: false }));
+    } else {
+      setIsDark(true);
+
+      dispatch(changeTheme({ isDark: true }));
+    }
+  }, [dispatch, setIsDark, isDark]);
 
   return (
     <SafeAreaContainer>
       <IconHeader isBackButton onPress={onBackPress} />
 
       <Container>
-        <CommonText
-          text={isEnabled ? '다크 테마' : '화이트 테마'}
-          fontSize={16}
-        />
+        <CommonText text={isDark ? '화이트 테마' : '다크 테마'} fontSize={16} />
 
-        <SettingSwitch onValueChange={onValueChange} isEnabled={isEnabled} />
+        <SettingSwitch onValueChange={onValueChange} isEnabled={isDark} />
       </Container>
     </SafeAreaContainer>
   );
