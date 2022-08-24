@@ -31,6 +31,8 @@
     "implicit-arrow-linebreak": "off",
     "object-curly-newline": "off",
     "import/prefer-default-export": "off",
-    "no-param-reassign": "off"
+    "no-param-reassign": "off",
+    "no-confusing-arrow": "off",
+    "function-paren-newline": "off"
   }
 }

@@ -7,6 +7,7 @@ export const font = {
 export const icon = {
   settings: require('../assets/icons/settings.png'),
   backward: require('../assets/icons/backward.png'),
+  splash: require('../assets/icons/splash.png'),
 };
 
 export const lightTheme: Theme = {
