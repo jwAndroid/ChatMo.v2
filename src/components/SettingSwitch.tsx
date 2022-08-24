@@ -20,7 +20,7 @@ function SettingSwitch({ isEnabled, onValueChange }: ISettingSwitch) {
       value={isEnabled}
       onValueChange={onValueChange}
       trackColor={trackColor}
-      thumbColor={isEnabled ? '#f5dd4b' : '#f4f3f4'}
+      thumbColor={isEnabled ? '#0781FF' : '#f4f3f4'}
       ios_backgroundColor="#3e3e3e"
     />
   );

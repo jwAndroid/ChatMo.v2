@@ -10,7 +10,6 @@ function RoomScreen() {
   const navigation = useNavigation<RootStackNavigationProp>();
 
   const { params } = useRoute<RoomScreenRouteProp>();
-
   console.log(params?.id);
 
   const onBackPress = useCallback(() => {
