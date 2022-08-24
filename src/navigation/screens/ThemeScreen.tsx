@@ -12,6 +12,7 @@ import {
 } from '../../components';
 import { changeTheme } from '../../redux/system/slice';
 import { RootState } from '../../redux/rootReducer';
+import themeStorage from '../../storages/themeStorage';
 
 const Container = styled.View(() => ({
   flexDirection: 'row',
@@ -28,14 +29,13 @@ function ThemeScreen() {
 
   const [isDark, setIsDark] = useState(systemTheme);
 
-  // console.log(`isDark: ${isDark}`);
-  // console.log(`systemTheme: ${systemTheme}`);
-
   const navigation = useNavigation<RootStackNavigationProp>();
 
   const onBackPress = useCallback(() => {
+    themeStorage.set(isDark.toString());
+
     navigation.goBack();
-  }, [navigation]);
+  }, [navigation, isDark]);
 
   const onValueChange = useCallback(() => {
     if (isDark) {

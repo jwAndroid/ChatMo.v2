@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ThemeState } from './types';
 
 const initialState: ThemeState = {
-  isDark: true,
+  isDark: false,
 };
 
 const systemSlice = createSlice({
