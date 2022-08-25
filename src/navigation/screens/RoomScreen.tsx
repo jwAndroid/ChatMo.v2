@@ -1,10 +1,11 @@
 import React, { memo, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
-import { View, Text } from 'react-native';
+import { Text } from 'react-native';
 
 import { RootStackNavigationProp, RootStackParamList } from '../RootStack';
 import { RootState } from '../../redux/rootReducer';
+import { IconHeader, SafeAreaContainer } from '../../components';
 
 type RoomScreenRouteProp = RouteProp<RootStackParamList, 'Room'>;
 
@@ -20,18 +21,18 @@ function RoomScreen() {
     navigation.pop();
   }, [navigation]);
 
-  const onPress = () => {
-    console.log(user?.userId);
-  };
+  const onPress = useCallback(() => {
+    console.log(user);
+  }, [user]);
 
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>RoomScreen</Text>
+    <SafeAreaContainer>
+      <IconHeader isBackButton onPress={onBackPress} />
 
-      <Text onPress={onBackPress}>onBack</Text>
-
-      <Text onPress={onPress}>get user</Text>
-    </View>
+      <Text style={{ fontSize: 25, marginTop: 20 }} onPress={onPress}>
+        getUser
+      </Text>
+    </SafeAreaContainer>
   );
 }
 

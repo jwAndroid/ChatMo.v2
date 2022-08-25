@@ -18,8 +18,8 @@ function Main() {
   const dispatch = useDispatch();
 
   const systemTheme = useSelector((state: RootState) => state.system.isDark);
+  const user = useSelector((state: RootState) => state.auth.user);
 
-  const [isReady, setIsReady] = useState(false);
   const [cacheReady, setCacheReady] = useState(false);
 
   useAuthLoadEffect();
@@ -27,18 +27,12 @@ function Main() {
   useEffect(() => {
     (async () => {
       await Promise.all([cacheFonts(font), ...cacheImages(icon)]).then(() => {
-        setCacheReady(true);
+        setTimeout(() => {
+          setCacheReady(true);
+        }, 2000);
       });
     })();
   }, []);
-
-  useEffect(() => {
-    setTimeout(() => {
-      if (cacheReady) {
-        setIsReady(true);
-      }
-    }, 2000);
-  }, [cacheReady]);
 
   useEffect(() => {
     (async () => {
@@ -58,7 +52,7 @@ function Main() {
 
   return (
     <ThemeProvider theme={systemTheme ? darkTheme : lightTheme}>
-      {isReady ? (
+      {cacheReady && user ? (
         <NavigationContainer>
           <StatusBar style={systemTheme ? 'light' : 'dark'} />
 

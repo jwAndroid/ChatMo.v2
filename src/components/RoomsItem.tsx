@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import styled from '@emotion/native';
 import { useTheme } from '@emotion/react';
 
+import { Text } from 'react-native';
 import CommonText from './CommonText';
 import { ellipsize } from '../utils/ellipsize';
 import { RoomsEntity } from '../../types';
@@ -75,11 +76,9 @@ function RoomsItem({ item }: IRoomsItem) {
 
         {memoCount && (
           <CircleContainer>
-            <CommonText
-              text={memoCount.toString()}
-              fontSize={12}
-              color={theme.color.white}
-            />
+            <Text style={{ fontSize: 12, color: theme.color.white }}>
+              {memoCount.toString()}
+            </Text>
           </CircleContainer>
         )}
       </CountContainer>
