@@ -1,20 +1,27 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const key = 'APP_AUTH';
+import { UserEntity } from '../../types';
+import { userStorageKey } from '../utils/constants';
 
-const themeStorage = {
+const authStorage = {
   async get() {
-    const rawData = await AsyncStorage.getItem(key);
+    const rawData = await AsyncStorage.getItem(userStorageKey);
 
-    if (rawData === 'true') {
-      return true;
+    if (!rawData) {
+      return null;
     }
 
-    return false;
+    try {
+      const data: UserEntity = JSON.parse(rawData);
+
+      return data;
+    } catch (error) {
+      return null;
+    }
   },
-  set(uid: string) {
-    return AsyncStorage.setItem(key, uid);
+  set(user: UserEntity) {
+    return AsyncStorage.setItem(userStorageKey, JSON.stringify(user));
   },
 };
 
-export default themeStorage;
+export default authStorage;

@@ -1,3 +1,9 @@
+export interface UserEntity {
+  userId: string;
+  createdAt: number;
+  status: number;
+}
+
 export interface SettingEntity {
   id: number;
   title: string;

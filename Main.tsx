@@ -12,6 +12,7 @@ import { darkTheme, font, icon, lightTheme } from './src/theme';
 import themeStorage from './src/storages/themeStorage';
 import { cacheFonts, cacheImages } from './src/utils/cache';
 import Splash from './Splash';
+import useAuthLoadEffect from './src/hooks/useAuthLoadEffect';
 
 function Main() {
   const dispatch = useDispatch();
@@ -20,6 +21,8 @@ function Main() {
 
   const [isReady, setIsReady] = useState(false);
   const [cacheReady, setCacheReady] = useState(false);
+
+  useAuthLoadEffect();
 
   useEffect(() => {
     (async () => {
