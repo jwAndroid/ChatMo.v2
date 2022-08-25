@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo, useLayoutEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import * as SystemUI from 'expo-system-ui';
@@ -7,12 +7,12 @@ import { ThemeProvider } from '@emotion/react';
 
 import { RootState } from './src/redux/rootReducer';
 import { changeTheme } from './src/redux/system/slice';
+import useAuthLoadEffect from './src/hooks/useAuthLoadEffect';
 import RootStack from './src/navigation/RootStack';
-import { darkTheme, font, icon, lightTheme } from './src/theme';
 import themeStorage from './src/storages/themeStorage';
 import { cacheFonts, cacheImages } from './src/utils/cache';
+import { darkTheme, font, icon, lightTheme } from './src/theme';
 import Splash from './Splash';
-import useAuthLoadEffect from './src/hooks/useAuthLoadEffect';
 
 function Main() {
   const dispatch = useDispatch();
@@ -20,21 +20,21 @@ function Main() {
   const systemTheme = useSelector((state: RootState) => state.system.isDark);
   const user = useSelector((state: RootState) => state.auth.user);
 
-  const [cacheReady, setCacheReady] = useState(false);
+  const [appReady, setAppReady] = useState(false);
 
   useAuthLoadEffect();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     (async () => {
       await Promise.all([cacheFonts(font), ...cacheImages(icon)]).then(() => {
         setTimeout(() => {
-          setCacheReady(true);
+          setAppReady(true);
         }, 2000);
       });
     })();
   }, []);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     (async () => {
       const storage = await themeStorage.get();
 
@@ -52,7 +52,7 @@ function Main() {
 
   return (
     <ThemeProvider theme={systemTheme ? darkTheme : lightTheme}>
-      {cacheReady && user ? (
+      {appReady && user ? (
         <NavigationContainer>
           <StatusBar style={systemTheme ? 'light' : 'dark'} />
 

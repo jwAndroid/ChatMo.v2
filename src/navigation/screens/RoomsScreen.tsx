@@ -32,32 +32,36 @@ function RoomsScreen() {
 
   const onEdit = useCallback(
     (rowMap: RowMap<RoomsEntity>, item: RoomsEntity) => () => {
-      // console.log(rowMap);
-      console.log(item);
+      if (rowMap[item.roomId]) {
+        rowMap[item.roomId].closeRow();
+      }
     },
     []
   );
 
   const onFavorit = useCallback(
     (rowMap: RowMap<RoomsEntity>, item: RoomsEntity) => () => {
-      console.log(rowMap);
-      console.log(item);
+      if (rowMap[item.roomId]) {
+        rowMap[item.roomId].closeRow();
+      }
     },
     []
   );
 
   const onLock = useCallback(
     (rowMap: RowMap<RoomsEntity>, item: RoomsEntity) => () => {
-      console.log(rowMap);
-      console.log(item);
+      if (rowMap[item.roomId]) {
+        rowMap[item.roomId].closeRow();
+      }
     },
     []
   );
 
   const onDelete = useCallback(
     (rowMap: RowMap<RoomsEntity>, item: RoomsEntity) => () => {
-      console.log(rowMap);
-      console.log(item);
+      if (rowMap[item.roomId]) {
+        rowMap[item.roomId].closeRow();
+      }
     },
     []
   );

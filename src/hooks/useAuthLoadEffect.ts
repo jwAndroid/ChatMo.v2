@@ -14,11 +14,7 @@ export default function useAuthLoadEffect() {
 
   useEffect(() => {
     (async () => {
-      console.log('useAuthLoadEffect start');
-
       const auth = await authStorage.get();
-
-      console.log(auth);
 
       if (!auth) {
         const user: UserEntity = {
