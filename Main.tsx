@@ -1,8 +1,8 @@
 import React, { memo, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { NavigationContainer } from '@react-navigation/native';
 import * as SystemUI from 'expo-system-ui';
 import { StatusBar } from 'expo-status-bar';
-import { NavigationContainer } from '@react-navigation/native';
 import { ThemeProvider } from '@emotion/react';
 
 import { RootState } from './src/redux/rootReducer';
