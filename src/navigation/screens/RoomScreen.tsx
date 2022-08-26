@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useState } from 'react';
+import React, { memo, useCallback, useEffect, useState } from 'react';
 // import { useSelector } from 'react-redux';
 import uuid from 'react-native-uuid';
 import { useNavigation } from '@react-navigation/core';
@@ -50,6 +50,10 @@ function RoomScreen() {
   const [prepare, setPrepare] = useState<Message[]>(chatSampleData);
 
   const [renderData, setRenderData] = useState<Message[]>([]);
+
+  useEffect(() => {
+    console.log(JSON.stringify(renderData, null, 5));
+  }, [renderData]);
 
   const onBackPress = useCallback(() => {
     navigation.pop();

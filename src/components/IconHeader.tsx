@@ -1,7 +1,9 @@
 import React, { memo } from 'react';
+import { Platform, Pressable } from 'react-native';
 import styled from '@emotion/native';
 import { useTheme } from '@emotion/react';
-import { Pressable } from 'react-native';
+
+import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 import CommonText from './CommonText';
 
@@ -11,6 +13,7 @@ const HeaderContainer = styled.View(({ theme }) => ({
   paddingHorizontal: 15,
   alignItems: 'center',
   justifyContent: 'space-between',
+  marginTop: Platform.select({ android: getStatusBarHeight(), ios: 0 }),
   backgroundColor: theme.color.background,
 }));
 
