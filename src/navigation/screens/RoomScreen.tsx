@@ -1,38 +1,66 @@
-import React, { memo, useCallback } from 'react';
-import { useSelector } from 'react-redux';
+import React, { memo, useCallback, useEffect, useState } from 'react';
+// import { useSelector } from 'react-redux';
+import { GiftedChat, IMessage } from 'react-native-gifted-chat';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
-import { Text } from 'react-native';
+import styled from '@emotion/native';
 
 import { RootStackNavigationProp, RootStackParamList } from '../RootStack';
-import { RootState } from '../../redux/rootReducer';
-import { IconHeader, SafeAreaContainer } from '../../components';
+// import { RootState } from '../../redux/rootReducer';
+import { IconHeader } from '../../components';
+
+const Container = styled.View(() => ({
+  flex: 1,
+}));
 
 type RoomScreenRouteProp = RouteProp<RootStackParamList, 'Room'>;
 
 function RoomScreen() {
-  const user = useSelector((state: RootState) => state.auth.user);
+  // const user = useSelector((state: RootState) => state.auth.user);
 
   const navigation = useNavigation<RootStackNavigationProp>();
 
   const { params } = useRoute<RoomScreenRouteProp>();
-  console.log(params);
+  // console.log(params);
+
+  const [messages, setMessages] = useState<IMessage[]>([]);
+
+  useEffect(() => {
+    setMessages([
+      {
+        _id: 1,
+        text: 'Hello developer',
+        createdAt: new Date(),
+        user: {
+          _id: 2,
+          name: 'React Native',
+          avatar: 'https://placeimg.com/140/140/any',
+        },
+      },
+    ]);
+  }, []);
 
   const onBackPress = useCallback(() => {
     navigation.pop();
   }, [navigation]);
 
-  const onPress = useCallback(() => {
-    console.log(user);
-  }, [user]);
+  const onSend = useCallback((messages: IMessage[]) => {
+    setMessages((previousMessages) =>
+      GiftedChat.append(previousMessages, messages)
+    );
+  }, []);
 
   return (
-    <SafeAreaContainer>
+    <Container>
       <IconHeader isBackButton onPress={onBackPress} />
 
-      <Text style={{ fontSize: 25, marginTop: 20 }} onPress={onPress}>
-        getUser
-      </Text>
-    </SafeAreaContainer>
+      <GiftedChat
+        messages={messages}
+        onSend={(messages) => onSend(messages)}
+        user={{
+          _id: 1,
+        }}
+      />
+    </Container>
   );
 }
 

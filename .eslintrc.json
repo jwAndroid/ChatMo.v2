@@ -34,6 +34,7 @@
     "no-param-reassign": "off",
     "no-confusing-arrow": "off",
     "function-paren-newline": "off",
-    "operator-linebreak": "off"
+    "operator-linebreak": "off",
+    "no-shadow": "off"
   }
 }

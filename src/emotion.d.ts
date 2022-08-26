@@ -20,7 +20,6 @@ declare module '@emotion/react' {
       sky_200: string;
       sky_300: string;
       sky_400: string;
-      header: string;
       divider: string;
       text: string;
       icon: string;

@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import styled from '@emotion/native';
 import { useTheme } from '@emotion/react';
 import { Pressable } from 'react-native';
+
 import CommonText from './CommonText';
 
 const HeaderContainer = styled.View(({ theme }) => ({
@@ -10,7 +11,7 @@ const HeaderContainer = styled.View(({ theme }) => ({
   paddingHorizontal: 15,
   alignItems: 'center',
   justifyContent: 'space-between',
-  backgroundColor: theme.color.header,
+  backgroundColor: theme.color.background,
 }));
 
 const Container = styled.View(() => ({
