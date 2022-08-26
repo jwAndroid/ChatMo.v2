@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "ChatMo-v2",
-    "slug": "ChatMo-v2",
+    "name": "ChatMo",
+    "slug": "ChatMo",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
