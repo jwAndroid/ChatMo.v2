@@ -1,66 +1,121 @@
-import React, { memo, useCallback, useEffect, useState } from 'react';
+import React, { memo, useCallback, useState } from 'react';
 // import { useSelector } from 'react-redux';
-import { GiftedChat, IMessage } from 'react-native-gifted-chat';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
+import uuid from 'react-native-uuid';
+import { useNavigation } from '@react-navigation/core';
 import styled from '@emotion/native';
 
-import { RootStackNavigationProp, RootStackParamList } from '../RootStack';
+import {
+  FlatList,
+  Keyboard,
+  KeyboardAvoidingView,
+  ListRenderItem,
+  Platform,
+  Text,
+  View,
+} from 'react-native';
+import { RootStackNavigationProp } from '../RootStack';
 // import { RootState } from '../../redux/rootReducer';
-import { IconHeader } from '../../components';
+import { IconHeader, SafeAreaContainer } from '../../components';
+import { getFormatTime, getTimestamp } from '../../utils/date';
+import { chatSampleData } from '../../../sampleData';
 
-const Container = styled.View(() => ({
+const Container = styled.Pressable(() => ({
   flex: 1,
 }));
 
-type RoomScreenRouteProp = RouteProp<RootStackParamList, 'Room'>;
+const StyledInput = styled.TextInput(() => ({
+  width: '100%',
+  height: 50,
+  backgroundColor: 'skyblue',
+}));
+
+interface Message {
+  id: string;
+  text: string;
+  renderDay: string | null;
+  createdAt: number;
+  type: string;
+}
+
+// type RoomScreenRouteProp = RouteProp<RootStackParamList, 'Room'>;
 
 function RoomScreen() {
   // const user = useSelector((state: RootState) => state.auth.user);
 
   const navigation = useNavigation<RootStackNavigationProp>();
 
-  const { params } = useRoute<RoomScreenRouteProp>();
-  // console.log(params);
+  // const { params } = useRoute<RoomScreenRouteProp>();
 
-  const [messages, setMessages] = useState<IMessage[]>([]);
+  const [value, setValue] = useState('');
+  const [prepare, setPrepare] = useState<Message[]>(chatSampleData);
 
-  useEffect(() => {
-    setMessages([
-      {
-        _id: 1,
-        text: 'Hello developer',
-        createdAt: new Date(),
-        user: {
-          _id: 2,
-          name: 'React Native',
-          avatar: 'https://placeimg.com/140/140/any',
-        },
-      },
-    ]);
-  }, []);
+  const [renderData, setRenderData] = useState<Message[]>([]);
 
   const onBackPress = useCallback(() => {
     navigation.pop();
   }, [navigation]);
 
-  const onSend = useCallback((messages: IMessage[]) => {
-    setMessages((previousMessages) =>
-      GiftedChat.append(previousMessages, messages)
-    );
+  const onChangeText = useCallback((text: string) => {
+    setValue(text);
   }, []);
 
+  const onSubmitEditing = useCallback(() => {
+    const currentMessage = {
+      id: uuid.v4().toString(),
+      text: value,
+      renderDay: getFormatTime(),
+      createdAt: getTimestamp(),
+      type: 'text',
+    };
+
+    setPrepare((prev) => prev.concat(currentMessage));
+
+    if (prepare[prepare.length - 1].renderDay === currentMessage.renderDay) {
+      setRenderData([...renderData, { ...currentMessage, renderDay: null }]);
+    } else {
+      setRenderData([
+        ...renderData,
+        { ...currentMessage, renderDay: getFormatTime() },
+      ]);
+    }
+  }, [value, prepare, renderData]);
+
+  const keyExtractor = useCallback((item: Message) => `${item.id}`, []);
+
+  const renderItem = useCallback<ListRenderItem<Message>>(
+    ({ item }) => (
+      <View>
+        {item.renderDay && <Text>{item.renderDay}</Text>}
+
+        <Text>{item.text}</Text>
+      </View>
+    ),
+    []
+  );
+
   return (
-    <Container>
+    <SafeAreaContainer>
       <IconHeader isBackButton onPress={onBackPress} />
 
-      <GiftedChat
-        messages={messages}
-        onSend={(messages) => onSend(messages)}
-        user={{
-          _id: 1,
-        }}
-      />
-    </Container>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.select({ ios: 'padding' })}
+      >
+        <Container onPress={() => Keyboard.dismiss()}>
+          <FlatList
+            data={renderData}
+            keyExtractor={keyExtractor}
+            renderItem={renderItem}
+          />
+        </Container>
+
+        <StyledInput
+          value={value}
+          onChangeText={onChangeText}
+          onSubmitEditing={onSubmitEditing}
+        />
+      </KeyboardAvoidingView>
+    </SafeAreaContainer>
   );
 }
 

@@ -10,3 +10,11 @@ export function getTimestamp(): number {
 
   return timestamp;
 }
+
+export function getFormatTime(): string {
+  const timestamp = moment().toDate().getTime();
+
+  const formated = moment(timestamp).format('YYYY-MM-DD');
+
+  return formated;
+}

@@ -5,6 +5,7 @@ import * as SystemUI from 'expo-system-ui';
 import { StatusBar } from 'expo-status-bar';
 import { ThemeProvider } from '@emotion/react';
 
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { RootState } from './src/redux/rootReducer';
 import { changeTheme } from './src/redux/system/slice';
 import useAuthLoadEffect from './src/hooks/useAuthLoadEffect';
@@ -51,17 +52,19 @@ function Main() {
   }, [dispatch]);
 
   return (
-    <ThemeProvider theme={systemTheme ? darkTheme : lightTheme}>
-      {appReady && user ? (
-        <NavigationContainer>
-          <StatusBar style={systemTheme ? 'light' : 'dark'} />
+    <SafeAreaProvider>
+      <ThemeProvider theme={systemTheme ? darkTheme : lightTheme}>
+        {appReady && user ? (
+          <NavigationContainer>
+            <StatusBar style={systemTheme ? 'light' : 'dark'} />
 
-          <RootStack />
-        </NavigationContainer>
-      ) : (
-        <Splash />
-      )}
-    </ThemeProvider>
+            <RootStack />
+          </NavigationContainer>
+        ) : (
+          <Splash />
+        )}
+      </ThemeProvider>
+    </SafeAreaProvider>
   );
 }
 
