@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import styled from '@emotion/native';
 import { useTheme } from '@emotion/react';
 
@@ -30,4 +30,4 @@ function Empty() {
   );
 }
 
-export default Empty;
+export default memo(Empty);

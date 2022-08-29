@@ -24,7 +24,6 @@ function Main() {
   const [appReady, setAppReady] = useState(false);
 
   useAuthLoadEffect();
-
   const { isLoadData } = useRoomsLoadEffect();
 
   useLayoutEffect(() => {

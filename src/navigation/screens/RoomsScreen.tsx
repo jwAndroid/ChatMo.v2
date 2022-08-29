@@ -1,9 +1,10 @@
-import React, { memo, useCallback } from 'react';
+import React, { memo, useCallback, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/core';
 import { RowMap } from 'react-native-swipe-list-view';
 import uuid from 'react-native-uuid';
 
+import { deleteDoc, doc } from 'firebase/firestore';
 import { RootState } from '../../redux/rootReducer';
 import { RootStackNavigationProp } from '../RootStack';
 import { createRoom } from '../../firebase/posts';
@@ -11,11 +12,13 @@ import { fulfilled } from '../../redux/posts/slice';
 import {
   FloatingButton,
   IconHeader,
+  NotificationModal,
   SafeAreaContainer,
   SwipeList,
 } from '../../components';
 import { RoomEntity } from '../../../types';
 import { getTimestamp } from '../../utils/date';
+import { firestore } from '../../firebase/config';
 
 function RoomsScreen() {
   const dispatch = useDispatch();
@@ -24,6 +27,8 @@ function RoomsScreen() {
   const posts = useSelector((state: RootState) => state.posts.posts);
 
   const navigation = useNavigation<RootStackNavigationProp>();
+
+  const [isOpen, setIsOpen] = useState(false);
 
   const onPressSetting = useCallback(() => {
     navigation.navigate('Setting');
@@ -85,9 +90,33 @@ function RoomsScreen() {
       if (rowMap[item.roomId]) {
         rowMap[item.roomId].closeRow();
       }
+
+      setIsOpen(true);
     },
     []
   );
+
+  const onPostive = useCallback(async () => {
+    if (user) {
+      await deleteDoc(
+        doc(
+          firestore,
+          'posts',
+          'users',
+          user?.userId,
+          'rooms',
+          'room',
+          '32c9652b-798c-410e-b519-c0f8e9277b8a'
+        )
+      );
+    }
+
+    setIsOpen(false);
+  }, [user]);
+
+  const onNegative = useCallback(() => {
+    setIsOpen(false);
+  }, []);
 
   return (
     <SafeAreaContainer>
@@ -100,6 +129,13 @@ function RoomsScreen() {
         onLock={onLock}
         onPressItem={onPressItem}
       />
+      {isOpen && (
+        <NotificationModal
+          isOpen={isOpen}
+          onNegative={onNegative}
+          onPostive={onPostive}
+        />
+      )}
 
       <FloatingButton onPress={onPressFloatingButton} />
     </SafeAreaContainer>
