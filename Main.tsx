@@ -25,12 +25,14 @@ function Main() {
 
   useAuthLoadEffect();
 
+  const { isLoadData } = useRoomsLoadEffect();
+
   useLayoutEffect(() => {
     (async () => {
       await Promise.all([cacheFonts(font), ...cacheImages(icon)]).then(() => {
         setTimeout(() => {
           setAppReady(true);
-        }, 2000);
+        }, 3000);
       });
     })();
   }, []);
@@ -51,11 +53,9 @@ function Main() {
     })();
   }, [dispatch]);
 
-  useRoomsLoadEffect();
-
   return (
     <ThemeProvider theme={systemTheme ? darkTheme : lightTheme}>
-      {appReady && user ? (
+      {appReady && user && isLoadData ? (
         <NavigationContainer>
           <StatusBar style={systemTheme ? 'light' : 'dark'} />
 

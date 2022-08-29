@@ -12,6 +12,7 @@ export const icon = {
   favorites: require('../assets/icons/favorites.png'),
   lock: require('../assets/icons/lock.png'),
   delete: require('../assets/icons/delete.png'),
+  empty: require('../assets/icons/empty.png'),
 };
 
 export const lightTheme: Theme = {

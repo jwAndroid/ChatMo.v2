@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   collection,
@@ -49,6 +49,8 @@ export function useRoomsLoadEffect() {
 
   const user = useSelector((state: RootState) => state.auth.user);
 
+  const [isLoadData, setIsLoadData] = useState(false);
+
   useEffect(() => {
     (async () => {
       if (user) {
@@ -66,7 +68,13 @@ export function useRoomsLoadEffect() {
         });
 
         dispatch(fulfilled(document as Post[]));
+
+        setIsLoadData(true);
       }
     })();
   }, [dispatch, user]);
+
+  return {
+    isLoadData,
+  };
 }

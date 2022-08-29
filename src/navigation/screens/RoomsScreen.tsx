@@ -5,17 +5,17 @@ import { RowMap } from 'react-native-swipe-list-view';
 import uuid from 'react-native-uuid';
 
 import { RootState } from '../../redux/rootReducer';
+import { RootStackNavigationProp } from '../RootStack';
+import { createRoom } from '../../firebase/posts';
+import { fulfilled } from '../../redux/posts/slice';
 import {
   FloatingButton,
   IconHeader,
   SafeAreaContainer,
   SwipeList,
 } from '../../components';
-import { RootStackNavigationProp } from '../RootStack';
 import { RoomEntity } from '../../../types';
-import { createRoom } from '../../firebase/posts';
 import { getTimestamp } from '../../utils/date';
-import { fulfilled } from '../../redux/posts/slice';
 
 function RoomsScreen() {
   const dispatch = useDispatch();
@@ -34,13 +34,13 @@ function RoomsScreen() {
     // navigation.navigate('Room');
     const room = {
       roomId: uuid.v4().toString(),
-      title: '13번',
+      title: '15번',
       lastMemo: 'string',
       memoCount: 1,
       isFavorites: true,
       isCompleate: true,
       isPin: true,
-      isLock: true,
+      isLock: false,
       password: 123,
       status: 123,
       createdAt: getTimestamp(),

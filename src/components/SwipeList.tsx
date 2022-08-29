@@ -4,11 +4,11 @@ import styled from '@emotion/native';
 import { RowMap, SwipeListView } from 'react-native-swipe-list-view';
 import { useTheme } from '@emotion/react';
 
-import CommonText from './CommonText';
 import RoomsItem from './RoomsItem';
 import { RoomEntity } from '../../types';
 import useSwipeStyles from '../hooks/useStyles';
 import { Post } from '../redux/posts/type';
+import Empty from './Empty';
 
 const RowBack = styled.View({
   flex: 1,
@@ -59,10 +59,7 @@ function SwipeList({
   const listFooterComponent = useCallback(() => <Footer />, []);
 
   const ListEmptyComponent = useCallback(
-    () =>
-      rooms?.length === 0 ? (
-        <CommonText text="결과가 존재하지 않습니다." />
-      ) : null,
+    () => (rooms?.length === 0 ? <Empty /> : null),
     [rooms]
   );
 
@@ -107,6 +104,7 @@ function SwipeList({
       stopLeftSwipe={150}
       stopRightSwipe={-75}
       rightOpenValue={-75}
+      initialNumToRender={15}
     />
   );
 }
