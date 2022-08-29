@@ -3,6 +3,7 @@ import {
   createNativeStackNavigator,
   NativeStackNavigationProp,
 } from '@react-navigation/native-stack';
+import { RouteProp } from '@react-navigation/core';
 
 import { RoomScreen, RoomsScreen, SettingScreen, ThemeScreen } from './screens';
 import { RoomsEntity } from '../../types';
@@ -13,6 +14,8 @@ export type RootStackParamList = {
   Room: RoomsEntity | undefined;
   Theme: undefined;
 };
+
+export type RoomScreenRouteProp = RouteProp<RootStackParamList, 'Room'>;
 
 export type RootStackNavigationProp =
   NativeStackNavigationProp<RootStackParamList>;
