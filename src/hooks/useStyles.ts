@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
 import { useTheme } from '@emotion/react';
 
-export default function useStyles() {
+export default function useSwipeStyles() {
   const theme = useTheme();
 
   const Row = useMemo<StyleProp<ViewStyle>>(
@@ -14,30 +14,16 @@ export default function useStyles() {
     [theme]
   );
 
-  const EditButton = useMemo<StyleProp<ViewStyle>>(
-    () => ({
-      position: 'absolute',
-      bottom: 0,
-      top: 0,
-      width: 75,
-      left: 0,
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: theme.color.sky_100,
-    }),
-    [theme]
-  );
-
   const FavoritButton = useMemo<StyleProp<ViewStyle>>(
     () => ({
       position: 'absolute',
       bottom: 0,
       top: 0,
+      left: 0,
       width: 75,
-      left: 75,
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: theme.color.sky_200,
+      backgroundColor: theme.color.sky_100,
     }),
     [theme]
   );
@@ -47,11 +33,11 @@ export default function useStyles() {
       position: 'absolute',
       bottom: 0,
       top: 0,
+      left: 75,
       width: 75,
-      left: 150,
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: theme.color.sky_300,
+      backgroundColor: theme.color.sky_200,
     }),
     [theme]
   );
@@ -61,8 +47,8 @@ export default function useStyles() {
       position: 'absolute',
       bottom: 0,
       top: 0,
-      width: 75,
       right: 0,
+      width: 75,
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: theme.color.red,
@@ -72,7 +58,6 @@ export default function useStyles() {
 
   return {
     Row,
-    EditButton,
     FavoritButton,
     LockButton,
     DeleteButton,

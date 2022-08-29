@@ -1,7 +1,15 @@
 export interface Post {
-  id: string;
-  text: string;
-  renderDay: string | null;
+  roomId: string;
+  title: string;
+  lastMemo: string;
+  memoCount: number;
+  isFavorites: boolean;
+  isCompleate: boolean;
+  isPin: boolean;
+  isLock: boolean;
+  password: number;
+  status: number;
   createdAt: number;
-  type: string;
+  updatedAt: number;
+  lastUpdateOn: number;
 }

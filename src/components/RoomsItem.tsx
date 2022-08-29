@@ -5,7 +5,8 @@ import { useTheme } from '@emotion/react';
 import { Text } from 'react-native';
 import CommonText from './CommonText';
 import { ellipsize } from '../utils/ellipsize';
-import { RoomsEntity } from '../../types';
+import { RoomEntity } from '../../types';
+import { getFormatTime } from '../utils/date';
 
 const Container = styled.View(() => ({
   flex: 1,
@@ -47,7 +48,7 @@ const Icon = styled.Image(({ theme }) => ({
 }));
 
 interface IRoomsItem {
-  item: RoomsEntity;
+  item: RoomEntity;
 }
 
 function RoomsItem({ item }: IRoomsItem) {
@@ -72,7 +73,7 @@ function RoomsItem({ item }: IRoomsItem) {
       </ContentsContainer>
 
       <CountContainer>
-        <CommonText text={createdAt.toString()} fontSize={10} />
+        <CommonText text={getFormatTime(createdAt)} fontSize={10} />
 
         {memoCount && (
           <CircleContainer>

@@ -1,7 +1,10 @@
 import React, { memo, useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/core';
 import { RowMap } from 'react-native-swipe-list-view';
+import uuid from 'react-native-uuid';
 
+import { RootState } from '../../redux/rootReducer';
 import {
   FloatingButton,
   IconHeader,
@@ -9,10 +12,17 @@ import {
   SwipeList,
 } from '../../components';
 import { RootStackNavigationProp } from '../RootStack';
-import { RoomsEntity } from '../../../types';
-import { sample } from '../../../sampleData';
+import { RoomEntity } from '../../../types';
+import { createRoom } from '../../firebase/posts';
+import { getTimestamp } from '../../utils/date';
+import { fulfilled } from '../../redux/posts/slice';
 
 function RoomsScreen() {
+  const dispatch = useDispatch();
+
+  const user = useSelector((state: RootState) => state.auth.user);
+  const posts = useSelector((state: RootState) => state.posts.posts);
+
   const navigation = useNavigation<RootStackNavigationProp>();
 
   const onPressSetting = useCallback(() => {
@@ -20,27 +30,40 @@ function RoomsScreen() {
   }, [navigation]);
 
   const onPressFloatingButton = useCallback(() => {
-    navigation.navigate('Room');
-  }, [navigation]);
+    console.log('onPressFloatingButton');
+    // navigation.navigate('Room');
+    const room = {
+      roomId: uuid.v4().toString(),
+      title: '13번',
+      lastMemo: 'string',
+      memoCount: 1,
+      isFavorites: true,
+      isCompleate: true,
+      isPin: true,
+      isLock: true,
+      password: 123,
+      status: 123,
+      createdAt: getTimestamp(),
+      updatedAt: 123,
+      lastUpdateOn: 123,
+    };
+
+    if (user && posts.data) {
+      createRoom(user.userId, room);
+
+      dispatch(fulfilled([room, ...posts.data]));
+    }
+  }, [dispatch, user, posts.data]);
 
   const onPressItem = useCallback(
-    (item: RoomsEntity) => () => {
+    (item: RoomEntity) => () => {
       navigation.navigate('Room', item);
     },
     [navigation]
   );
 
-  const onEdit = useCallback(
-    (rowMap: RowMap<RoomsEntity>, item: RoomsEntity) => () => {
-      if (rowMap[item.roomId]) {
-        rowMap[item.roomId].closeRow();
-      }
-    },
-    []
-  );
-
   const onFavorit = useCallback(
-    (rowMap: RowMap<RoomsEntity>, item: RoomsEntity) => () => {
+    (rowMap: RowMap<RoomEntity>, item: RoomEntity) => () => {
       if (rowMap[item.roomId]) {
         rowMap[item.roomId].closeRow();
       }
@@ -49,7 +72,7 @@ function RoomsScreen() {
   );
 
   const onLock = useCallback(
-    (rowMap: RowMap<RoomsEntity>, item: RoomsEntity) => () => {
+    (rowMap: RowMap<RoomEntity>, item: RoomEntity) => () => {
       if (rowMap[item.roomId]) {
         rowMap[item.roomId].closeRow();
       }
@@ -58,7 +81,7 @@ function RoomsScreen() {
   );
 
   const onDelete = useCallback(
-    (rowMap: RowMap<RoomsEntity>, item: RoomsEntity) => () => {
+    (rowMap: RowMap<RoomEntity>, item: RoomEntity) => () => {
       if (rowMap[item.roomId]) {
         rowMap[item.roomId].closeRow();
       }
@@ -68,12 +91,11 @@ function RoomsScreen() {
 
   return (
     <SafeAreaContainer>
-      <IconHeader title="목록" onPress={onPressSetting} />
+      <IconHeader isRightIcon title="목록" onPress={onPressSetting} />
 
       <SwipeList
-        rooms={sample}
+        rooms={posts.data}
         onDelete={onDelete}
-        onEdit={onEdit}
         onFavorit={onFavorit}
         onLock={onLock}
         onPressItem={onPressItem}

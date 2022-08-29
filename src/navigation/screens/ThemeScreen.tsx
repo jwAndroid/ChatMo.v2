@@ -51,7 +51,7 @@ function ThemeScreen() {
 
   return (
     <SafeAreaContainer>
-      <IconHeader isBackButton onPress={onBackPress} />
+      <IconHeader isLeftIcon onPress={onBackPress} />
 
       <Container>
         <CommonText text={isDark ? '화이트 테마' : '다크 테마'} fontSize={16} />

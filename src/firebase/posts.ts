@@ -1,17 +1,22 @@
-// useLayoutEffect(() => {
-//   const unsubscribe = onSnapshot(
-//     query(collection(firestore, 'posts'), orderBy('createdAt', 'asc')),
-//     (snopshot) => {
-//       const document: DocumentData[] = [];
+import { setDoc, doc } from 'firebase/firestore';
 
-//       snopshot.forEach((doc) => {
-//         document.push(doc.data());
-//       });
+import { RoomEntity } from '../../types';
+import { firestore } from './config';
 
-//       setPrepare(document as Message[]);
-//       setRenderData(document as Message[]);
-//     }
-//   );
+export async function createRoom(userId: string, room: RoomEntity) {
+  if (userId && room) {
+    const reference = doc(
+      firestore,
+      'posts',
+      'users',
+      userId,
+      'rooms',
+      'room',
+      room.roomId
+    );
 
-//   return () => unsubscribe();
-// }, []);
+    await setDoc(reference, room);
+  } else {
+    throw new Error('error!');
+  }
+}

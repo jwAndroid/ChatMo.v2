@@ -1,101 +1,90 @@
 import React, { memo, useCallback, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import {
-  FlatList,
-  KeyboardAvoidingView,
-  ListRenderItem,
-  Platform,
-  Text,
-  View,
-} from 'react-native';
-import { addDoc, collection } from 'firebase/firestore';
-import { useNavigation, useRoute } from '@react-navigation/core';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from '@emotion/native';
-import uuid from 'react-native-uuid';
+import { GiftedChat, IMessage } from 'react-native-gifted-chat';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
 
+import { RootStackNavigationProp, RootStackParamList } from '../RootStack';
+import { IconHeader, SafeAreaContainer } from '../../components';
 import { RootState } from '../../redux/rootReducer';
 import { fulfilled } from '../../redux/posts/slice';
-import { firestore } from '../../firebase/config';
-import { RoomScreenRouteProp, RootStackNavigationProp } from '../RootStack';
-import { IconHeader, SafeAreaContainer } from '../../components';
-import { getFormatTime, getTimestamp } from '../../utils/date';
-import usePostsLoadEffect from '../../hooks/usePostsLoadEffect';
-import { Post } from '../../redux/posts/type';
 
-const StyledInput = styled.TextInput(() => ({
-  width: '100%',
-  height: 50,
-  backgroundColor: 'skyblue',
+const Container = styled.View(({ theme }) => ({
+  flex: 1,
+  backgroundColor: theme.color.background,
 }));
+
+type RoomScreenRouteProp = RouteProp<RootStackParamList, 'Room'>;
 
 function RoomScreen() {
   const dispatch = useDispatch();
 
   const posts = useSelector((state: RootState) => state.posts.posts);
 
-  const navigation = useNavigation<RootStackNavigationProp>();
+  const { bottom } = useSafeAreaInsets();
+
   const { params } = useRoute<RoomScreenRouteProp>();
+  const navigation = useNavigation<RootStackNavigationProp>();
 
-  const [value, setValue] = useState('');
+  console.log(JSON.stringify(params, null, 5));
 
-  usePostsLoadEffect();
-
-  const keyExtractor = useCallback((item: Post) => `${item.id}`, []);
-
-  const onSubmitEditing = useCallback(async () => {
+  const onPressTest = useCallback(() => {
     if (posts.data) {
-      const currentMessage = {
-        id: uuid.v4().toString(),
-        text: value,
-        renderDay: getFormatTime(),
-        createdAt: getTimestamp(),
-        type: 'text',
-      };
-
-      await addDoc(collection(firestore, 'posts'), currentMessage);
-
-      dispatch(fulfilled([...posts.data, currentMessage]));
+      dispatch(
+        fulfilled([
+          {
+            id: '1',
+            text: 'testredux',
+            renderDay: 'testday',
+            createdAt: 1,
+            type: 'dasd',
+          },
+          ...posts.data,
+        ])
+      );
     }
-  }, [dispatch, value, posts.data]);
+  }, [dispatch, posts.data]);
 
-  const renderItem = useCallback<ListRenderItem<Post>>(
-    ({ item }) => (
-      <View>
-        {item.renderDay && <Text>{item.renderDay}</Text>}
+  const [messages, setMessages] = useState<IMessage[]>([
+    {
+      _id: 1,
+      text: 'Hello developer',
+      createdAt: new Date(),
+      user: {
+        _id: 1,
+        name: 'React Native',
+      },
+    },
+  ]);
 
-        <Text>{item.text}</Text>
-      </View>
-    ),
-    []
-  );
+  const onBackPress = useCallback(() => {
+    navigation.goBack();
+  }, [navigation]);
+
+  const onSend = useCallback((messages: IMessage[]) => {
+    setMessages((prev) => GiftedChat.append(prev, messages));
+  }, []);
 
   return (
-    <SafeAreaContainer>
-      <IconHeader
-        title={params?.title}
-        isBackButton
-        onPress={() => navigation.pop()}
-      />
+    <Container>
+      <IconHeader isLeftIcon isIosTopInset onPress={onBackPress} />
 
-      <KeyboardAvoidingView
-        style={{ flex: 1 }}
-        behavior={Platform.select({ ios: 'padding' })}
-      >
-        <FlatList
-          data={posts.data}
-          keyExtractor={keyExtractor}
-          renderItem={renderItem}
+      <SafeAreaContainer>
+        <GiftedChat
+          messages={messages}
+          wrapInSafeArea={false}
+          alignTop
+          alwaysShowSend
+          showUserAvatar={false}
+          bottomOffset={bottom === 0 ? 0 : bottom}
+          onSend={(messages) => onSend(messages)}
+          user={{
+            _id: 1,
+          }}
         />
-
-        <View>
-          <StyledInput
-            value={value}
-            onChangeText={setValue}
-            onSubmitEditing={onSubmitEditing}
-          />
-        </View>
-      </KeyboardAvoidingView>
-    </SafeAreaContainer>
+      </SafeAreaContainer>
+    </Container>
   );
 }
 

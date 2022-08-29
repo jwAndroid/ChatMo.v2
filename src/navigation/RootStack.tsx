@@ -1,21 +1,19 @@
-import React, { memo } from 'react';
+import React, { memo, useMemo } from 'react';
 import {
   createNativeStackNavigator,
+  NativeStackNavigationOptions,
   NativeStackNavigationProp,
 } from '@react-navigation/native-stack';
-import { RouteProp } from '@react-navigation/core';
 
 import { RoomScreen, RoomsScreen, SettingScreen, ThemeScreen } from './screens';
-import { RoomsEntity } from '../../types';
+import { RoomEntity } from '../../types';
 
 export type RootStackParamList = {
   Rooms: undefined;
   Setting: undefined;
-  Room: RoomsEntity | undefined;
+  Room: RoomEntity | undefined;
   Theme: undefined;
 };
-
-export type RoomScreenRouteProp = RouteProp<RootStackParamList, 'Room'>;
 
 export type RootStackNavigationProp =
   NativeStackNavigationProp<RootStackParamList>;
@@ -23,37 +21,29 @@ export type RootStackNavigationProp =
 const { Navigator, Screen } = createNativeStackNavigator<RootStackParamList>();
 
 function RootStack() {
+  const screenOptions = useMemo<NativeStackNavigationOptions>(
+    () => ({
+      headerShown: false,
+      gestureEnabled: false,
+    }),
+    []
+  );
+
   return (
-    <Navigator>
-      <Screen
-        name="Rooms"
-        component={RoomsScreen}
-        options={{
-          headerShown: false,
-        }}
-      />
+    <Navigator screenOptions={screenOptions}>
+      <Screen name="Rooms" component={RoomsScreen} />
 
       <Screen
         name="Setting"
         component={SettingScreen}
-        options={{
-          headerShown: false,
-        }}
+        options={{ animation: 'slide_from_bottom' }}
       />
       <Screen
         name="Room"
         component={RoomScreen}
-        options={{
-          headerShown: false,
-        }}
+        options={{ animation: 'slide_from_right' }}
       />
-      <Screen
-        name="Theme"
-        component={ThemeScreen}
-        options={{
-          headerShown: false,
-        }}
-      />
+      <Screen name="Theme" component={ThemeScreen} />
     </Navigator>
   );
 }

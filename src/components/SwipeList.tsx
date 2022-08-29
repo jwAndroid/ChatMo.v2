@@ -2,12 +2,13 @@ import React, { memo, useCallback } from 'react';
 import { ListRenderItem, Pressable, ListRenderItemInfo } from 'react-native';
 import styled from '@emotion/native';
 import { RowMap, SwipeListView } from 'react-native-swipe-list-view';
-
 import { useTheme } from '@emotion/react';
-import useStyles from '../hooks/useStyles';
+
 import CommonText from './CommonText';
 import RoomsItem from './RoomsItem';
-import { RoomsEntity } from '../../types';
+import { RoomEntity } from '../../types';
+import useSwipeStyles from '../hooks/useStyles';
+import { Post } from '../redux/posts/type';
 
 const RowBack = styled.View({
   flex: 1,
@@ -26,30 +27,27 @@ const Footer = styled.View({
 });
 
 interface ISwipeList {
-  rooms: RoomsEntity[];
-  onPressItem: (item: RoomsEntity) => () => void;
-  onEdit: (rowMap: RowMap<RoomsEntity>, item: RoomsEntity) => () => void;
-  onFavorit: (rowMap: RowMap<RoomsEntity>, item: RoomsEntity) => () => void;
-  onLock: (rowMap: RowMap<RoomsEntity>, item: RoomsEntity) => () => void;
-  onDelete: (rowMap: RowMap<RoomsEntity>, item: RoomsEntity) => () => void;
+  rooms: Post[] | null;
+  onPressItem: (item: RoomEntity) => () => void;
+  onFavorit: (rowMap: RowMap<RoomEntity>, item: RoomEntity) => () => void;
+  onLock: (rowMap: RowMap<RoomEntity>, item: RoomEntity) => () => void;
+  onDelete: (rowMap: RowMap<RoomEntity>, item: RoomEntity) => () => void;
 }
 
 function SwipeList({
   rooms,
   onPressItem,
-  onEdit,
   onFavorit,
   onLock,
   onDelete,
 }: ISwipeList) {
   const theme = useTheme();
 
-  const { Row, DeleteButton, EditButton, FavoritButton, LockButton } =
-    useStyles();
+  const { Row, DeleteButton, FavoritButton, LockButton } = useSwipeStyles();
 
-  const key = useCallback((item: RoomsEntity) => `${item.roomId}`, []);
+  const key = useCallback((item: RoomEntity) => `${item.roomId}`, []);
 
-  const renderItem = useCallback<ListRenderItem<RoomsEntity>>(
+  const renderItem = useCallback<ListRenderItem<RoomEntity>>(
     ({ item }) => (
       <Pressable onPress={onPressItem(item)} style={Row}>
         <RoomsItem item={item} />
@@ -62,22 +60,15 @@ function SwipeList({
 
   const ListEmptyComponent = useCallback(
     () =>
-      rooms.length === 0 ? (
+      rooms?.length === 0 ? (
         <CommonText text="결과가 존재하지 않습니다." />
       ) : null,
     [rooms]
   );
 
   const renderHiddenItem = useCallback(
-    (
-      { item }: ListRenderItemInfo<RoomsEntity>,
-      rowMap: RowMap<RoomsEntity>
-    ) => (
+    ({ item }: ListRenderItemInfo<RoomEntity>, rowMap: RowMap<RoomEntity>) => (
       <RowBack>
-        <Pressable style={EditButton} onPress={onEdit(rowMap, item)}>
-          <ButtonIcon source={theme.icon.edit} />
-        </Pressable>
-
         <Pressable style={FavoritButton} onPress={onFavorit(rowMap, item)}>
           <ButtonIcon source={theme.icon.favorites} />
         </Pressable>
@@ -92,11 +83,9 @@ function SwipeList({
       </RowBack>
     ),
     [
-      EditButton,
       FavoritButton,
       LockButton,
       DeleteButton,
-      onEdit,
       onFavorit,
       onLock,
       onDelete,
@@ -114,8 +103,8 @@ function SwipeList({
       ListEmptyComponent={ListEmptyComponent}
       renderHiddenItem={renderHiddenItem}
       ListFooterComponent={listFooterComponent}
-      leftOpenValue={225}
-      stopLeftSwipe={225}
+      leftOpenValue={150}
+      stopLeftSwipe={150}
       stopRightSwipe={-75}
       rightOpenValue={-75}
     />

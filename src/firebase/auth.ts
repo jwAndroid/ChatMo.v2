@@ -1,4 +1,5 @@
 import { doc, setDoc } from 'firebase/firestore';
+
 import { UserEntity } from '../../types';
 import { firestore } from './config';
 

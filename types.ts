@@ -8,8 +8,8 @@ export interface SettingEntity {
   id: number;
   title: string;
 }
-export interface RoomsEntity {
-  roomId: number;
+export interface RoomEntity {
+  roomId: string;
   title: string;
   lastMemo: string;
   memoCount: number;
@@ -22,8 +22,4 @@ export interface RoomsEntity {
   createdAt: number;
   updatedAt: number;
   lastUpdateOn: number;
-}
-export interface RoomEntity {
-  id: number;
-  title: string;
 }

@@ -5,7 +5,6 @@ import * as SystemUI from 'expo-system-ui';
 import { StatusBar } from 'expo-status-bar';
 import { ThemeProvider } from '@emotion/react';
 
-import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { RootState } from './src/redux/rootReducer';
 import { changeTheme } from './src/redux/system/slice';
 import useAuthLoadEffect from './src/hooks/useAuthLoadEffect';
@@ -14,6 +13,7 @@ import themeStorage from './src/storages/themeStorage';
 import { cacheFonts, cacheImages } from './src/utils/cache';
 import { darkTheme, font, icon, lightTheme } from './src/theme';
 import Splash from './Splash';
+import { useRoomsLoadEffect } from './src/hooks/useRoomsLoadEffect';
 
 function Main() {
   const dispatch = useDispatch();
@@ -51,20 +51,20 @@ function Main() {
     })();
   }, [dispatch]);
 
-  return (
-    <SafeAreaProvider>
-      <ThemeProvider theme={systemTheme ? darkTheme : lightTheme}>
-        {appReady && user ? (
-          <NavigationContainer>
-            <StatusBar style={systemTheme ? 'light' : 'dark'} />
+  useRoomsLoadEffect();
 
-            <RootStack />
-          </NavigationContainer>
-        ) : (
-          <Splash />
-        )}
-      </ThemeProvider>
-    </SafeAreaProvider>
+  return (
+    <ThemeProvider theme={systemTheme ? darkTheme : lightTheme}>
+      {appReady && user ? (
+        <NavigationContainer>
+          <StatusBar style={systemTheme ? 'light' : 'dark'} />
+
+          <RootStack />
+        </NavigationContainer>
+      ) : (
+        <Splash />
+      )}
+    </ThemeProvider>
   );
 }
 
