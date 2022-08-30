@@ -1,13 +1,13 @@
 import React, { memo, useCallback } from 'react';
 import { Text, FlatList, ListRenderItem } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from '@emotion/native';
 
-import { useDispatch, useSelector } from 'react-redux';
-import { RoomEntity } from '../../types';
 import { Post } from '../redux/posts/type';
 import { fulfilled } from '../redux/posts/slice';
-import { onFavoritesRoom } from '../firebase/posts';
 import { RootState } from '../redux/rootReducer';
+import { onFavoritesRoom } from '../firebase/posts';
+import { RoomEntity } from '../../types';
 
 const Container = styled.View(() => ({
   flex: 1,
