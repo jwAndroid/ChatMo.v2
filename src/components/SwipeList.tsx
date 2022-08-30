@@ -67,7 +67,11 @@ function SwipeList({
     ({ item }: ListRenderItemInfo<RoomEntity>, rowMap: RowMap<RoomEntity>) => (
       <RowBack>
         <Pressable style={FavoritButton} onPress={onFavorit(rowMap, item)}>
-          <ButtonIcon source={theme.icon.favorites} />
+          <ButtonIcon
+            source={
+              item.isFavorites ? theme.icon.favoritesfill : theme.icon.favorites
+            }
+          />
         </Pressable>
 
         <Pressable style={LockButton} onPress={onLock(rowMap, item)}>

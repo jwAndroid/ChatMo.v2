@@ -6,7 +6,7 @@ import uuid from 'react-native-uuid';
 
 import { RootState } from '../../redux/rootReducer';
 import { RootStackNavigationProp } from '../RootStack';
-import { createRoom, deleteRoom } from '../../firebase/posts';
+import { createRoom, deleteRoom, onFavoritesRoom } from '../../firebase/posts';
 import { fulfilled } from '../../redux/posts/slice';
 import {
   FloatingButton,
@@ -34,14 +34,13 @@ function RoomsScreen() {
   }, [navigation]);
 
   const onPressFloatingButton = useCallback(() => {
-    console.log('onPressFloatingButton');
     // navigation.navigate('Room');
     const room = {
       roomId: uuid.v4().toString(),
-      title: '15번',
+      title: '16번',
       lastMemo: 'string',
       memoCount: 1,
-      isFavorites: true,
+      isFavorites: false,
       isCompleate: true,
       isPin: true,
       isLock: false,
@@ -71,8 +70,25 @@ function RoomsScreen() {
       if (rowMap[item.roomId]) {
         rowMap[item.roomId].closeRow();
       }
+
+      if (user && item && posts.data) {
+        const updatedRooms = posts.data.map((post) =>
+          post.roomId === item.roomId
+            ? {
+                ...post,
+                isFavorites: !item.isFavorites,
+              }
+            : post
+        );
+
+        dispatch(fulfilled(updatedRooms));
+
+        onFavoritesRoom(user?.userId, item);
+      }
+
+      console.log(JSON.stringify(item, null, 5));
     },
-    []
+    [dispatch, user, posts]
   );
 
   const onLock = useCallback(
@@ -106,16 +122,12 @@ function RoomsScreen() {
       );
 
       dispatch(fulfilled(prepared));
+
+      setIsOpen(false);
+
+      setPickedItem(null);
     }
-
-    setIsOpen(false);
-
-    setPickedItem(null);
   }, [dispatch, user, pickedItem, posts]);
-
-  const onNegative = useCallback(() => {
-    setIsOpen(false);
-  }, []);
 
   return (
     <SafeAreaContainer>
@@ -131,7 +143,7 @@ function RoomsScreen() {
       {isOpen && (
         <NotificationModal
           isOpen={isOpen}
-          onNegative={onNegative}
+          onNegative={() => setIsOpen(false)}
           onPostive={onPostive}
         />
       )}

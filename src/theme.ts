@@ -10,6 +10,7 @@ export const icon = {
   splash: require('../assets/icons/splash.png'),
   edit: require('../assets/icons/edit.png'),
   favorites: require('../assets/icons/favorites.png'),
+  favoritesfill: require('../assets/icons/favoritesfill.png'),
   lock: require('../assets/icons/lock.png'),
   delete: require('../assets/icons/delete.png'),
   empty: require('../assets/icons/empty.png'),
