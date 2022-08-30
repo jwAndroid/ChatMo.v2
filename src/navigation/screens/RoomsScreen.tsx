@@ -4,10 +4,9 @@ import { useNavigation } from '@react-navigation/core';
 import { RowMap } from 'react-native-swipe-list-view';
 import uuid from 'react-native-uuid';
 
-import { deleteDoc, doc } from 'firebase/firestore';
 import { RootState } from '../../redux/rootReducer';
 import { RootStackNavigationProp } from '../RootStack';
-import { createRoom } from '../../firebase/posts';
+import { createRoom, deleteRoom } from '../../firebase/posts';
 import { fulfilled } from '../../redux/posts/slice';
 import {
   FloatingButton,
@@ -18,7 +17,6 @@ import {
 } from '../../components';
 import { RoomEntity } from '../../../types';
 import { getTimestamp } from '../../utils/date';
-import { firestore } from '../../firebase/config';
 
 function RoomsScreen() {
   const dispatch = useDispatch();
@@ -29,6 +27,7 @@ function RoomsScreen() {
   const navigation = useNavigation<RootStackNavigationProp>();
 
   const [isOpen, setIsOpen] = useState(false);
+  const [pickedItem, setPickedItem] = useState<RoomEntity | null>(null);
 
   const onPressSetting = useCallback(() => {
     navigation.navigate('Setting');
@@ -92,27 +91,27 @@ function RoomsScreen() {
       }
 
       setIsOpen(true);
+
+      setPickedItem(item);
     },
     []
   );
 
   const onPostive = useCallback(async () => {
-    if (user) {
-      await deleteDoc(
-        doc(
-          firestore,
-          'posts',
-          'users',
-          user?.userId,
-          'rooms',
-          'room',
-          '32c9652b-798c-410e-b519-c0f8e9277b8a'
-        )
+    if (user && pickedItem && posts.data) {
+      deleteRoom(user.userId, pickedItem.roomId);
+
+      const prepared = posts.data.filter(
+        (post) => post.roomId !== pickedItem.roomId
       );
+
+      dispatch(fulfilled(prepared));
     }
 
     setIsOpen(false);
-  }, [user]);
+
+    setPickedItem(null);
+  }, [dispatch, user, pickedItem, posts]);
 
   const onNegative = useCallback(() => {
     setIsOpen(false);
