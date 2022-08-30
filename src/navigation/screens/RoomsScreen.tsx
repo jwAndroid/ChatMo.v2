@@ -83,10 +83,8 @@ function RoomsScreen() {
 
         dispatch(fulfilled(updatedRooms));
 
-        onFavoritesRoom(user?.userId, item);
+        onFavoritesRoom(user.userId, item);
       }
-
-      console.log(JSON.stringify(item, null, 5));
     },
     [dispatch, user, posts]
   );

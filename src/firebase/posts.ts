@@ -4,6 +4,8 @@ import { RoomEntity } from '../../types';
 import { firestore } from './config';
 
 export async function createRoom(userId: string, room: RoomEntity) {
+  console.log('createRoom start');
+
   if (userId && room) {
     const reference = doc(
       firestore,
@@ -22,6 +24,8 @@ export async function createRoom(userId: string, room: RoomEntity) {
 }
 
 export async function deleteRoom(userId: string, roomId: string) {
+  console.log('deleteRoom start');
+
   if (userId && roomId) {
     await deleteDoc(
       doc(firestore, 'posts', 'users', userId, 'rooms', 'room', roomId)
@@ -32,8 +36,9 @@ export async function deleteRoom(userId: string, roomId: string) {
 }
 
 export async function onFavoritesRoom(userId: string, room: RoomEntity) {
+  console.log('onFavoritesRoom start');
+
   if (userId && room) {
-    console.log(room.roomId);
     await updateDoc(
       doc(firestore, 'posts', 'users', userId, 'rooms', 'room', room.roomId),
       { isFavorites: !room.isFavorites }

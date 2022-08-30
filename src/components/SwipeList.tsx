@@ -9,6 +9,7 @@ import { RoomEntity } from '../../types';
 import useSwipeStyles from '../hooks/useStyles';
 import { Post } from '../redux/posts/type';
 import Empty from './Empty';
+import Favorites from './Favorites';
 
 const RowBack = styled.View({
   flex: 1,
@@ -56,10 +57,8 @@ function SwipeList({
     [Row, onPressItem]
   );
 
-  const listFooterComponent = useCallback(() => <Footer />, []);
-
-  const ListEmptyComponent = useCallback(
-    () => (rooms?.length === 0 ? <Empty /> : null),
+  const ListHeaderComponent = useCallback(
+    () => <Favorites rooms={rooms} />,
     [rooms]
   );
 
@@ -94,15 +93,26 @@ function SwipeList({
     ]
   );
 
+  const listFooterComponent = useCallback(() => <Footer />, []);
+
+  const ListEmptyComponent = useCallback(
+    () =>
+      rooms?.filter((room) => !room.isFavorites).length === 0 ? (
+        <Empty />
+      ) : null,
+    [rooms]
+  );
+
   return (
     <SwipeListView
-      data={rooms}
+      data={rooms?.filter((room) => !room.isFavorites)}
       keyExtractor={key}
       stickySectionHeadersEnabled={false}
       showsVerticalScrollIndicator={false}
       renderItem={renderItem}
-      ListEmptyComponent={ListEmptyComponent}
       renderHiddenItem={renderHiddenItem}
+      ListHeaderComponent={ListHeaderComponent}
+      ListEmptyComponent={ListEmptyComponent}
       ListFooterComponent={listFooterComponent}
       leftOpenValue={150}
       stopLeftSwipe={150}

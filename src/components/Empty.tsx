@@ -8,7 +8,6 @@ const Container = styled.View(({ theme }) => ({
   flex: 1,
   justifyContent: 'center',
   alignItems: 'center',
-  paddingBottom: 70,
   backgroundColor: theme.color.background,
 }));
 
