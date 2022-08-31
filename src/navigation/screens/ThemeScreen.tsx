@@ -1,18 +1,19 @@
 import React, { memo, useCallback, useState } from 'react';
-import styled from '@emotion/native';
-import { useNavigation } from '@react-navigation/core';
-
 import { useDispatch, useSelector } from 'react-redux';
-import { RootStackNavigationProp } from '../RootStack';
+import { useNavigation } from '@react-navigation/core';
+import * as SystemUI from 'expo-system-ui';
+import styled from '@emotion/native';
+
+import { changeTheme } from '../../redux/system/slice';
+import { RootState } from '../../redux/rootReducer';
+import themeStorage from '../../storages/themeStorage';
 import {
   CommonText,
   IconHeader,
   SafeAreaContainer,
   SettingSwitch,
 } from '../../components';
-import { changeTheme } from '../../redux/system/slice';
-import { RootState } from '../../redux/rootReducer';
-import themeStorage from '../../storages/themeStorage';
+import { RootStackNavigationProp } from '../RootStack';
 
 const Container = styled.View(() => ({
   flexDirection: 'row',
@@ -37,15 +38,19 @@ function ThemeScreen() {
     navigation.goBack();
   }, [navigation, isDark]);
 
-  const onValueChange = useCallback(() => {
+  const onValueChange = useCallback(async () => {
     if (isDark) {
       setIsDark(false);
 
       dispatch(changeTheme({ isDark: false }));
+
+      await SystemUI.setBackgroundColorAsync('#ffffff');
     } else {
       setIsDark(true);
 
       dispatch(changeTheme({ isDark: true }));
+
+      await SystemUI.setBackgroundColorAsync('#000000');
     }
   }, [dispatch, setIsDark, isDark]);
 

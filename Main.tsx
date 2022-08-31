@@ -1,4 +1,4 @@
-import React, { memo, useLayoutEffect, useState } from 'react';
+import React, { memo, useEffect, useLayoutEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import * as SystemUI from 'expo-system-ui';
@@ -51,6 +51,14 @@ function Main() {
       }
     })();
   }, [dispatch]);
+
+  useEffect(() => {
+    (async () => {
+      const color = await SystemUI.getBackgroundColorAsync();
+
+      console.log(color);
+    })();
+  }, []);
 
   return (
     <ThemeProvider theme={systemTheme ? darkTheme : lightTheme}>
