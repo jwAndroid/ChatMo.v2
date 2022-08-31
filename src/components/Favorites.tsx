@@ -1,4 +1,4 @@
-import React, { memo, useCallback } from 'react';
+import React, { memo, useCallback, useMemo } from 'react';
 import { FlatList, ListRenderItem } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -18,6 +18,14 @@ function Favorites({ rooms }: IFavorites) {
   const dispatch = useDispatch();
 
   const user = useSelector((state: RootState) => state.auth.user);
+
+  const data = useMemo(
+    () =>
+      rooms
+        ?.filter((room) => room.isFavorites)
+        .sort((a, b) => b.updatedAt - a.updatedAt),
+    [rooms]
+  );
 
   const key = useCallback((item: RoomEntity) => `${item.roomId}`, []);
 
@@ -62,9 +70,7 @@ function Favorites({ rooms }: IFavorites) {
 
   return (
     <FlatList
-      data={rooms
-        ?.filter((room) => room.isFavorites)
-        .sort((a, b) => b.updatedAt - a.updatedAt)}
+      data={data}
       contentContainerStyle={{ marginLeft: 6 }}
       horizontal
       showsHorizontalScrollIndicator={false}

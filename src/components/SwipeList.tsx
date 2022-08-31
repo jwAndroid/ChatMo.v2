@@ -1,4 +1,4 @@
-import React, { memo, useCallback } from 'react';
+import React, { memo, useCallback, useMemo } from 'react';
 import { ListRenderItem, Pressable, ListRenderItemInfo } from 'react-native';
 import styled from '@emotion/native';
 import { RowMap, SwipeListView } from 'react-native-swipe-list-view';
@@ -45,6 +45,11 @@ function SwipeList({
   const theme = useTheme();
 
   const { Row, DeleteButton, FavoritButton, LockButton } = useSwipeStyles();
+
+  const data = useMemo(
+    () => rooms?.filter((room) => !room.isFavorites),
+    [rooms]
+  );
 
   const key = useCallback((item: RoomEntity) => `${item.roomId}`, []);
 
@@ -105,7 +110,7 @@ function SwipeList({
 
   return (
     <SwipeListView
-      data={rooms?.filter((room) => !room.isFavorites)}
+      data={data}
       keyExtractor={key}
       stickySectionHeadersEnabled={false}
       showsVerticalScrollIndicator={false}
@@ -118,7 +123,7 @@ function SwipeList({
       stopLeftSwipe={150}
       stopRightSwipe={-75}
       rightOpenValue={-75}
-      initialNumToRender={15}
+      initialNumToRender={10}
     />
   );
 }
