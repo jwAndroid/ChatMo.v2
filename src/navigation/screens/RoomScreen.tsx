@@ -1,5 +1,4 @@
 import React, { memo, useCallback, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import styled from '@emotion/native';
 import { GiftedChat, IMessage } from 'react-native-gifted-chat';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -7,8 +6,6 @@ import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
 
 import { RootStackNavigationProp, RootStackParamList } from '../RootStack';
 import { IconHeader, SafeAreaContainer } from '../../components';
-import { RootState } from '../../redux/rootReducer';
-import { fulfilled } from '../../redux/posts/slice';
 
 const Container = styled.View(({ theme }) => ({
   flex: 1,
@@ -18,10 +15,6 @@ const Container = styled.View(({ theme }) => ({
 type RoomScreenRouteProp = RouteProp<RootStackParamList, 'Room'>;
 
 function RoomScreen() {
-  const dispatch = useDispatch();
-
-  const posts = useSelector((state: RootState) => state.posts.posts);
-
   const { bottom } = useSafeAreaInsets();
 
   const { params } = useRoute<RoomScreenRouteProp>();
@@ -42,7 +35,7 @@ function RoomScreen() {
   ]);
 
   const onBackPress = useCallback(() => {
-    navigation.goBack();
+    navigation.popToTop();
   }, [navigation]);
 
   const onSend = useCallback((messages: IMessage[]) => {

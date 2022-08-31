@@ -5,7 +5,13 @@ import {
   NativeStackNavigationProp,
 } from '@react-navigation/native-stack';
 
-import { RoomScreen, RoomsScreen, SettingScreen, ThemeScreen } from './screens';
+import {
+  OTPScreen,
+  RoomScreen,
+  RoomsScreen,
+  SettingScreen,
+  ThemeScreen,
+} from './screens';
 import { RoomEntity } from '../../types';
 
 export type RootStackParamList = {
@@ -13,6 +19,7 @@ export type RootStackParamList = {
   Setting: undefined;
   Room: RoomEntity | undefined;
   Theme: undefined;
+  OTP: RoomEntity | undefined;
 };
 
 export type RootStackNavigationProp =
@@ -43,7 +50,16 @@ function RootStack() {
         component={RoomScreen}
         options={{ animation: 'slide_from_right' }}
       />
-      <Screen name="Theme" component={ThemeScreen} />
+      <Screen
+        name="Theme"
+        component={ThemeScreen}
+        options={{ animation: 'slide_from_right' }}
+      />
+      <Screen
+        name="OTP"
+        component={OTPScreen}
+        options={{ animation: 'slide_from_bottom' }}
+      />
     </Navigator>
   );
 }

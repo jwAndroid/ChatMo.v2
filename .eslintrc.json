@@ -37,6 +37,7 @@
     "operator-linebreak": "off",
     "no-shadow": "off",
     "consistent-return": "off",
-    "indent": "off"
+    "indent": "off",
+    "react/jsx-props-no-spreading": "off"
   }
 }

@@ -83,7 +83,11 @@ function RoomsScreen() {
 
   const onPressItem = useCallback(
     (item: RoomEntity) => () => {
-      navigation.navigate('Room', item);
+      if (item.password) {
+        navigation.navigate('OTP', item);
+      } else {
+        navigation.navigate('Room', item);
+      }
     },
     [navigation]
   );

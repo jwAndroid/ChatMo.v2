@@ -137,7 +137,11 @@ function ShadowCard({ item, onPressCard, onPressFavorit }: IShadowCard) {
         </LeftContainer>
 
         <RightContainer>
-          <Pressable onPress={onPressFavorit(item)} hitSlop={10}>
+          <Pressable
+            style={({ pressed }) => pressed && { opacity: 0.75 }}
+            onPress={onPressFavorit(item)}
+            hitSlop={10}
+          >
             <Icon
               size={20}
               tintColor={theme.color.chip}
