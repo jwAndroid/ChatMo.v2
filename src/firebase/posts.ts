@@ -1,6 +1,7 @@
 import { setDoc, doc, deleteDoc, updateDoc } from 'firebase/firestore';
 
 import { RoomEntity } from '../../types';
+import { getTimestamp } from '../utils/date';
 import { firestore } from './config';
 
 export async function createRoom(userId: string, room: RoomEntity) {
@@ -41,7 +42,7 @@ export async function onFavoritesRoom(userId: string, room: RoomEntity) {
   if (userId && room) {
     await updateDoc(
       doc(firestore, 'posts', 'users', userId, 'rooms', 'room', room.roomId),
-      { isFavorites: !room.isFavorites }
+      { isFavorites: !room.isFavorites, updatedAt: getTimestamp() }
     );
   } else {
     throw new Error('error!');

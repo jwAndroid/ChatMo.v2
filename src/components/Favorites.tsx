@@ -8,6 +8,7 @@ import { RootState } from '../redux/rootReducer';
 import { onFavoritesRoom } from '../firebase/posts';
 import { RoomEntity } from '../../types';
 import ShadowCard from './ShadowCard';
+import { getTimestamp } from '../utils/date';
 
 interface IFavorites {
   rooms: Post[] | null;
@@ -28,6 +29,7 @@ function Favorites({ rooms }: IFavorites) {
             ? {
                 ...post,
                 isFavorites: !item.isFavorites,
+                updatedAt: getTimestamp(),
               }
             : post
         );
@@ -60,7 +62,9 @@ function Favorites({ rooms }: IFavorites) {
 
   return (
     <FlatList
-      data={rooms?.filter((room) => room.isFavorites)}
+      data={rooms
+        ?.filter((room) => room.isFavorites)
+        .sort((a, b) => b.updatedAt - a.updatedAt)}
       contentContainerStyle={{ marginLeft: 6 }}
       horizontal
       showsHorizontalScrollIndicator={false}

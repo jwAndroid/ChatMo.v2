@@ -37,7 +37,7 @@ function RoomsScreen() {
     // navigation.navigate('Room');
     const room = {
       roomId: uuid.v4().toString(),
-      title: '16번',
+      title: '20번',
       lastMemo: 'string',
       memoCount: 1,
       isFavorites: false,
@@ -77,6 +77,7 @@ function RoomsScreen() {
             ? {
                 ...post,
                 isFavorites: !item.isFavorites,
+                updatedAt: getTimestamp(),
               }
             : post
         );
