@@ -45,6 +45,12 @@ function RoomsScreen() {
     []
   );
 
+  const delayedModalOpen = useCallback((isOpen: boolean) => {
+    setTimeout(() => {
+      setIsOpen(isOpen);
+    }, 200);
+  }, []);
+
   const onPressSetting = useCallback(() => {
     navigation.navigate('Setting');
   }, [navigation]);
@@ -122,11 +128,11 @@ function RoomsScreen() {
         rowMap[item.roomId].closeRow();
       }
 
-      setIsOpen(true);
+      delayedModalOpen(true);
 
       setPickedItem(item);
     },
-    []
+    [delayedModalOpen]
   );
 
   const onPostive = useCallback(async () => {
@@ -139,15 +145,17 @@ function RoomsScreen() {
 
       dispatch(fulfilled(prepared));
 
-      setTimeout(() => {
-        setIsOpen(false);
-      }, 200);
+      delayedModalOpen(false);
 
       setPickedItem(null);
 
       LayoutAnimation.configureNext(animationConfig);
     }
-  }, [dispatch, user, pickedItem, posts, animationConfig]);
+  }, [dispatch, user, pickedItem, posts, animationConfig, delayedModalOpen]);
+
+  const onNegative = useCallback(() => {
+    delayedModalOpen(false);
+  }, [delayedModalOpen]);
 
   return (
     <SafeAreaContainer>
@@ -163,7 +171,7 @@ function RoomsScreen() {
       {isOpen && (
         <NotificationModal
           isOpen={isOpen}
-          onNegative={() => setIsOpen(false)}
+          onNegative={onNegative}
           onPostive={onPostive}
         />
       )}

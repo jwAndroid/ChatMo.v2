@@ -13,7 +13,7 @@ const Container = styled.Pressable({
   backgroundColor: 'rgba(0, 0, 0, 0.4)',
 });
 
-const TextContainer = styled.View(() => ({
+const TextContainer = styled.View(({ theme }) => ({
   width: '100%',
   paddingVertical: 25,
   paddingHorizontal: 30,
@@ -21,15 +21,15 @@ const TextContainer = styled.View(() => ({
   alignItems: 'center',
   borderTopEndRadius: 20,
   borderTopLeftRadius: 20,
-  backgroundColor: 'gray',
+  backgroundColor: theme.color.card,
 }));
 
-const ButtonContainer = styled.View(() => ({
+const ButtonContainer = styled.View(({ theme }) => ({
   width: '100%',
   flexDirection: 'row',
   borderBottomEndRadius: 20,
   borderBottomLeftRadius: 20,
-  backgroundColor: 'gray',
+  backgroundColor: theme.color.card,
 }));
 
 const StyledButton = styled.Pressable(() => ({
@@ -44,7 +44,7 @@ const ModalText = styled.Text(({ theme }) => ({
   includeFontPadding: false,
   textAlign: 'center',
   fontSize: 14,
-  color: theme.color.black,
+  color: theme.color.text,
 }));
 
 interface INotificationModal {

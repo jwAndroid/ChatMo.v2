@@ -1,5 +1,5 @@
 import React, { memo, useCallback, useMemo } from 'react';
-import { FlatList, ListRenderItem } from 'react-native';
+import { FlatList, LayoutAnimation, ListRenderItem } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { Post } from '../redux/posts/type';
@@ -27,6 +27,21 @@ function Favorites({ rooms }: IFavorites) {
     [rooms]
   );
 
+  const animationConfig = useMemo(
+    () => ({
+      duration: 300,
+      update: {
+        type: LayoutAnimation.Types.easeInEaseOut,
+      },
+      delete: {
+        duration: 100,
+        type: LayoutAnimation.Types.easeInEaseOut,
+        property: LayoutAnimation.Properties.opacity,
+      },
+    }),
+    []
+  );
+
   const key = useCallback((item: RoomEntity) => `${item.roomId}`, []);
 
   const onPressFavorit = useCallback(
@@ -45,9 +60,11 @@ function Favorites({ rooms }: IFavorites) {
         dispatch(fulfilled(updatedRooms));
 
         onFavoritesRoom(user.userId, item);
+
+        LayoutAnimation.configureNext(animationConfig);
       }
     },
-    [dispatch, rooms, user]
+    [dispatch, rooms, user, animationConfig]
   );
 
   const onPressCard = useCallback(
