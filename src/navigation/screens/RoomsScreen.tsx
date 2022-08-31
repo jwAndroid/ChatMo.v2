@@ -37,7 +37,7 @@ function RoomsScreen() {
     // navigation.navigate('Room');
     const room = {
       roomId: uuid.v4().toString(),
-      title: '21번',
+      title: '22번',
       lastMemo: 'string',
       memoCount: 1,
       isFavorites: false,
@@ -49,6 +49,7 @@ function RoomsScreen() {
       createdAt: getTimestamp(),
       updatedAt: 123,
       lastUpdateOn: 123,
+      chips: ['hello world', 'jw', 'develop'],
     };
 
     if (user && posts.data) {

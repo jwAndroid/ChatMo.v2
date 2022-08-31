@@ -25,6 +25,7 @@ declare module '@emotion/react' {
       icon: string;
       shadow: string;
       card: string;
+      chip: string;
       background: string;
     };
     icon: typeof icon;

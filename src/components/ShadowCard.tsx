@@ -62,7 +62,6 @@ const ContentsContainer = styled.View(() => ({
   flex: 1,
   flexDirection: 'row',
   marginHorizontal: 10,
-  marginVertical: 5,
 }));
 
 const LeftContainer = styled.View(() => ({
@@ -71,6 +70,24 @@ const LeftContainer = styled.View(() => ({
 
 const RightContainer = styled.View(() => ({
   justifyContent: 'flex-end',
+  paddingBottom: 10,
+}));
+
+const ChipContainer = styled.View(() => ({
+  flexDirection: 'row',
+  marginTop: 5,
+  marginBottom: 2,
+}));
+
+const Chip = styled.View(({ theme }) => ({
+  justifyContent: 'center',
+  alignItems: 'center',
+  paddingVertical: 4,
+  paddingHorizontal: 10,
+  borderRadius: 12,
+  borderWidth: 1,
+  marginLeft: 6,
+  borderColor: theme.color.chip,
 }));
 
 interface IShadowCard {
@@ -101,12 +118,20 @@ function ShadowCard({ item, onPressCard, onPressFavorit }: IShadowCard) {
         fontSize={12}
         marginLeft={10}
       />
+      {item.chips ? (
+        <ChipContainer>
+          {item.chips.map((chip, index) => (
+            <Chip key={`${index + 1}`}>
+              <CommonText text={ellipsize(chip, 10)} fontSize={12} />
+            </Chip>
+          ))}
+        </ChipContainer>
+      ) : null}
 
       <ContentsContainer>
         <LeftContainer>
           <CommonText
-            marginTop={5}
-            text={lineBreak(ellipsize(item.lastMemo, 80))}
+            text={lineBreak(ellipsize(item.lastMemo, 30))}
             fontSize={17}
           />
         </LeftContainer>
@@ -115,7 +140,7 @@ function ShadowCard({ item, onPressCard, onPressFavorit }: IShadowCard) {
           <Pressable onPress={onPressFavorit(item)} hitSlop={10}>
             <Icon
               size={20}
-              tintColor={theme.color.sky_400}
+              tintColor={theme.color.chip}
               source={theme.icon.favoritesfill}
             />
           </Pressable>

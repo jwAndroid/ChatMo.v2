@@ -14,6 +14,7 @@ const StyledText = styled.Text<IStyledText>(
     marginLeft,
     marginTop,
     marginBottom,
+    includeFontPadding: false,
     color: theme.color.text,
   })
 );

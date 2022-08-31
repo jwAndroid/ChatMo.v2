@@ -12,4 +12,5 @@ export interface Post {
   createdAt: number;
   updatedAt: number;
   lastUpdateOn: number;
+  chips: string[];
 }

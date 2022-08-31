@@ -29,23 +29,6 @@ function RoomScreen() {
 
   console.log(JSON.stringify(params, null, 5));
 
-  const onPressTest = useCallback(() => {
-    if (posts.data) {
-      dispatch(
-        fulfilled([
-          {
-            id: '1',
-            text: 'testredux',
-            renderDay: 'testday',
-            createdAt: 1,
-            type: 'dasd',
-          },
-          ...posts.data,
-        ])
-      );
-    }
-  }, [dispatch, posts.data]);
-
   const [messages, setMessages] = useState<IMessage[]>([
     {
       _id: 1,

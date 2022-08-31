@@ -22,4 +22,5 @@ export interface RoomEntity {
   createdAt: number;
   updatedAt: number;
   lastUpdateOn: number;
+  chips: string[];
 }
