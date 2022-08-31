@@ -1,9 +1,10 @@
-import React, { memo, useCallback, useState } from 'react';
+import React, { memo, useCallback, useMemo, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/core';
 import { RowMap } from 'react-native-swipe-list-view';
 import uuid from 'react-native-uuid';
 
+import { LayoutAnimation } from 'react-native';
 import { RootState } from '../../redux/rootReducer';
 import { RootStackNavigationProp } from '../RootStack';
 import { createRoom, deleteRoom, onFavoritesRoom } from '../../firebase/posts';
@@ -28,6 +29,21 @@ function RoomsScreen() {
 
   const [isOpen, setIsOpen] = useState(false);
   const [pickedItem, setPickedItem] = useState<RoomEntity | null>(null);
+
+  const animationConfig = useMemo(
+    () => ({
+      duration: 300,
+      update: {
+        type: LayoutAnimation.Types.easeInEaseOut,
+      },
+      delete: {
+        duration: 100,
+        type: LayoutAnimation.Types.easeInEaseOut,
+        property: LayoutAnimation.Properties.opacity,
+      },
+    }),
+    []
+  );
 
   const onPressSetting = useCallback(() => {
     navigation.navigate('Setting');
@@ -123,11 +139,15 @@ function RoomsScreen() {
 
       dispatch(fulfilled(prepared));
 
-      setIsOpen(false);
+      setTimeout(() => {
+        setIsOpen(false);
+      }, 200);
 
       setPickedItem(null);
+
+      LayoutAnimation.configureNext(animationConfig);
     }
-  }, [dispatch, user, pickedItem, posts]);
+  }, [dispatch, user, pickedItem, posts, animationConfig]);
 
   return (
     <SafeAreaContainer>

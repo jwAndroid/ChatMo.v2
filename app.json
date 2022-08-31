@@ -4,7 +4,7 @@
     "slug": "ChatMo",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/icons/logo.png",
     "userInterfaceStyle": "light",
     "updates": {
       "fallbackToCacheTimeout": 0
