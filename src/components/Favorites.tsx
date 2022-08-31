@@ -1,18 +1,13 @@
 import React, { memo, useCallback } from 'react';
-import { Text, FlatList, ListRenderItem } from 'react-native';
+import { FlatList, ListRenderItem } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import styled from '@emotion/native';
 
 import { Post } from '../redux/posts/type';
 import { fulfilled } from '../redux/posts/slice';
 import { RootState } from '../redux/rootReducer';
 import { onFavoritesRoom } from '../firebase/posts';
 import { RoomEntity } from '../../types';
-
-const Container = styled.View(() => ({
-  flex: 1,
-  backgroundColor: 'gray',
-}));
+import ShadowCard from './ShadowCard';
 
 interface IFavorites {
   rooms: Post[] | null;
@@ -45,24 +40,33 @@ function Favorites({ rooms }: IFavorites) {
     [dispatch, rooms, user]
   );
 
+  const onPressCard = useCallback(
+    (item: RoomEntity) => () => {
+      console.log(item);
+    },
+    []
+  );
+
   const renderItem = useCallback<ListRenderItem<RoomEntity>>(
     ({ item }) => (
-      <Container>
-        <Text style={{ marginLeft: 15 }} onPress={onPressFavorit(item)}>
-          {item.title}
-        </Text>
-      </Container>
+      <ShadowCard
+        item={item}
+        onPressCard={onPressCard}
+        onPressFavorit={onPressFavorit}
+      />
     ),
-    [onPressFavorit]
+    [onPressCard, onPressFavorit]
   );
 
   return (
     <FlatList
       data={rooms?.filter((room) => room.isFavorites)}
+      contentContainerStyle={{ marginLeft: 6 }}
       horizontal
       showsHorizontalScrollIndicator={false}
       keyExtractor={key}
       renderItem={renderItem}
+      initialNumToRender={2}
     />
   );
 }

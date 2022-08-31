@@ -7,8 +7,8 @@ export function getTimestamp(): number {
   return timestamp;
 }
 
-export function getFormatTime(timestamp: number): string {
-  const formated = moment(timestamp).format('MM-DD');
+export function getFormatTime(timestamp: number, isYear?: boolean): string {
+  const formated = moment(timestamp).format(isYear ? 'YYYY-MM-DD' : 'MM-DD');
 
   return formated;
 }
