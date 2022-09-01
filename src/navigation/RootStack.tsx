@@ -6,6 +6,7 @@ import {
 } from '@react-navigation/native-stack';
 
 import {
+  ModifyScreen,
   OTPScreen,
   RoomScreen,
   RoomsScreen,
@@ -20,6 +21,7 @@ export type RootStackParamList = {
   Room: RoomEntity | undefined;
   Theme: undefined;
   OTP: RoomEntity | undefined;
+  Modify: RoomEntity | undefined;
 };
 
 export type RootStackNavigationProp =
@@ -59,6 +61,11 @@ function RootStack() {
         name="OTP"
         component={OTPScreen}
         options={{ animation: 'slide_from_bottom' }}
+      />
+      <Screen
+        name="Modify"
+        component={ModifyScreen}
+        options={{ animation: 'slide_from_right' }}
       />
     </Navigator>
   );

@@ -5,7 +5,6 @@ export const font = {
 };
 
 export const icon = {
-  settings: require('../assets/icons/settings.png'),
   backward: require('../assets/icons/backward.png'),
   splash: require('../assets/icons/splash.png'),
   edit: require('../assets/icons/edit.png'),
@@ -14,6 +13,8 @@ export const icon = {
   lock: require('../assets/icons/lock.png'),
   delete: require('../assets/icons/delete.png'),
   empty: require('../assets/icons/empty.png'),
+  plus: require('../assets/icons/plus.png'),
+  settings: require('../assets/icons/settings.png'),
 };
 
 export const lightTheme: Theme = {

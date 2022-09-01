@@ -31,7 +31,7 @@ interface ISwipeList {
   rooms: Post[] | null;
   onPressItem: (item: RoomEntity) => () => void;
   onFavorit: (rowMap: RowMap<RoomEntity>, item: RoomEntity) => () => void;
-  onLock: (rowMap: RowMap<RoomEntity>, item: RoomEntity) => () => void;
+  onModify: (rowMap: RowMap<RoomEntity>, item: RoomEntity) => () => void;
   onDelete: (rowMap: RowMap<RoomEntity>, item: RoomEntity) => () => void;
 }
 
@@ -39,7 +39,7 @@ function SwipeList({
   rooms,
   onPressItem,
   onFavorit,
-  onLock,
+  onModify,
   onDelete,
 }: ISwipeList) {
   const theme = useTheme();
@@ -78,8 +78,8 @@ function SwipeList({
           />
         </Pressable>
 
-        <Pressable style={LockButton} onPress={onLock(rowMap, item)}>
-          <ButtonIcon source={theme.icon.lock} />
+        <Pressable style={LockButton} onPress={onModify(rowMap, item)}>
+          <ButtonIcon source={theme.icon.edit} />
         </Pressable>
 
         <Pressable style={DeleteButton} onPress={onDelete(rowMap, item)}>
@@ -92,7 +92,7 @@ function SwipeList({
       LockButton,
       DeleteButton,
       onFavorit,
-      onLock,
+      onModify,
       onDelete,
       theme,
     ]

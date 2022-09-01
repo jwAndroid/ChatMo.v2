@@ -1,3 +1,4 @@
+export { default as ModifyScreen } from './ModifyScreen';
 export { default as OTPScreen } from './OTPScreen';
 export { default as RoomScreen } from './RoomScreen';
 export { default as RoomsScreen } from './RoomsScreen';

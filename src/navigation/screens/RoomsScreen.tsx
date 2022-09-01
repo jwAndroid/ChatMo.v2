@@ -117,13 +117,15 @@ function RoomsScreen() {
     [dispatch, user, posts]
   );
 
-  const onLock = useCallback(
+  const onModify = useCallback(
     (rowMap: RowMap<RoomEntity>, item: RoomEntity) => () => {
       if (rowMap[item.roomId]) {
         rowMap[item.roomId].closeRow();
+
+        navigation.navigate('Modify', item);
       }
     },
-    []
+    [navigation]
   );
 
   const onDelete = useCallback(
@@ -169,7 +171,7 @@ function RoomsScreen() {
         rooms={posts.data}
         onDelete={onDelete}
         onFavorit={onFavorit}
-        onLock={onLock}
+        onModify={onModify}
         onPressItem={onPressItem}
       />
       {isOpen && (
