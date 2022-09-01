@@ -187,7 +187,7 @@ function OTPScreen() {
         style={{ flex: 1 }}
         behavior={Platform.select({ ios: 'padding' })}
       >
-        <IconHeader isLeftIcon onPress={onBackPress} />
+        <IconHeader isBackword onPress={onBackPress} />
 
         <ContentsContainer onPress={onPressLayout}>
           <Icon source={theme.icon.lock} />

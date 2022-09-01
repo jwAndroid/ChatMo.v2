@@ -44,7 +44,7 @@ function RoomScreen() {
 
   return (
     <Container>
-      <IconHeader isLeftIcon isIosTopInset onPress={onBackPress} />
+      <IconHeader isBackword isIosTopInset onPress={onBackPress} />
 
       <SafeAreaContainer>
         <GiftedChat

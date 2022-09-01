@@ -30,6 +30,12 @@ function RoomsScreen() {
   const [isOpen, setIsOpen] = useState(false);
   const [pickedItem, setPickedItem] = useState<RoomEntity | null>(null);
 
+  const notification = useMemo(
+    () =>
+      '삭제 하시겠습니까?\n삭제를 하면 내용이 모두 삭제되고\n목록에서도 삭제됩니다.',
+    []
+  );
+
   const animationConfig = useMemo(
     () => ({
       duration: 300,
@@ -122,7 +128,9 @@ function RoomsScreen() {
       if (rowMap[item.roomId]) {
         rowMap[item.roomId].closeRow();
 
-        navigation.navigate('Modify', item);
+        setTimeout(() => {
+          navigation.navigate('Modify', item);
+        }, 300);
       }
     },
     [navigation]
@@ -165,7 +173,7 @@ function RoomsScreen() {
 
   return (
     <SafeAreaContainer>
-      <IconHeader isRightIcon title="목록" onPress={onPressSetting} />
+      <IconHeader isSettings title="목록" onPress={onPressSetting} />
 
       <SwipeList
         rooms={posts.data}
@@ -177,6 +185,7 @@ function RoomsScreen() {
       {isOpen && (
         <NotificationModal
           isOpen={isOpen}
+          notification={notification}
           onNegative={onNegative}
           onPostive={onPostive}
         />

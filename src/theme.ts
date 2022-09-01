@@ -6,6 +6,7 @@ export const font = {
 
 export const icon = {
   backward: require('../assets/icons/backward.png'),
+  check_circle: require('../assets/icons/check_circle.png'),
   splash: require('../assets/icons/splash.png'),
   edit: require('../assets/icons/edit.png'),
   favorites: require('../assets/icons/favorites.png'),

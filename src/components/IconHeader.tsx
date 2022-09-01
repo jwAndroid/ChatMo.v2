@@ -14,7 +14,7 @@ const HeaderContainer = styled.View<IHeaderContainer>(
   ({ theme, isIosTopInset }) => ({
     height: 50,
     flexDirection: 'row',
-    paddingHorizontal: 15,
+    paddingHorizontal: 20,
     alignItems: 'center',
     justifyContent: 'space-between',
     marginTop: Platform.select({
@@ -38,25 +38,29 @@ const Icon = styled.Image(({ theme }) => ({
 
 interface IIconHeader {
   title?: string;
-  isLeftIcon?: boolean;
-  isRightIcon?: boolean;
+  isBackword?: boolean;
+  isSettings?: boolean;
   isIosTopInset?: boolean;
+  isCheck?: boolean;
   onPress: () => void;
+  onPressCheck?: () => void;
 }
 
 function IconHeader({
   title,
-  isLeftIcon,
-  isRightIcon,
+  isBackword,
+  isSettings,
   isIosTopInset,
+  isCheck,
   onPress,
+  onPressCheck,
 }: IIconHeader) {
   const theme = useTheme();
 
   return (
     <HeaderContainer isIosTopInset={isIosTopInset}>
       <Container>
-        {isLeftIcon && (
+        {isBackword && (
           <Pressable onPress={onPress} hitSlop={10}>
             <Icon source={theme.icon.backward} />
           </Pressable>
@@ -65,9 +69,15 @@ function IconHeader({
         <CommonText fontSize={20} text={title} marginLeft={3} />
       </Container>
 
-      {isRightIcon && (
+      {isSettings && (
         <Pressable onPress={onPress} hitSlop={10}>
           <Icon source={theme.icon.settings} />
+        </Pressable>
+      )}
+
+      {isCheck && (
+        <Pressable onPress={onPressCheck} hitSlop={10}>
+          <Icon source={theme.icon.check_circle} />
         </Pressable>
       )}
     </HeaderContainer>
@@ -76,9 +86,11 @@ function IconHeader({
 
 IconHeader.defaultProps = {
   title: '',
-  isLeftIcon: false,
-  isRightIcon: false,
+  isBackword: false,
+  isSettings: false,
+  isCheck: false,
   isIosTopInset: false,
+  onPressCheck: null,
 };
 
 export default memo(IconHeader);

@@ -6,16 +6,26 @@ interface IStyledText {
   marginLeft?: number;
   marginTop?: number;
   marginBottom?: number;
+  isSpecificColor?: boolean;
+  specificColor?: string;
 }
 
 const StyledText = styled.Text<IStyledText>(
-  ({ theme, fontSize, marginLeft, marginTop, marginBottom }) => ({
+  ({
+    theme,
+    fontSize,
+    marginLeft,
+    marginTop,
+    marginBottom,
+    isSpecificColor,
+    specificColor,
+  }) => ({
     fontSize,
     marginLeft,
     marginTop,
     marginBottom,
     includeFontPadding: false,
-    color: theme.color.text,
+    color: isSpecificColor ? specificColor : theme.color.text,
   })
 );
 
@@ -25,6 +35,8 @@ interface ICommonText {
   marginLeft?: number;
   marginTop?: number;
   marginBottom?: number;
+  isSpecificColor?: boolean;
+  specificColor?: string;
 }
 
 function CommonText({
@@ -33,6 +45,8 @@ function CommonText({
   marginLeft,
   marginTop,
   marginBottom,
+  isSpecificColor,
+  specificColor,
 }: ICommonText) {
   return (
     <StyledText
@@ -40,6 +54,8 @@ function CommonText({
       marginLeft={marginLeft}
       marginTop={marginTop}
       marginBottom={marginBottom}
+      isSpecificColor={isSpecificColor}
+      specificColor={specificColor}
     >
       {text}
     </StyledText>
@@ -51,6 +67,8 @@ CommonText.defaultProps = {
   marginLeft: 0,
   marginTop: 0,
   marginBottom: 0,
+  isSpecificColor: false,
+  specificColor: '#000000',
 };
 
 export default memo(CommonText);

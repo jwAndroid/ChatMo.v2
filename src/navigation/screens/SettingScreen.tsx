@@ -59,7 +59,7 @@ function SettingScreen() {
 
   return (
     <SafeAreaContainer>
-      <IconHeader title="세팅" isLeftIcon onPress={onBackPress} />
+      <IconHeader title="세팅" isBackword onPress={onBackPress} />
 
       <FlatList
         data={settings}

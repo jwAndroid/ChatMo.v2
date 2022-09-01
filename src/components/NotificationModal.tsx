@@ -1,4 +1,4 @@
-import React, { memo, useMemo } from 'react';
+import React, { memo } from 'react';
 import { GestureResponderEvent, Modal } from 'react-native';
 import styled from '@emotion/native';
 
@@ -49,21 +49,17 @@ const ModalText = styled.Text(({ theme }) => ({
 
 interface INotificationModal {
   isOpen: boolean;
+  notification: string;
   onNegative: () => void;
   onPostive: (event: GestureResponderEvent) => void;
 }
 
 function NotificationModal({
   isOpen,
+  notification,
   onNegative,
   onPostive,
 }: INotificationModal) {
-  const notification = useMemo(
-    () =>
-      '삭제 하시겠습니까?\n삭제를 하면 내용이 모두 삭제되고\n목록에서도 삭제됩니다.',
-    []
-  );
-
   return (
     <Modal
       transparent
