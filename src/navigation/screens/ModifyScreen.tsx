@@ -1,6 +1,7 @@
-import React, { memo, useCallback, useMemo, useState } from 'react';
-import { Keyboard } from 'react-native';
+import React, { memo, useCallback, useEffect, useState } from 'react';
+import { Keyboard, Pressable } from 'react-native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
+import uuid from 'react-native-uuid';
 import styled from '@emotion/native';
 import { useTheme } from '@emotion/react';
 
@@ -8,11 +9,13 @@ import { RootStackNavigationProp, RootStackParamList } from '../RootStack';
 import {
   CommonText,
   IconHeader,
+  InputModal,
   NotificationModal,
   SafeAreaContainer,
   SettingSwitch,
 } from '../../components';
 import { ellipsize } from '../../utils/ellipsize';
+import { ChipEntity } from '../../../types';
 
 const PressableContainer = styled.Pressable(() => ({
   flex: 1,
@@ -28,21 +31,21 @@ const TitleInput = styled.TextInput(({ theme }) => ({
   borderWidth: 1,
   fontSize: 17,
   paddingHorizontal: 15,
-  paddingVertical: 10,
+  paddingVertical: 8,
   marginTop: 10,
   color: theme.color.text,
-  borderColor: theme.color.chip,
+  borderColor: theme.color.shadow,
 }));
 
 const ContentContainer = styled.View(() => ({
   flexDirection: 'row',
   justifyContent: 'space-between',
   alignItems: 'center',
-  marginTop: 10,
+  marginTop: 6,
 }));
 
 const PasswordInput = styled.TextInput(({ theme }) => ({
-  width: 55,
+  width: 60,
   borderBottomWidth: 1,
   textAlign: 'center',
   borderBottomColor: '#0099ff',
@@ -50,13 +53,20 @@ const PasswordInput = styled.TextInput(({ theme }) => ({
   color: theme.color.text,
 }));
 
-const Icon = styled.Image(({ theme }) => ({
-  width: 15,
-  height: 15,
-  tintColor: theme.color.white,
+interface IIcon {
+  size: number;
+  tintColor: string;
+  marginLeft?: number;
+}
+
+const Icon = styled.Image<IIcon>(({ size, tintColor, marginLeft }) => ({
+  width: size,
+  height: size,
+  tintColor,
+  marginLeft,
 }));
 
-const PressableCircle = styled.Pressable(({ theme }) => ({
+const PressableCircle = styled.TouchableOpacity(({ theme }) => ({
   width: 30,
   height: 30,
   justifyContent: 'center',
@@ -72,6 +82,7 @@ const ChipContainer = styled.View(() => ({
 }));
 
 const Chip = styled.View(({ theme }) => ({
+  flexDirection: 'row',
   justifyContent: 'center',
   alignItems: 'center',
   paddingVertical: 4,
@@ -80,6 +91,12 @@ const Chip = styled.View(({ theme }) => ({
   borderWidth: 1,
   marginLeft: 5,
   borderColor: theme.color.chip,
+}));
+
+const ChipTitleContainer = styled.View(() => ({
+  flexDirection: 'row',
+  alignItems: 'center',
+  marginTop: 20,
 }));
 
 type ModifyScreenRouteProp = RouteProp<RootStackParamList, 'Modify'>;
@@ -91,16 +108,26 @@ function ModifyScreen() {
   const navigation = useNavigation<RootStackNavigationProp>();
 
   const [isEnabled, setIsEnabled] = useState<boolean>(params?.isLock ?? false);
-  const [isOpen, setIsOpen] = useState(false);
+  const [chips, setChips] = useState<ChipEntity[] | null>(
+    params?.chips ?? null
+  );
 
-  const notification = useMemo(() => '수정 하시겠습니까?', []);
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [isInputModalOpen, setIsInputModalOpen] = useState(false);
+  const [isOverflow, setIsOverflow] = useState(false);
+
+  const [inputModalValue, setInputModalValue] = useState('');
+
+  useEffect(() => {
+    console.log(chips);
+  }, [chips]);
 
   const onBackPress = useCallback(() => {
     navigation.pop();
   }, [navigation]);
 
   const onPressConfirm = useCallback(() => {
-    setIsOpen(true);
+    setIsConfirmModalOpen(true);
   }, []);
 
   const onPressLayout = useCallback(() => {
@@ -108,12 +135,42 @@ function ModifyScreen() {
   }, []);
 
   const onPostive = useCallback(() => {
-    setIsOpen(false);
+    setIsConfirmModalOpen(false);
   }, []);
 
-  const onNegative = useCallback(() => {
-    setIsOpen(false);
-  }, []);
+  const onPostiveInputModal = useCallback(() => {
+    if (chips) {
+      const create = {
+        id: uuid.v4().toString(),
+        title: inputModalValue,
+      };
+
+      setChips([...chips, create]);
+    }
+
+    setIsInputModalOpen(false);
+  }, [inputModalValue, chips]);
+
+  const onCreateChips = useCallback(() => {
+    if (params && chips && chips.length >= 3) {
+      setIsOverflow(true);
+    } else {
+      setInputModalValue('');
+
+      setIsInputModalOpen(true);
+
+      setIsOverflow(false);
+    }
+  }, [params, chips]);
+
+  const onPressChipDelete = useCallback(
+    (item: ChipEntity) => () => {
+      if (chips) {
+        setChips(chips.filter((chip) => chip.id !== item.id));
+      }
+    },
+    [chips]
+  );
 
   return (
     <SafeAreaContainer>
@@ -163,35 +220,67 @@ function ModifyScreen() {
             <SettingSwitch isEnabled={isEnabled} onValueChange={setIsEnabled} />
           </ContentContainer>
 
-          <CommonText text="속성" fontSize={15} marginTop={25} />
+          <ChipTitleContainer>
+            <CommonText text="속성" fontSize={15} />
+
+            <CommonText text="1/3" fontSize={12} marginLeft={5} />
+          </ChipTitleContainer>
 
           <ContentContainer>
             <ChipContainer>
-              <Chip>
-                <CommonText text={ellipsize('android', 10)} fontSize={12} />
-              </Chip>
+              {chips?.map((chip) => (
+                <Chip key={chip.id}>
+                  <CommonText text={ellipsize(chip.title, 10)} fontSize={13} />
 
-              <Chip>
-                <CommonText text={ellipsize('ios', 10)} fontSize={12} />
-              </Chip>
-
-              <Chip>
-                <CommonText text={ellipsize('react', 10)} fontSize={12} />
-              </Chip>
+                  <Pressable hitSlop={10} onPress={onPressChipDelete(chip)}>
+                    <Icon
+                      size={17}
+                      tintColor={theme.color.icon}
+                      source={theme.icon.cancel}
+                      marginLeft={3}
+                    />
+                  </Pressable>
+                </Chip>
+              ))}
             </ChipContainer>
 
-            <PressableCircle>
-              <Icon source={theme.icon.plus} />
+            <PressableCircle onPress={onCreateChips}>
+              <Icon
+                size={15}
+                source={theme.icon.plus}
+                tintColor={theme.color.white}
+              />
             </PressableCircle>
           </ContentContainer>
+
+          {isOverflow ? (
+            <CommonText
+              text="3개 이상 만들수 없습니다."
+              fontSize={12}
+              isSpecificColor
+              specificColor={theme.color.shadow}
+              marginTop={3}
+              marginLeft={3}
+            />
+          ) : null}
         </ContentsContainer>
 
-        {isOpen && (
+        {isConfirmModalOpen && (
           <NotificationModal
-            isOpen={isOpen}
-            notification={notification}
-            onNegative={onNegative}
+            isOpen={isConfirmModalOpen}
+            notification="수정 하시겠습니까?"
+            onNegative={() => setIsConfirmModalOpen(false)}
             onPostive={onPostive}
+          />
+        )}
+
+        {isInputModalOpen && (
+          <InputModal
+            isOpen={isInputModalOpen}
+            onNegative={() => setIsInputModalOpen(false)}
+            onPostive={onPostiveInputModal}
+            value={inputModalValue}
+            onChangeText={setInputModalValue}
           />
         )}
       </PressableContainer>

@@ -10,7 +10,7 @@ function SettingSwitch({ isEnabled, onValueChange }: ISettingSwitch) {
   const trackColor = useMemo(
     () => ({
       false: '#767577',
-      true: '#81b0ff',
+      true: '#767577',
     }),
     []
   );
@@ -20,7 +20,7 @@ function SettingSwitch({ isEnabled, onValueChange }: ISettingSwitch) {
       value={isEnabled}
       onValueChange={onValueChange}
       trackColor={trackColor}
-      thumbColor={isEnabled ? '#0781FF' : '#f4f3f4'}
+      thumbColor={isEnabled ? '#24ddb9' : '#f4f3f4'}
       ios_backgroundColor="#3e3e3e"
     />
   );

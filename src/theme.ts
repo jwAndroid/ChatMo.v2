@@ -12,6 +12,7 @@ export const icon = {
   favorites: require('../assets/icons/favorites.png'),
   favoritesfill: require('../assets/icons/favoritesfill.png'),
   lock: require('../assets/icons/lock.png'),
+  cancel: require('../assets/icons/cancel.png'),
   delete: require('../assets/icons/delete.png'),
   empty: require('../assets/icons/empty.png'),
   plus: require('../assets/icons/plus.png'),

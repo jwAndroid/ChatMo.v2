@@ -1,3 +1,7 @@
+interface ChipEntity {
+  id: string;
+  title: string;
+}
 export interface Post {
   roomId: string;
   title: string;
@@ -12,5 +16,5 @@ export interface Post {
   createdAt: number;
   updatedAt: number;
   lastUpdateOn: number;
-  chips: string[];
+  chips: ChipEntity[];
 }

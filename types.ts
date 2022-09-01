@@ -8,6 +8,11 @@ export interface SettingEntity {
   id: number;
   title: string;
 }
+
+export interface ChipEntity {
+  id: string;
+  title: string;
+}
 export interface RoomEntity {
   roomId: string;
   title: string;
@@ -22,5 +27,5 @@ export interface RoomEntity {
   createdAt: number;
   updatedAt: number;
   lastUpdateOn: number;
-  chips: string[];
+  chips: ChipEntity[];
 }

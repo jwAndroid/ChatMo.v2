@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import { GestureResponderEvent, Modal } from 'react-native';
 import styled from '@emotion/native';
 
+import { useTheme } from '@emotion/react';
 import Divider from './Divider';
 import CommonText from './CommonText';
 
@@ -13,9 +14,9 @@ const Container = styled.Pressable({
   backgroundColor: 'rgba(0, 0, 0, 0.4)',
 });
 
-const TextContainer = styled.View(({ theme }) => ({
+const ContentContainer = styled.View(({ theme }) => ({
   width: '100%',
-  paddingVertical: 25,
+  paddingVertical: 20,
   paddingHorizontal: 30,
   justifyContent: 'center',
   alignItems: 'center',
@@ -40,26 +41,35 @@ const StyledButton = styled.Pressable(() => ({
   alignItems: 'center',
 }));
 
-const ModalText = styled.Text(({ theme }) => ({
-  includeFontPadding: false,
-  textAlign: 'center',
-  fontSize: 15,
+const StyledInput = styled.TextInput(({ theme }) => ({
+  borderWidth: 1,
+  fontSize: 13,
+  justifyContent: 'center',
+  alignItems: 'center',
+  paddingVertical: 5,
+  paddingHorizontal: 15,
+  borderRadius: 15,
   color: theme.color.text,
+  borderColor: theme.color.chip,
 }));
 
-interface INotificationModal {
+interface IInputModal {
   isOpen: boolean;
-  notification: string;
   onNegative: () => void;
   onPostive: (event: GestureResponderEvent) => void;
+  value: string;
+  onChangeText: (text: string) => void;
 }
 
-function NotificationModal({
+function InputModal({
   isOpen,
-  notification,
   onNegative,
   onPostive,
-}: INotificationModal) {
+  value,
+  onChangeText,
+}: IInputModal) {
+  const theme = useTheme();
+
   return (
     <Modal
       transparent
@@ -68,21 +78,36 @@ function NotificationModal({
       animationType="fade"
     >
       <Container onPress={onNegative}>
-        <TextContainer>
-          <ModalText>{notification}</ModalText>
-        </TextContainer>
+        <ContentContainer>
+          <StyledInput
+            value={value}
+            placeholder="제목 입력"
+            onChangeText={onChangeText}
+            maxLength={15}
+          />
+
+          {value.length >= 15 ? (
+            <CommonText
+              fontSize={12}
+              text="제목은 15자 까지 입력 가능 합니다."
+              isSpecificColor
+              specificColor={theme.color.shadow}
+              marginTop={5}
+            />
+          ) : null}
+        </ContentContainer>
 
         <Divider />
 
         <ButtonContainer>
           <StyledButton onPress={onNegative}>
-            <CommonText fontSize={14} text="아니요" />
+            <CommonText fontSize={14} text="취소" />
           </StyledButton>
 
           <Divider isVertical />
 
           <StyledButton onPress={onPostive}>
-            <CommonText fontSize={14} text="예" />
+            <CommonText fontSize={14} text="확인" />
           </StyledButton>
         </ButtonContainer>
       </Container>
@@ -90,4 +115,4 @@ function NotificationModal({
   );
 }
 
-export default memo(NotificationModal);
+export default memo(InputModal);

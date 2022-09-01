@@ -120,9 +120,9 @@ function ShadowCard({ item, onPressCard, onPressFavorit }: IShadowCard) {
       />
       {item.chips ? (
         <ChipContainer>
-          {item.chips.map((chip, index) => (
-            <Chip key={`${index + 1}`}>
-              <CommonText text={ellipsize(chip, 10)} fontSize={12} />
+          {item.chips.map((chip) => (
+            <Chip key={chip.id}>
+              <CommonText text={ellipsize(chip.title, 10)} fontSize={12} />
             </Chip>
           ))}
         </ChipContainer>
