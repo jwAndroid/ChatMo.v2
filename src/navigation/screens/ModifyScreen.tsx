@@ -1,9 +1,9 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
+import { Keyboard } from 'react-native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
 import styled from '@emotion/native';
 import { useTheme } from '@emotion/react';
 
-import { Keyboard } from 'react-native';
 import { RootStackNavigationProp, RootStackParamList } from '../RootStack';
 import {
   CommonText,
@@ -42,11 +42,11 @@ const ContentContainer = styled.View(() => ({
 }));
 
 const PasswordInput = styled.TextInput(({ theme }) => ({
-  width: 70,
+  width: 55,
   borderBottomWidth: 1,
   textAlign: 'center',
   borderBottomColor: '#0099ff',
-  fontSize: 20,
+  fontSize: 15,
   color: theme.color.text,
 }));
 
@@ -68,6 +68,7 @@ const PressableCircle = styled.Pressable(({ theme }) => ({
 const ChipContainer = styled.View(() => ({
   flexDirection: 'row',
   alignItems: 'center',
+  marginLeft: -5,
 }));
 
 const Chip = styled.View(({ theme }) => ({
@@ -77,7 +78,7 @@ const Chip = styled.View(({ theme }) => ({
   paddingHorizontal: 10,
   borderRadius: 12,
   borderWidth: 1,
-  marginLeft: 6,
+  marginLeft: 5,
   borderColor: theme.color.chip,
 }));
 
@@ -136,7 +137,20 @@ function ModifyScreen() {
 
           <ContentContainer>
             {isEnabled ? (
-              <PasswordInput maxLength={4} placeholder="****" />
+              <PasswordInput
+                maxLength={4}
+                placeholder="****"
+                clearTextOnFocus
+                onChangeText={(text: string) => {
+                  console.log(text);
+                }}
+                onSubmitEditing={() => {
+                  console.log('onSubmitEditing');
+                }}
+                keyboardType="number-pad"
+                returnKeyType="done"
+                secureTextEntry
+              />
             ) : (
               <CommonText
                 text="패스워드가 존재하지 않습니다."
