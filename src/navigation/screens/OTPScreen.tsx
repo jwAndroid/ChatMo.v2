@@ -1,7 +1,15 @@
 import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
-import { Animated, StyleProp, ViewStyle } from 'react-native';
+import {
+  Animated,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  StyleProp,
+  ViewStyle,
+} from 'react-native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
 import styled from '@emotion/native';
+import { useTheme } from '@emotion/react';
 import {
   CodeField,
   Cursor,
@@ -10,12 +18,13 @@ import {
   useClearByFocusCell,
 } from 'react-native-confirmation-code-field';
 
-import { IconHeader } from '../../components';
+import { IconHeader, SafeAreaContainer } from '../../components';
 import { RootStackNavigationProp, RootStackParamList } from '../RootStack';
 
-const Container = styled.SafeAreaView(({ theme }) => ({
+const ContentsContainer = styled.Pressable(() => ({
   flex: 1,
-  backgroundColor: theme.color.background,
+  paddingTop: 50,
+  alignItems: 'center',
 }));
 
 const InvailedContainer = styled.View(() => ({
@@ -25,15 +34,18 @@ const InvailedContainer = styled.View(() => ({
 
 const InvailedText = styled.Text(({ theme }) => ({
   fontSize: 15,
-  color: theme.color.red,
+  color: theme.color.text,
+}));
+
+const Icon = styled.Image(({ theme }) => ({
+  width: 80,
+  height: 80,
+  marginBottom: 30,
+  tintColor: theme.color.icon,
 }));
 
 const CELL_COUNT = 4;
-const CELL_SIZE = 50;
-const CELL_BORDER_RADIUS = 8;
-const DEFAULT_CELL_BG_COLOR = '#3557b7';
-const NOT_EMPTY_CELL_BG_COLOR = '#3557b7';
-const ACTIVE_CELL_BG_COLOR = 'skyblue';
+const CELL_SIZE = 40;
 
 const { Value, Text: AnimatedText } = Animated;
 
@@ -66,11 +78,11 @@ const animateCell = ({
 type OTPScreenRouteProp = RouteProp<RootStackParamList, 'OTP'>;
 
 function OTPScreen() {
+  const theme = useTheme();
+
   const { params } = useRoute<OTPScreenRouteProp>();
 
   const navigation = useNavigation<RootStackNavigationProp>();
-
-  console.log(JSON.stringify(params, null, 5));
 
   const [value, setValue] = useState('');
   const [error, setError] = useState(false);
@@ -84,7 +96,9 @@ function OTPScreen() {
 
   useEffect(() => {
     if (params && value === params.password.toString()) {
-      navigation.navigate('Room', params);
+      setTimeout(() => {
+        navigation.navigate('Room', params);
+      }, 300);
     } else if (
       params &&
       value.length === 4 &&
@@ -99,7 +113,6 @@ function OTPScreen() {
   const rootStyle = useMemo<StyleProp<ViewStyle>>(
     () => ({
       height: CELL_SIZE,
-      paddingHorizontal: 20,
       justifyContent: 'center',
     }),
     []
@@ -107,13 +120,13 @@ function OTPScreen() {
 
   const cellStyle = useMemo<StyleProp<ViewStyle>>(
     () => ({
-      marginHorizontal: 10,
+      marginHorizontal: 15,
       height: CELL_SIZE,
       width: CELL_SIZE,
       lineHeight: CELL_SIZE - 5,
       fontSize: 20,
       textAlign: 'center',
-      color: '#3759b8',
+      color: 'white',
     }),
     []
   );
@@ -125,15 +138,15 @@ function OTPScreen() {
       backgroundColor: hasValue
         ? animationsScale[index].interpolate({
             inputRange: [0, 1],
-            outputRange: [NOT_EMPTY_CELL_BG_COLOR, ACTIVE_CELL_BG_COLOR],
+            outputRange: ['#0099ff', '#0099ff'],
           })
         : animationsColor[index].interpolate({
             inputRange: [0, 1],
-            outputRange: [DEFAULT_CELL_BG_COLOR, ACTIVE_CELL_BG_COLOR],
+            outputRange: ['#0099ff', '#0099ff'],
           }),
       borderRadius: animationsScale[index].interpolate({
         inputRange: [0, 1],
-        outputRange: [CELL_SIZE, CELL_BORDER_RADIUS],
+        outputRange: [CELL_SIZE, 10],
       }),
       transform: [
         {
@@ -164,28 +177,41 @@ function OTPScreen() {
     navigation.goBack();
   }, [navigation]);
 
+  const onPressLayout = useCallback(() => {
+    Keyboard.dismiss();
+  }, []);
+
   return (
-    <Container>
-      <IconHeader isLeftIcon onPress={onBackPress} />
+    <SafeAreaContainer>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.select({ ios: 'padding' })}
+      >
+        <IconHeader isLeftIcon onPress={onBackPress} />
 
-      <CodeField
-        {...props}
-        ref={ref}
-        value={value}
-        onChangeText={setValue}
-        cellCount={CELL_COUNT}
-        rootStyle={rootStyle}
-        keyboardType="number-pad"
-        textContentType="oneTimeCode"
-        renderCell={renderCell}
-      />
+        <ContentsContainer onPress={onPressLayout}>
+          <Icon source={theme.icon.lock} />
 
-      {error ? (
-        <InvailedContainer>
-          <InvailedText>비밀번호가 잘못되었습니다.</InvailedText>
-        </InvailedContainer>
-      ) : null}
-    </Container>
+          <CodeField
+            {...props}
+            ref={ref}
+            value={value}
+            onChangeText={setValue}
+            cellCount={CELL_COUNT}
+            rootStyle={rootStyle}
+            keyboardType="number-pad"
+            textContentType="oneTimeCode"
+            renderCell={renderCell}
+          />
+
+          {error ? (
+            <InvailedContainer>
+              <InvailedText>비밀번호가 잘못되었습니다.</InvailedText>
+            </InvailedContainer>
+          ) : null}
+        </ContentsContainer>
+      </KeyboardAvoidingView>
+    </SafeAreaContainer>
   );
 }
 
