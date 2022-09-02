@@ -21,7 +21,7 @@ export interface RoomEntity {
   isFavorites: boolean;
   isCompleate: boolean | null;
   isLock: boolean;
-  password: number | null;
+  password: string | null;
   createdAt: number;
   updatedAt: number;
   modifyAt: number | null;

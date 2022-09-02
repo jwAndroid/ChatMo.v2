@@ -117,12 +117,15 @@ function ModifyScreen() {
   const { params } = useRoute<ModifyScreenRouteProp>();
   const navigation = useNavigation<RootStackNavigationProp>();
 
-  const [isEnabled, setIsEnabled] = useState<boolean>(params?.isLock ?? false);
+  const [isLock, setIsLock] = useState<boolean>(params?.isLock ?? false);
+  const [title, setTitle] = useState('');
+  const [password, setPassword] = useState('');
+  const [chipValue, setChipValue] = useState('');
   const [chips, setChips] = useState<ChipEntity[] | null>(
     params?.chips ?? null
   );
 
-  const [inputModalValue, setInputModalValue] = useState('');
+  console.log(password);
 
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [isInputModalOpen, setIsInputModalOpen] = useState(false);
@@ -142,57 +145,50 @@ function ModifyScreen() {
 
   const onPostive = useCallback(() => {
     if (user && params && posts.data) {
-      try {
-        const prepared = {
-          ...params,
-          title: '3번쨰꺼 수정123',
-          isLock: false,
-          password: 1222,
-          lastUpdateOn: getTimestamp(),
-          chips: [
-            { id: uuid.v4().toString(), title: 'android' },
-            { id: uuid.v4().toString(), title: 'react' },
-          ],
-        };
+      const prepared = {
+        ...params,
+        title,
+        isLock,
+        password: isLock ? password : null,
+        modifyAt: getTimestamp(),
+        chips,
+      };
 
-        const updatedRooms = posts.data.map((post) =>
-          post.roomId === params.roomId
-            ? {
-                ...post,
-                ...prepared,
-              }
-            : post
-        );
+      const updatedRooms = posts.data.map((post) =>
+        post.roomId === params.roomId
+          ? {
+              ...post,
+              ...prepared,
+            }
+          : post
+      );
 
-        dispatch(fulfilled(updatedRooms));
+      dispatch(fulfilled(updatedRooms));
 
-        onModifyRoom(user.userId, { ...prepared });
+      onModifyRoom(user.userId, { ...prepared });
 
-        setIsConfirmModalOpen(false);
-      } catch (error) {
-        throw new Error(error?.toString());
-      }
+      setIsConfirmModalOpen(false);
     }
-  }, [dispatch, user, params, posts]);
+  }, [dispatch, user, params, posts, isLock, title, password, chips]);
 
   const onPostiveInputModal = useCallback(() => {
     if (chips) {
       const create = {
         id: uuid.v4().toString(),
-        title: inputModalValue,
+        title: chipValue,
       };
 
       setChips([...chips, create]);
     }
 
     setIsInputModalOpen(false);
-  }, [inputModalValue, chips]);
+  }, [chipValue, chips]);
 
   const onCreateChips = useCallback(() => {
     if (params && chips && chips.length >= 3) {
       setIsOverflow(true);
     } else {
-      setInputModalValue('');
+      setChipValue('');
 
       setIsInputModalOpen(true);
 
@@ -227,19 +223,20 @@ function ModifyScreen() {
           <TitleInput
             placeholder={params?.title}
             placeholderTextColor={theme.color.shadow}
+            value={title}
+            onChangeText={setTitle}
           />
 
           <CommonText text="패스워드" fontSize={15} marginTop={25} />
 
           <ContentContainer>
-            {isEnabled ? (
+            {isLock ? (
               <PasswordInput
+                value={password}
+                onChangeText={setPassword}
                 maxLength={4}
                 placeholder="****"
                 clearTextOnFocus
-                onChangeText={(text: string) => {
-                  console.log(text);
-                }}
                 onSubmitEditing={() => {
                   console.log('onSubmitEditing');
                 }}
@@ -256,7 +253,7 @@ function ModifyScreen() {
               />
             )}
 
-            <SettingSwitch isEnabled={isEnabled} onValueChange={setIsEnabled} />
+            <SettingSwitch isEnabled={isLock} onValueChange={setIsLock} />
           </ContentContainer>
 
           <ChipTitleContainer>
@@ -318,8 +315,8 @@ function ModifyScreen() {
             isOpen={isInputModalOpen}
             onNegative={() => setIsInputModalOpen(false)}
             onPostive={onPostiveInputModal}
-            value={inputModalValue}
-            onChangeText={setInputModalValue}
+            value={chipValue}
+            onChangeText={setChipValue}
           />
         )}
       </PressableContainer>

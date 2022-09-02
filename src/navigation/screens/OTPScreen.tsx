@@ -96,7 +96,7 @@ function OTPScreen() {
 
   useEffect(() => {
     if (params?.password && params) {
-      const password = params?.password.toString();
+      const password = params?.password;
 
       if (value === password) {
         navigation.navigate('Room', params);

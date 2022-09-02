@@ -65,17 +65,17 @@ function RoomsScreen() {
     // navigation.navigate('Room');
     const room = {
       roomId: uuid.v4().toString(),
-      title: '4 title',
+      title: '5 title',
       lastMemo: 'first memo',
       memoCount: null,
       isFavorites: false,
       isCompleate: false,
-      isLock: false,
-      password: null,
+      isLock: true,
+      password: '1234',
       createdAt: getTimestamp(),
       updatedAt: 123,
       modifyAt: null,
-      chips: [{ id: uuid.v4().toString(), title: 'react' }],
+      chips: [{ id: uuid.v4().toString(), title: 'asdasdasd' }],
     };
 
     if (user && posts.data) {
@@ -126,9 +126,7 @@ function RoomsScreen() {
       if (rowMap[item.roomId]) {
         rowMap[item.roomId].closeRow();
 
-        setTimeout(() => {
-          navigation.navigate('Modify', item);
-        }, 300);
+        navigation.navigate('Modify', item);
       }
     },
     [navigation]
