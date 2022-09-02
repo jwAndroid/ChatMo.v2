@@ -18,8 +18,10 @@ import {
   useClearByFocusCell,
 } from 'react-native-confirmation-code-field';
 
+import { useSelector } from 'react-redux';
 import { IconHeader, SafeAreaContainer } from '../../components';
 import { RootStackNavigationProp, RootStackParamList } from '../RootStack';
+import { RootState } from '../../redux/rootReducer';
 
 const ContentsContainer = styled.Pressable(() => ({
   flex: 1,
@@ -79,6 +81,10 @@ type OTPScreenRouteProp = RouteProp<RootStackParamList, 'OTP'>;
 
 function OTPScreen() {
   const theme = useTheme();
+
+  const from = useSelector((state: RootState) => state.system.from);
+
+  console.log(`from: ${from}`);
 
   const { params } = useRoute<OTPScreenRouteProp>();
 
