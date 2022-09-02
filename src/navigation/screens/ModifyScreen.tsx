@@ -165,6 +165,8 @@ function ModifyScreen() {
 
   const onPressChipDelete = useCallback(
     (item: ChipEntity) => () => {
+      setIsOverflow(false);
+
       if (chips) {
         setChips(chips.filter((chip) => chip.id !== item.id));
       }

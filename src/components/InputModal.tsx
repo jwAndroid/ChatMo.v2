@@ -11,7 +11,7 @@ const Container = styled.Pressable({
   justifyContent: 'center',
   alignItems: 'center',
   paddingHorizontal: 30,
-  backgroundColor: 'rgba(0, 0, 0, 0.4)',
+  backgroundColor: 'rgba(0, 0, 0, 0.5)',
 });
 
 const ContentContainer = styled.View(({ theme }) => ({
@@ -81,7 +81,8 @@ function InputModal({
         <ContentContainer>
           <StyledInput
             value={value}
-            placeholder="제목 입력"
+            placeholder="제목 입력.."
+            placeholderTextColor={theme.color.shadow}
             onChangeText={onChangeText}
             maxLength={15}
           />
