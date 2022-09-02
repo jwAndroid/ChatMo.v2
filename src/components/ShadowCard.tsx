@@ -131,7 +131,7 @@ function ShadowCard({ item, onPressCard, onPressFavorit }: IShadowCard) {
       <ContentsContainer>
         <LeftContainer>
           <CommonText
-            text={lineBreak(ellipsize(item.lastMemo, 30))}
+            text={lineBreak(ellipsize(item.lastMemo ?? '', 30))}
             fontSize={17}
           />
         </LeftContainer>

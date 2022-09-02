@@ -1,13 +1,12 @@
 import React, { memo, useCallback, useMemo } from 'react';
 import { ListRenderItem, Pressable, ListRenderItemInfo } from 'react-native';
 import styled from '@emotion/native';
-import { RowMap, SwipeListView } from 'react-native-swipe-list-view';
 import { useTheme } from '@emotion/react';
+import { RowMap, SwipeListView } from 'react-native-swipe-list-view';
 
-import RoomsItem from './RoomsItem';
 import { RoomEntity } from '../../types';
+import RoomsItem from './RoomsItem';
 import useSwipeStyles from '../hooks/useStyles';
-import { Post } from '../redux/posts/type';
 import Empty from './Empty';
 import Favorites from './Favorites';
 
@@ -28,7 +27,7 @@ const Footer = styled.View({
 });
 
 interface ISwipeList {
-  rooms: Post[] | null;
+  rooms: RoomEntity[] | null;
   onPressItem: (item: RoomEntity) => () => void;
   onFavorit: (rowMap: RowMap<RoomEntity>, item: RoomEntity) => () => void;
   onModify: (rowMap: RowMap<RoomEntity>, item: RoomEntity) => () => void;

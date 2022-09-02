@@ -48,3 +48,16 @@ export async function onFavoritesRoom(userId: string, room: RoomEntity) {
     throw new Error('error!');
   }
 }
+
+export async function onModifyRoom(userId: string, room: RoomEntity) {
+  console.log('onModifyRoom start');
+
+  if (userId && room) {
+    await updateDoc(
+      doc(firestore, 'posts', 'users', userId, 'rooms', 'room', room.roomId),
+      { ...room }
+    );
+  } else {
+    throw new Error('error!');
+  }
+}

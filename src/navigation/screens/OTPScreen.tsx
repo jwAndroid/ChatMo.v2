@@ -95,18 +95,16 @@ function OTPScreen() {
   });
 
   useEffect(() => {
-    if (params && value === params.password.toString()) {
-      setTimeout(() => {
+    if (params?.password && params) {
+      const password = params?.password.toString();
+
+      if (value === password) {
         navigation.navigate('Room', params);
-      }, 300);
-    } else if (
-      params &&
-      value.length === 4 &&
-      value !== params.password.toString()
-    ) {
-      setError(true);
-    } else {
-      setError(false);
+      } else if (value.length === 4 && value !== password) {
+        setError(true);
+      } else {
+        setError(false);
+      }
     }
   }, [value, params, navigation]);
 

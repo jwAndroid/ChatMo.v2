@@ -66,7 +66,7 @@ function RoomsItem({ item }: IRoomsItem) {
         </TitleContainer>
 
         <CommonText
-          text={ellipsize(lastMemo, 20)}
+          text={ellipsize(lastMemo ?? '', 20)}
           fontSize={12}
           marginTop={3}
         />

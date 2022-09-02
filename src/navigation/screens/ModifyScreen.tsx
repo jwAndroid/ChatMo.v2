@@ -1,10 +1,11 @@
-import React, { memo, useCallback, useEffect, useState } from 'react';
+import React, { memo, useCallback, useState } from 'react';
 import { Keyboard, Pressable } from 'react-native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
 import uuid from 'react-native-uuid';
 import styled from '@emotion/native';
 import { useTheme } from '@emotion/react';
 
+import { useSelector, useDispatch } from 'react-redux';
 import { RootStackNavigationProp, RootStackParamList } from '../RootStack';
 import {
   CommonText,
@@ -16,6 +17,10 @@ import {
 } from '../../components';
 import { ellipsize } from '../../utils/ellipsize';
 import { ChipEntity } from '../../../types';
+import { onModifyRoom } from '../../firebase/posts';
+import { RootState } from '../../redux/rootReducer';
+import { getTimestamp } from '../../utils/date';
+import { fulfilled } from '../../redux/posts/slice';
 
 const PressableContainer = styled.Pressable(() => ({
   flex: 1,
@@ -104,6 +109,11 @@ type ModifyScreenRouteProp = RouteProp<RootStackParamList, 'Modify'>;
 function ModifyScreen() {
   const theme = useTheme();
 
+  const dispatch = useDispatch();
+
+  const user = useSelector((state: RootState) => state.auth.user);
+  const posts = useSelector((state: RootState) => state.posts.posts);
+
   const { params } = useRoute<ModifyScreenRouteProp>();
   const navigation = useNavigation<RootStackNavigationProp>();
 
@@ -112,15 +122,11 @@ function ModifyScreen() {
     params?.chips ?? null
   );
 
+  const [inputModalValue, setInputModalValue] = useState('');
+
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [isInputModalOpen, setIsInputModalOpen] = useState(false);
   const [isOverflow, setIsOverflow] = useState(false);
-
-  const [inputModalValue, setInputModalValue] = useState('');
-
-  useEffect(() => {
-    console.log(chips);
-  }, [chips]);
 
   const onBackPress = useCallback(() => {
     navigation.pop();
@@ -135,8 +141,39 @@ function ModifyScreen() {
   }, []);
 
   const onPostive = useCallback(() => {
-    setIsConfirmModalOpen(false);
-  }, []);
+    if (user && params && posts.data) {
+      try {
+        const prepared = {
+          ...params,
+          title: '3번쨰꺼 수정123',
+          isLock: false,
+          password: 1222,
+          lastUpdateOn: getTimestamp(),
+          chips: [
+            { id: uuid.v4().toString(), title: 'android' },
+            { id: uuid.v4().toString(), title: 'react' },
+          ],
+        };
+
+        const updatedRooms = posts.data.map((post) =>
+          post.roomId === params.roomId
+            ? {
+                ...post,
+                ...prepared,
+              }
+            : post
+        );
+
+        dispatch(fulfilled(updatedRooms));
+
+        onModifyRoom(user.userId, { ...prepared });
+
+        setIsConfirmModalOpen(false);
+      } catch (error) {
+        throw new Error(error?.toString());
+      }
+    }
+  }, [dispatch, user, params, posts]);
 
   const onPostiveInputModal = useCallback(() => {
     if (chips) {

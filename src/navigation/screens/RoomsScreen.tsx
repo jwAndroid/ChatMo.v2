@@ -65,23 +65,17 @@ function RoomsScreen() {
     // navigation.navigate('Room');
     const room = {
       roomId: uuid.v4().toString(),
-      title: '23번',
-      lastMemo: 'string',
-      memoCount: 1,
+      title: '4 title',
+      lastMemo: 'first memo',
+      memoCount: null,
       isFavorites: false,
-      isCompleate: true,
-      isPin: true,
+      isCompleate: false,
       isLock: false,
-      password: 123,
-      status: 123,
+      password: null,
       createdAt: getTimestamp(),
       updatedAt: 123,
-      lastUpdateOn: 123,
-      chips: [
-        { id: uuid.v4().toString(), title: 'android' },
-        { id: uuid.v4().toString(), title: 'react' },
-        { id: uuid.v4().toString(), title: 'ios' },
-      ],
+      modifyAt: null,
+      chips: [{ id: uuid.v4().toString(), title: 'react' }],
     };
 
     if (user && posts.data) {

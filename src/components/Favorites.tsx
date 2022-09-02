@@ -2,7 +2,6 @@ import React, { memo, useCallback, useMemo } from 'react';
 import { FlatList, LayoutAnimation, ListRenderItem } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { Post } from '../redux/posts/type';
 import { fulfilled } from '../redux/posts/slice';
 import { RootState } from '../redux/rootReducer';
 import { onFavoritesRoom } from '../firebase/posts';
@@ -11,7 +10,7 @@ import ShadowCard from './ShadowCard';
 import { getTimestamp } from '../utils/date';
 
 interface IFavorites {
-  rooms: Post[] | null;
+  rooms: RoomEntity[] | null;
 }
 
 function Favorites({ rooms }: IFavorites) {

@@ -16,16 +16,14 @@ export interface ChipEntity {
 export interface RoomEntity {
   roomId: string;
   title: string;
-  lastMemo: string;
-  memoCount: number;
+  lastMemo: string | null;
+  memoCount: number | null;
   isFavorites: boolean;
-  isCompleate: boolean;
-  isPin: boolean;
+  isCompleate: boolean | null;
   isLock: boolean;
-  password: number;
-  status: number;
+  password: number | null;
   createdAt: number;
   updatedAt: number;
-  lastUpdateOn: number;
-  chips: ChipEntity[];
+  modifyAt: number | null;
+  chips: ChipEntity[] | null;
 }

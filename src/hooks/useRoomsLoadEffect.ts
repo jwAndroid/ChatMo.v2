@@ -12,7 +12,7 @@ import {
 import { RootState } from '../redux/rootReducer';
 import { firestore } from '../firebase/config';
 import { fulfilled } from '../redux/posts/slice';
-import { Post } from '../redux/posts/type';
+import { RoomEntity } from '../redux/posts/type';
 
 export function useRoomsSnapshotEffect() {
   const dispatch = useDispatch();
@@ -35,7 +35,7 @@ export function useRoomsSnapshotEffect() {
             document.push(doc.data());
           });
 
-          dispatch(fulfilled(document as Post[]));
+          dispatch(fulfilled(document as RoomEntity[]));
         }
       );
 
@@ -67,7 +67,7 @@ export function useRoomsLoadEffect() {
           document.push(doc.data());
         });
 
-        dispatch(fulfilled(document as Post[]));
+        dispatch(fulfilled(document as RoomEntity[]));
 
         setIsLoadData(true);
       }
