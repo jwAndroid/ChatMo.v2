@@ -125,14 +125,12 @@ function ModifyScreen() {
     params?.chips ?? null
   );
 
-  console.log(password);
-
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [isInputModalOpen, setIsInputModalOpen] = useState(false);
   const [isOverflow, setIsOverflow] = useState(false);
 
   const onBackPress = useCallback(() => {
-    navigation.pop();
+    navigation.popToTop();
   }, [navigation]);
 
   const onPressConfirm = useCallback(() => {
