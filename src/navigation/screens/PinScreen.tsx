@@ -1,23 +1,17 @@
-import React, { memo, useCallback, useState } from 'react';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
-import styled from '@emotion/native';
-
-import { useTheme } from '@emotion/react';
+import React, { memo, useCallback } from 'react';
 import { useSelector } from 'react-redux';
+import styled from '@emotion/native';
+import { useTheme } from '@emotion/react';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
+
+import { RootState } from '../../redux/rootReducer';
+import { RootStackNavigationProp, RootStackParamList } from '../RootStack';
 import {
   IconHeader,
   KeyboardContainer,
+  Pin,
   SafeAreaContainer,
 } from '../../components';
-import { RootStackNavigationProp, RootStackParamList } from '../RootStack';
-import { RootState } from '../../redux/rootReducer';
-
-const TitleInput = styled.TextInput(() => ({
-  width: '100%',
-  height: 50,
-  color: 'white',
-  backgroundColor: 'gray',
-}));
 
 const Icon = styled.Image(({ theme }) => ({
   width: 80,
@@ -31,35 +25,35 @@ const Icon = styled.Image(({ theme }) => ({
 type PinScreenRouteProp = RouteProp<RootStackParamList, 'Pin'>;
 
 function PinScreen() {
-  const from = useSelector((state: RootState) => state.system.from);
-
   const theme = useTheme();
-  const [value, setValue] = useState('');
+
+  const from = useSelector((state: RootState) => state.system.from);
 
   const { params } = useRoute<PinScreenRouteProp>();
   const navigation = useNavigation<RootStackNavigationProp>();
+
+  console.log(`params: ${params}`);
+  console.log(`from: ${from}`);
 
   const onBackPress = useCallback(() => {
     navigation.popToTop();
   }, [navigation]);
 
-  const onSubmitEditing = useCallback(() => {
-    if (params) {
-      const password = params?.password;
+  // const onSubmitEditing = useCallback(() => {
+  //   if (params) {
+  //     const password = params?.password;
 
-      if (password === value) {
-        if (from === 'Modify') {
-          navigation.navigate('Modify', params);
-        } else {
-          navigation.navigate('Room', params);
-        }
-
-        console.log(`confirm! ${from}으로 이동하세요.`);
-      } else {
-        console.log('invailed!');
-      }
-    }
-  }, [navigation, params, value, from]);
+  //     if (password === '1234') {
+  //       if (from === 'Modify') {
+  //         navigation.navigate('Modify', params);
+  //       } else {
+  //         navigation.navigate('Room', params);
+  //       }
+  //     } else {
+  //       console.log('invailed!');
+  //     }
+  //   }
+  // }, [navigation, params, from]);
 
   return (
     <SafeAreaContainer>
@@ -68,11 +62,7 @@ function PinScreen() {
 
         <Icon source={theme.icon.lock} />
 
-        <TitleInput
-          value={value}
-          onChangeText={setValue}
-          onSubmitEditing={onSubmitEditing}
-        />
+        <Pin />
       </KeyboardContainer>
     </SafeAreaContainer>
   );

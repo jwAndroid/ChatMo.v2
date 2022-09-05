@@ -7,6 +7,7 @@ export { default as IconHeader } from './IconHeader';
 export { default as InputModal } from './InputModal';
 export { default as KeyboardContainer } from './KeyboardContainer';
 export { default as NotificationModal } from './NotificationModal';
+export { default as Pin } from './Pin';
 export { default as RoomsItem } from './RoomsItem';
 export { default as SafeAreaContainer } from './SafeAreaContainer';
 export { default as SettingSwitch } from './SettingSwitch';
