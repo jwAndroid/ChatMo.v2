@@ -118,7 +118,7 @@ function ModifyScreen() {
   const navigation = useNavigation<RootStackNavigationProp>();
 
   const [isLock, setIsLock] = useState<boolean>(params?.isLock ?? false);
-  const [title, setTitle] = useState('');
+  const [title, setTitle] = useState('무제');
   const [password, setPassword] = useState('');
   const [chipValue, setChipValue] = useState('');
   const [chips, setChips] = useState<ChipEntity[] | null>(

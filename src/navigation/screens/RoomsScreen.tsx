@@ -18,6 +18,7 @@ import {
 } from '../../components';
 import { RoomEntity } from '../../../types';
 import { getTimestamp } from '../../utils/date';
+import { fromUpdate } from '../../redux/system/slice';
 
 function RoomsScreen() {
   const dispatch = useDispatch();
@@ -88,12 +89,14 @@ function RoomsScreen() {
   const onPressItem = useCallback(
     (item: RoomEntity) => () => {
       if (item.password) {
-        navigation.navigate('OTP', item);
+        navigation.navigate('Pin', item);
+
+        dispatch(fromUpdate({ from: 'Room' }));
       } else {
         navigation.navigate('Room', item);
       }
     },
-    [navigation]
+    [dispatch, navigation]
   );
 
   const onFavorit = useCallback(
@@ -126,10 +129,16 @@ function RoomsScreen() {
       if (rowMap[item.roomId]) {
         rowMap[item.roomId].closeRow();
 
-        navigation.navigate('Modify', item);
+        if (item.password) {
+          navigation.navigate('Pin', item);
+
+          dispatch(fromUpdate({ from: 'Modify' }));
+        } else {
+          navigation.navigate('Modify', item);
+        }
       }
     },
-    [navigation]
+    [dispatch, navigation]
   );
 
   const onDelete = useCallback(

@@ -5,6 +5,7 @@ export { default as Favorites } from './Favorites';
 export { default as FloatingButton } from './FloatingButton';
 export { default as IconHeader } from './IconHeader';
 export { default as InputModal } from './InputModal';
+export { default as KeyboardContainer } from './KeyboardContainer';
 export { default as NotificationModal } from './NotificationModal';
 export { default as RoomsItem } from './RoomsItem';
 export { default as SafeAreaContainer } from './SafeAreaContainer';

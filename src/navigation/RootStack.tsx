@@ -7,7 +7,7 @@ import {
 
 import {
   ModifyScreen,
-  OTPScreen,
+  PinScreen,
   RoomScreen,
   RoomsScreen,
   SettingScreen,
@@ -20,7 +20,7 @@ export type RootStackParamList = {
   Setting: undefined;
   Room: RoomEntity | undefined;
   Theme: undefined;
-  OTP: RoomEntity | undefined;
+  Pin: RoomEntity | undefined;
   Modify: RoomEntity | undefined;
 };
 
@@ -58,8 +58,8 @@ function RootStack() {
         options={{ animation: 'slide_from_right' }}
       />
       <Screen
-        name="OTP"
-        component={OTPScreen}
+        name="Pin"
+        component={PinScreen}
         options={{ animation: 'slide_from_bottom' }}
       />
       <Screen
