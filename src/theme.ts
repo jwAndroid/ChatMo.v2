@@ -39,6 +39,7 @@ export const lightTheme: Theme = {
     card: '#F5F5F9',
     chip: '#24ddb9',
     background: '#F9F9F9',
+    pin: '#0A0A0A',
   },
   icon,
 };
@@ -63,6 +64,7 @@ export const darkTheme: Theme = {
     card: '#0A0A0A',
     chip: '#0099ff',
     background: '#0A0A0A',
+    pin: '#ffffff',
   },
   icon,
 };

@@ -11,8 +11,8 @@ import { IconHeader, Pin, SafeAreaContainer } from '../../components';
 import { useShakeAnimation } from '../../hooks/useAnimation';
 
 const Icon = styled.Image(({ theme }) => ({
-  width: 100,
-  height: 100,
+  width: 80,
+  height: 80,
   tintColor: theme.color.icon,
   alignSelf: 'center',
 }));
@@ -32,6 +32,7 @@ function PinScreen() {
 
   useEffect(() => {
     if (params && pinCode !== '') {
+      console.log(pinCode);
       if (params?.password === pinCode) {
         if (from === 'Modify') {
           navigation.navigate('Modify', params);
