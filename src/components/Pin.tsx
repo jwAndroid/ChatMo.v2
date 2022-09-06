@@ -86,9 +86,10 @@ const DefaultCellContainer = styled.View(() => ({
 
 interface IPin {
   setPinCode: React.Dispatch<React.SetStateAction<string>>;
+  setError: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function Pin({ setPinCode }: IPin) {
+function Pin({ setPinCode, setError }: IPin) {
   const theme = useTheme();
 
   const [pins, setPins] = useState<string[]>([]);
@@ -97,7 +98,9 @@ function Pin({ setPinCode }: IPin) {
     if (pins.length === 4) {
       setPinCode(pins.join(''));
     }
-  }, [pins, setPinCode]);
+
+    setError(false);
+  }, [pins, setPinCode, setError]);
 
   const key = useCallback((item: IPad) => `${item.id}`, []);
 

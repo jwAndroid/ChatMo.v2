@@ -10,10 +10,13 @@ import { RootStackNavigationProp, RootStackParamList } from '../RootStack';
 import { IconHeader, Pin, SafeAreaContainer } from '../../components';
 import { useShakeAnimation } from '../../hooks/useAnimation';
 
-const Icon = styled.Image(({ theme }) => ({
+interface IIcon {
+  isInvailed: boolean;
+}
+const Icon = styled.Image<IIcon>(({ theme, isInvailed }) => ({
   width: 80,
   height: 80,
-  tintColor: theme.color.icon,
+  tintColor: isInvailed ? '#EB4250' : theme.color.icon,
   alignSelf: 'center',
 }));
 
@@ -26,6 +29,7 @@ function PinScreen() {
   const { shake, style } = useShakeAnimation();
 
   const [pinCode, setPinCode] = useState('');
+  const [error, setError] = useState(false);
 
   const { params } = useRoute<PinScreenRouteProp>();
   const navigation = useNavigation<RootStackNavigationProp>();
@@ -41,6 +45,8 @@ function PinScreen() {
         }
       } else {
         shake();
+
+        setError(true);
       }
     }
   }, [pinCode, navigation, params, from, shake]);
@@ -54,10 +60,10 @@ function PinScreen() {
       <IconHeader isBackword onPress={onBackPress} />
 
       <Animated.View style={style}>
-        <Icon source={theme.icon.lock} />
+        <Icon isInvailed={error} source={theme.icon.lock} />
       </Animated.View>
 
-      <Pin setPinCode={setPinCode} />
+      <Pin setPinCode={setPinCode} setError={setError} />
     </SafeAreaContainer>
   );
 }
