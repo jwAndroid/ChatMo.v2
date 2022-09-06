@@ -1,80 +1,99 @@
-import React, { memo, useCallback, useState } from 'react';
-import { Text, StyleSheet, View } from 'react-native';
-import {
-  CodeField,
-  Cursor,
-  RenderCellOptions,
-  useBlurOnFulfill,
-  useClearByFocusCell,
-} from 'react-native-confirmation-code-field';
+import React, { memo, useCallback, useMemo, useState } from 'react';
+import { Dimensions, FlatList, ListRenderItem, Text, View } from 'react-native';
+import styled from '@emotion/native';
+import { pincodes } from '../utils/pincode';
 
-const CELL_COUNT = 4;
+const Container = styled.View(() => ({
+  flex: 1,
+}));
 
-const styles = StyleSheet.create({
-  root: { padding: 20, minHeight: 300 },
-  title: { textAlign: 'center', fontSize: 30 },
-  codeFieldRoot: {
-    marginTop: 20,
-    width: 280,
-    marginLeft: 'auto',
-    marginRight: 'auto',
-  },
-  cellRoot: {
-    width: 60,
-    height: 60,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderBottomColor: '#ccc',
-    borderBottomWidth: 1,
-  },
-  cellText: {
-    color: '#000',
-    fontSize: 36,
-    textAlign: 'center',
-  },
-  focusCell: {
-    borderBottomColor: '#007AFF',
-    borderBottomWidth: 2,
-  },
-});
+const PasswordContainer = styled.View(() => ({
+  width: '100%',
+  flexDirection: 'row',
+  justifyContent: 'center',
+  alignItems: 'center',
+  paddingVertical: 20,
+}));
+
+interface IItemContainer {
+  size: number;
+}
+const ItemContainer = styled.View<IItemContainer>(({ size }) => ({
+  width: size,
+  height: size,
+  justifyContent: 'center',
+  alignItems: 'center',
+}));
+
+const Numberpad = styled.Text(() => ({
+  fontSize: 15,
+}));
+
+interface IPad {
+  id: string;
+  number: string;
+  status: string;
+}
 
 function Pin() {
-  const [value, setValue] = useState('');
-  const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
-  const [props, getCellOnLayoutHandler] = useClearByFocusCell({
-    value,
-    setValue,
-  });
+  const [pins, setPins] = useState<string[]>([]);
 
-  // TODO: 글자가리기
-  const renderCell = useCallback(
-    ({ index, symbol, isFocused }: RenderCellOptions) => (
-      <View
-        onLayout={getCellOnLayoutHandler(index)}
-        key={index}
-        style={[styles.cellRoot, isFocused && styles.focusCell]}
-      >
-        <Text style={styles.cellText}>
-          {symbol || (isFocused ? <Cursor /> : null)}
-        </Text>
-      </View>
+  const size = useMemo(() => Dimensions.get('screen').width / 3, []);
+
+  const key = useCallback((item: IPad) => `${item.id}`, []);
+
+  const onPress = useCallback(
+    (item: IPad) => () => {
+      if (item.status === 'code') {
+        setPins([...pins, item.number]);
+      } else if (item.status === 'reset') {
+        setPins([]);
+      } else {
+        const prepared = pins.filter((_, index) => index < pins.length - 1);
+
+        setPins(prepared);
+      }
+
+      console.log(pins);
+    },
+    [pins]
+  );
+
+  const renderItem = useCallback<ListRenderItem<IPad>>(
+    ({ item }) => (
+      <ItemContainer size={size}>
+        <Numberpad>{item.number}</Numberpad>
+      </ItemContainer>
     ),
-    [getCellOnLayoutHandler]
+    [size]
   );
 
   return (
-    <CodeField
-      {...props}
-      ref={ref}
-      value={value}
-      onChangeText={setValue}
-      cellCount={CELL_COUNT}
-      returnKeyType="done"
-      rootStyle={styles.codeFieldRoot}
-      keyboardType="number-pad"
-      textContentType="oneTimeCode"
-      renderCell={renderCell}
-    />
+    <Container>
+      <Text>암호 입력</Text>
+
+      <PasswordContainer>
+        {pins.map((pin, index) => (
+          <Text key={`${index + 1}`}>{pin}</Text>
+        ))}
+      </PasswordContainer>
+
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: 'gray',
+          margin: 20,
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+        }}
+      >
+        {pincodes.map((pincode, index) => (
+          <Text style={{ fontSize: 100 }} key={`${index + 1}`}>
+            {pincode.number}
+          </Text>
+        ))}
+      </View>
+    </Container>
   );
 }
 
