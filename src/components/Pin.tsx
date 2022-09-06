@@ -1,13 +1,14 @@
-import React, { memo, useCallback, useMemo, useState } from 'react';
-import { Dimensions, FlatList, ListRenderItem, Text, View } from 'react-native';
+import React, { memo, useCallback, useEffect, useMemo, useState } from 'react';
+import { Dimensions, FlatList, ListRenderItem } from 'react-native';
 import styled from '@emotion/native';
+
 import { pincodes } from '../utils/pincode';
 
 const Container = styled.View(() => ({
   flex: 1,
 }));
 
-const PasswordContainer = styled.View(() => ({
+const PinCodeContainer = styled.View(() => ({
   width: '100%',
   flexDirection: 'row',
   justifyContent: 'center',
@@ -15,18 +16,27 @@ const PasswordContainer = styled.View(() => ({
   paddingVertical: 20,
 }));
 
-interface IItemContainer {
+const Cell = styled.View(() => ({
+  width: 10,
+  height: 10,
+  backgroundColor: 'black',
+  marginLeft: 1,
+}));
+
+interface IPadContainer {
   size: number;
 }
-const ItemContainer = styled.View<IItemContainer>(({ size }) => ({
+const PadContainer = styled.TouchableHighlight<IPadContainer>(({ size }) => ({
   width: size,
   height: size,
   justifyContent: 'center',
   alignItems: 'center',
 }));
 
-const Numberpad = styled.Text(() => ({
-  fontSize: 15,
+const NumberPad = styled.Text(({ theme }) => ({
+  fontSize: 28,
+  fontWeight: '600',
+  color: theme.color.text,
 }));
 
 interface IPad {
@@ -35,64 +45,62 @@ interface IPad {
   status: string;
 }
 
-function Pin() {
+interface IPin {
+  setPinCode: React.Dispatch<React.SetStateAction<string>>;
+}
+
+function Pin({ setPinCode }: IPin) {
   const [pins, setPins] = useState<string[]>([]);
 
   const size = useMemo(() => Dimensions.get('screen').width / 3, []);
+
+  useEffect(() => {
+    if (pins.length === 4) {
+      setPinCode(pins.join(''));
+    }
+  }, [pins, setPinCode]);
 
   const key = useCallback((item: IPad) => `${item.id}`, []);
 
   const onPress = useCallback(
     (item: IPad) => () => {
-      if (item.status === 'code') {
+      if (item.status === 'code' && pins.length < 4) {
         setPins([...pins, item.number]);
       } else if (item.status === 'reset') {
         setPins([]);
-      } else {
+      } else if (item.status === 'cancel') {
         const prepared = pins.filter((_, index) => index < pins.length - 1);
 
         setPins(prepared);
       }
-
-      console.log(pins);
     },
     [pins]
   );
 
   const renderItem = useCallback<ListRenderItem<IPad>>(
     ({ item }) => (
-      <ItemContainer size={size}>
-        <Numberpad>{item.number}</Numberpad>
-      </ItemContainer>
+      <PadContainer size={size} onPress={onPress(item)}>
+        <NumberPad>{item.number}</NumberPad>
+      </PadContainer>
     ),
-    [size]
+    [size, onPress]
   );
 
   return (
     <Container>
-      <Text>암호 입력</Text>
-
-      <PasswordContainer>
-        {pins.map((pin, index) => (
-          <Text key={`${index + 1}`}>{pin}</Text>
+      <PinCodeContainer>
+        {pins.map((_, index) => (
+          <Cell key={`${index + 1}`} />
         ))}
-      </PasswordContainer>
+      </PinCodeContainer>
 
-      <View
-        style={{
-          flex: 1,
-          backgroundColor: 'gray',
-          margin: 20,
-          flexDirection: 'row',
-          flexWrap: 'wrap',
-        }}
-      >
-        {pincodes.map((pincode, index) => (
-          <Text style={{ fontSize: 100 }} key={`${index + 1}`}>
-            {pincode.number}
-          </Text>
-        ))}
-      </View>
+      <FlatList
+        data={pincodes}
+        keyExtractor={key}
+        numColumns={3}
+        renderItem={renderItem}
+        scrollEnabled={false}
+      />
     </Container>
   );
 }

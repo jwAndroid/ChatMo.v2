@@ -1,48 +1,62 @@
-import React, { memo, useCallback } from 'react';
+import React, { memo, useCallback, useEffect, useState } from 'react';
+import { Animated } from 'react-native';
 import { useSelector } from 'react-redux';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
+import styled from '@emotion/native';
+import { useTheme } from '@emotion/react';
 
-import { View } from 'react-native';
 import { RootState } from '../../redux/rootReducer';
 import { RootStackNavigationProp, RootStackParamList } from '../RootStack';
 import { IconHeader, Pin, SafeAreaContainer } from '../../components';
+import { useShakeAnimation } from '../../hooks/useAnimation';
+
+const Icon = styled.Image(({ theme }) => ({
+  width: 100,
+  height: 100,
+  tintColor: theme.color.icon,
+  alignSelf: 'center',
+}));
 
 type PinScreenRouteProp = RouteProp<RootStackParamList, 'Pin'>;
 
 function PinScreen() {
   const from = useSelector((state: RootState) => state.system.from);
 
+  const theme = useTheme();
+  const { shake, style } = useShakeAnimation();
+
+  const [pinCode, setPinCode] = useState('');
+
   const { params } = useRoute<PinScreenRouteProp>();
   const navigation = useNavigation<RootStackNavigationProp>();
 
-  console.log(`params: ${params}`);
-  console.log(`from: ${from}`);
+  useEffect(() => {
+    if (params && pinCode !== '') {
+      if (params?.password === pinCode) {
+        if (from === 'Modify') {
+          navigation.navigate('Modify', params);
+        } else {
+          navigation.navigate('Room', params);
+        }
+      } else {
+        shake();
+      }
+    }
+  }, [pinCode, navigation, params, from, shake]);
 
   const onBackPress = useCallback(() => {
     navigation.popToTop();
   }, [navigation]);
 
-  // const onSubmitEditing = useCallback(() => {
-  //   if (params) {
-  //     const password = params?.password;
-
-  //     if (password === '1234') {
-  //       if (from === 'Modify') {
-  //         navigation.navigate('Modify', params);
-  //       } else {
-  //         navigation.navigate('Room', params);
-  //       }
-  //     } else {
-  //       console.log('invailed!');
-  //     }
-  //   }
-  // }, [navigation, params, from]);
-
   return (
     <SafeAreaContainer>
       <IconHeader isBackword onPress={onBackPress} />
 
-      <Pin />
+      <Animated.View style={style}>
+        <Icon source={theme.icon.lock} />
+      </Animated.View>
+
+      <Pin setPinCode={setPinCode} />
     </SafeAreaContainer>
   );
 }
