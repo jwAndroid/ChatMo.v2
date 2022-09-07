@@ -6,10 +6,13 @@ import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 import CommonText from './CommonText';
 
+const Container = styled.View(() => ({
+  flexDirection: 'row',
+  alignItems: 'center',
+}));
 interface IHeaderContainer {
   isIosTopInset?: boolean;
 }
-
 const HeaderContainer = styled.View<IHeaderContainer>(
   ({ theme, isIosTopInset }) => ({
     height: 50,
@@ -25,14 +28,17 @@ const HeaderContainer = styled.View<IHeaderContainer>(
   })
 );
 
-const Container = styled.View(() => ({
+const IconContainer = styled.View(() => ({
   flexDirection: 'row',
   alignItems: 'center',
 }));
-
-const Icon = styled.Image(({ theme }) => ({
+interface IIcon {
+  marginRight?: number;
+}
+const Icon = styled.Image<IIcon>(({ theme, marginRight = 0 }) => ({
   width: 22,
   height: 22,
+  marginRight,
   tintColor: theme.color.icon,
 }));
 
@@ -44,6 +50,8 @@ interface IIconHeader {
   isCheck?: boolean;
   onPress: () => void;
   onPressCheck?: () => void;
+  isSearch?: boolean;
+  onPressSearch?: () => void;
 }
 
 function IconHeader({
@@ -54,6 +62,8 @@ function IconHeader({
   isCheck,
   onPress,
   onPressCheck,
+  isSearch,
+  onPressSearch,
 }: IIconHeader) {
   const theme = useTheme();
 
@@ -69,17 +79,25 @@ function IconHeader({
         <CommonText fontSize={20} text={title} marginLeft={3} />
       </Container>
 
-      {isSettings && (
-        <Pressable onPress={onPress} hitSlop={10}>
-          <Icon source={theme.icon.settings} />
-        </Pressable>
-      )}
+      <IconContainer>
+        {isSearch && (
+          <Pressable onPress={onPressSearch} hitSlop={10}>
+            <Icon marginRight={12} source={theme.icon.search} />
+          </Pressable>
+        )}
 
-      {isCheck && (
-        <Pressable onPress={onPressCheck} hitSlop={10}>
-          <Icon source={theme.icon.check_circle} />
-        </Pressable>
-      )}
+        {isSettings && (
+          <Pressable onPress={onPress} hitSlop={10}>
+            <Icon source={theme.icon.settings} />
+          </Pressable>
+        )}
+
+        {isCheck && (
+          <Pressable onPress={onPressCheck} hitSlop={10}>
+            <Icon source={theme.icon.check_circle} />
+          </Pressable>
+        )}
+      </IconContainer>
     </HeaderContainer>
   );
 }
@@ -91,6 +109,8 @@ IconHeader.defaultProps = {
   isCheck: false,
   isIosTopInset: false,
   onPressCheck: null,
+  isSearch: false,
+  onPressSearch: null,
 };
 
 export default memo(IconHeader);

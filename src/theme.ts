@@ -16,6 +16,7 @@ export const icon = {
   delete: require('../assets/icons/delete.png'),
   empty: require('../assets/icons/empty.png'),
   plus: require('../assets/icons/plus.png'),
+  search: require('../assets/icons/search.png'),
   settings: require('../assets/icons/settings.png'),
 };
 

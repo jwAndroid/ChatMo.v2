@@ -10,6 +10,7 @@ import {
   PinScreen,
   RoomScreen,
   RoomsScreen,
+  SearchScreen,
   SettingScreen,
   ThemeScreen,
 } from './screens';
@@ -22,6 +23,7 @@ export type RootStackParamList = {
   Theme: undefined;
   Pin: RoomEntity | undefined;
   Modify: RoomEntity | undefined;
+  Search: undefined;
 };
 
 export type RootStackNavigationProp =
@@ -39,7 +41,7 @@ function RootStack() {
   );
 
   return (
-    <Navigator screenOptions={screenOptions}>
+    <Navigator screenOptions={screenOptions} initialRouteName="Rooms">
       <Screen name="Rooms" component={RoomsScreen} />
 
       <Screen
@@ -66,6 +68,11 @@ function RootStack() {
         name="Modify"
         component={ModifyScreen}
         options={{ animation: 'slide_from_right' }}
+      />
+      <Screen
+        name="Search"
+        component={SearchScreen}
+        options={{ animation: 'fade' }}
       />
     </Navigator>
   );

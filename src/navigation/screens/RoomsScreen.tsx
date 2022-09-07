@@ -193,9 +193,19 @@ function RoomsScreen() {
     delayedModalOpen(false);
   }, [delayedModalOpen]);
 
+  const onPressSearch = useCallback(() => {
+    navigation.navigate('Search');
+  }, [navigation]);
+
   return (
     <SafeAreaContainer>
-      <IconHeader isSettings title="목록" onPress={onPressSetting} />
+      <IconHeader
+        isSettings
+        isSearch
+        title="목록"
+        onPress={onPressSetting}
+        onPressSearch={onPressSearch}
+      />
 
       <SwipeList
         rooms={posts.data}
