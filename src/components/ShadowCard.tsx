@@ -1,14 +1,14 @@
-import styled from '@emotion/native';
-import { useTheme } from '@emotion/react';
 import React, { memo } from 'react';
 import { Dimensions, Platform, Pressable } from 'react-native';
+import styled from '@emotion/native';
+import { useTheme } from '@emotion/react';
 
+import Chip from './Chip';
+import CommonText from './CommonText';
 import { RoomEntity } from '../../types';
 import { getFormatTime } from '../utils/date';
 import { ellipsize } from '../utils/ellipsize';
 import { lineBreak } from '../utils/text';
-import Chip from './Chip';
-import CommonText from './CommonText';
 
 const { width, height } = Dimensions.get('screen');
 
@@ -35,6 +35,7 @@ const ShadowContainer = styled.Pressable(({ theme }) => {
     marginVertical: 3,
     marginHorizontal: 6,
     borderRadius: 10,
+    padding: 5,
     backgroundColor: theme.color.card,
     ...shadow,
   };
@@ -52,7 +53,6 @@ interface IIcon {
   size: number;
   tintColor: string;
 }
-
 const Icon = styled.Image<IIcon>(({ size, tintColor }) => ({
   width: size,
   height: size,
@@ -71,7 +71,7 @@ const LeftContainer = styled.View(() => ({
 
 const RightContainer = styled.View(() => ({
   justifyContent: 'flex-end',
-  paddingBottom: 10,
+  paddingBottom: 5,
 }));
 
 const ChipContainer = styled.View(() => ({
@@ -85,7 +85,6 @@ interface IShadowCard {
   onPressCard: (item: RoomEntity) => () => void;
   onPressFavorit: (item: RoomEntity) => () => void;
 }
-
 function ShadowCard({ item, onPressCard, onPressFavorit }: IShadowCard) {
   const theme = useTheme();
 

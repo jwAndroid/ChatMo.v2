@@ -115,8 +115,6 @@ function ModifyScreen() {
   const user = useSelector((state: RootState) => state.auth.user);
   const posts = useSelector((state: RootState) => state.posts.posts);
 
-  console.log(JSON.stringify(posts, null, 5));
-
   const { params } = useRoute<ModifyScreenRouteProp>();
   const navigation = useNavigation<RootStackNavigationProp>();
 
@@ -247,6 +245,7 @@ function ModifyScreen() {
                   placeholder="* * * *"
                   placeholderTextColor={theme.color.shadow}
                   keyboardType="number-pad"
+                  clearTextOnFocus
                   returnKeyType="done"
                   secureTextEntry
                 />
