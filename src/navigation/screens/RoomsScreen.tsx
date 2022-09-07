@@ -63,7 +63,6 @@ function RoomsScreen() {
   }, [navigation]);
 
   const onPressFloatingButton = useCallback(() => {
-    // navigation.navigate('Room');
     const room = {
       roomId: uuid.v4().toString(),
       title: '5 title',
@@ -156,21 +155,39 @@ function RoomsScreen() {
 
   const onPostive = useCallback(async () => {
     if (user && pickedItem && posts.data) {
-      deleteRoom(user.userId, pickedItem.roomId);
+      if (pickedItem.isLock) {
+        dispatch(fromUpdate({ from: 'Delete' }));
 
-      const prepared = posts.data.filter(
-        (post) => post.roomId !== pickedItem.roomId
-      );
+        delayedModalOpen(false);
 
-      dispatch(fulfilled(prepared));
+        setPickedItem(null);
 
-      delayedModalOpen(false);
+        navigation.navigate('Pin', pickedItem);
+      } else {
+        const prepared = posts.data.filter(
+          (post) => post.roomId !== pickedItem.roomId
+        );
 
-      setPickedItem(null);
+        deleteRoom(user.userId, pickedItem.roomId);
 
-      LayoutAnimation.configureNext(animationConfig);
+        dispatch(fulfilled(prepared));
+
+        delayedModalOpen(false);
+
+        setPickedItem(null);
+
+        LayoutAnimation.configureNext(animationConfig);
+      }
     }
-  }, [dispatch, user, pickedItem, posts, animationConfig, delayedModalOpen]);
+  }, [
+    dispatch,
+    user,
+    pickedItem,
+    posts,
+    animationConfig,
+    delayedModalOpen,
+    navigation,
+  ]);
 
   const onNegative = useCallback(() => {
     delayedModalOpen(false);

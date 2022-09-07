@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useEffect, useState } from 'react';
 import { Animated } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
 import styled from '@emotion/native';
 import { useTheme } from '@emotion/react';
@@ -9,6 +9,8 @@ import { RootState } from '../../redux/rootReducer';
 import { RootStackNavigationProp, RootStackParamList } from '../RootStack';
 import { IconHeader, Pin, SafeAreaContainer } from '../../components';
 import { useShakeAnimation } from '../../hooks/useAnimation';
+import { deleteRoom } from '../../firebase/posts';
+import { fulfilled } from '../../redux/posts/slice';
 
 interface IIcon {
   isInvailed: boolean;
@@ -23,7 +25,11 @@ const Icon = styled.Image<IIcon>(({ theme, isInvailed }) => ({
 type PinScreenRouteProp = RouteProp<RootStackParamList, 'Pin'>;
 
 function PinScreen() {
+  const dispatch = useDispatch();
+
   const from = useSelector((state: RootState) => state.system.from);
+  const user = useSelector((state: RootState) => state.auth.user);
+  const posts = useSelector((state: RootState) => state.posts.posts);
 
   const theme = useTheme();
   const { shake, style } = useShakeAnimation();
@@ -35,13 +41,22 @@ function PinScreen() {
   const navigation = useNavigation<RootStackNavigationProp>();
 
   useEffect(() => {
-    if (params && pinCode !== '') {
-      console.log(pinCode);
+    if (params && pinCode !== '' && from !== '' && posts.data && user) {
       if (params?.password === pinCode) {
         if (from === 'Modify') {
           navigation.navigate('Modify', params);
-        } else {
+        } else if (from === 'Room') {
           navigation.navigate('Room', params);
+        } else if (from === 'Delete') {
+          const prepared = posts.data.filter(
+            (post) => post.roomId !== params.roomId
+          );
+
+          deleteRoom(user.userId, params.roomId);
+
+          dispatch(fulfilled(prepared));
+
+          navigation.goBack();
         }
       } else {
         shake();
@@ -49,7 +64,7 @@ function PinScreen() {
         setError(true);
       }
     }
-  }, [pinCode, navigation, params, from, shake]);
+  }, [dispatch, posts.data, user, pinCode, navigation, params, from, shake]);
 
   const onBackPress = useCallback(() => {
     navigation.popToTop();
