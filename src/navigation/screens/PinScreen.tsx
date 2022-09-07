@@ -16,7 +16,7 @@ interface IIcon {
 const Icon = styled.Image<IIcon>(({ theme, isInvailed }) => ({
   width: 80,
   height: 80,
-  tintColor: isInvailed ? '#EB4250' : theme.color.icon,
+  tintColor: isInvailed ? theme.color.red : theme.color.icon,
   alignSelf: 'center',
 }));
 

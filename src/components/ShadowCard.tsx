@@ -7,6 +7,7 @@ import { RoomEntity } from '../../types';
 import { getFormatTime } from '../utils/date';
 import { ellipsize } from '../utils/ellipsize';
 import { lineBreak } from '../utils/text';
+import Chip from './Chip';
 import CommonText from './CommonText';
 
 const { width, height } = Dimensions.get('screen');
@@ -77,17 +78,6 @@ const ChipContainer = styled.View(() => ({
   flexDirection: 'row',
   marginTop: 5,
   marginBottom: 2,
-}));
-
-const Chip = styled.View(({ theme }) => ({
-  justifyContent: 'center',
-  alignItems: 'center',
-  paddingVertical: 4,
-  paddingHorizontal: 10,
-  borderRadius: 12,
-  borderWidth: 1,
-  marginLeft: 6,
-  borderColor: theme.color.chip,
 }));
 
 interface IShadowCard {

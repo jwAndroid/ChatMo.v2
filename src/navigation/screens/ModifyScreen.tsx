@@ -1,13 +1,13 @@
 import React, { memo, useCallback, useState } from 'react';
 import { Keyboard, Pressable } from 'react-native';
-import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
-import uuid from 'react-native-uuid';
+import { useSelector, useDispatch } from 'react-redux';
 import styled from '@emotion/native';
 import { useTheme } from '@emotion/react';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
+import uuid from 'react-native-uuid';
 
-import { useSelector, useDispatch } from 'react-redux';
-import { RootStackNavigationProp, RootStackParamList } from '../RootStack';
 import {
+  Chip,
   CommonText,
   IconHeader,
   InputModal,
@@ -15,12 +15,13 @@ import {
   SafeAreaContainer,
   SettingSwitch,
 } from '../../components';
-import { ellipsize } from '../../utils/ellipsize';
-import { ChipEntity } from '../../../types';
-import { onModifyRoom } from '../../firebase/posts';
+import { RootStackNavigationProp, RootStackParamList } from '../RootStack';
 import { RootState } from '../../redux/rootReducer';
-import { getTimestamp } from '../../utils/date';
 import { fulfilled } from '../../redux/posts/slice';
+import { onModifyRoom } from '../../firebase/posts';
+import { ellipsize } from '../../utils/ellipsize';
+import { getTimestamp } from '../../utils/date';
+import { ChipEntity } from '../../../types';
 
 const PressableContainer = styled.Pressable(() => ({
   flex: 1,
@@ -28,13 +29,14 @@ const PressableContainer = styled.Pressable(() => ({
 
 const ContentsContainer = styled.View(() => ({
   flex: 1,
-  padding: 20,
+  paddingHorizontal: 20,
+  paddingVertical: 10,
 }));
 
 const TitleInput = styled.TextInput(({ theme }) => ({
   borderRadius: 8,
   borderWidth: 1,
-  fontSize: 17,
+  fontSize: 15,
   paddingHorizontal: 15,
   paddingVertical: 8,
   marginTop: 10,
@@ -42,20 +44,26 @@ const TitleInput = styled.TextInput(({ theme }) => ({
   borderColor: theme.color.shadow,
 }));
 
-const ContentContainer = styled.View(() => ({
-  flexDirection: 'row',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  marginTop: 6,
-}));
+interface IContentContainer {
+  marginTop?: number;
+}
+const ContentContainer = styled.View<IContentContainer>(
+  ({ marginTop = 0 }) => ({
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop,
+  })
+);
 
 const PasswordInput = styled.TextInput(({ theme }) => ({
   width: 60,
   borderBottomWidth: 1,
   textAlign: 'center',
-  borderBottomColor: '#0099ff',
   fontSize: 15,
   color: theme.color.text,
+  padding: 3,
+  borderBottomColor: '#0099ff',
 }));
 
 interface IIcon {
@@ -63,7 +71,6 @@ interface IIcon {
   tintColor: string;
   marginLeft?: number;
 }
-
 const Icon = styled.Image<IIcon>(({ size, tintColor, marginLeft }) => ({
   width: size,
   height: size,
@@ -83,25 +90,19 @@ const PressableCircle = styled.TouchableOpacity(({ theme }) => ({
 const ChipContainer = styled.View(() => ({
   flexDirection: 'row',
   alignItems: 'center',
-  marginLeft: -5,
-}));
-
-const Chip = styled.View(({ theme }) => ({
-  flexDirection: 'row',
-  justifyContent: 'center',
-  alignItems: 'center',
-  paddingVertical: 4,
-  paddingHorizontal: 10,
-  borderRadius: 12,
-  borderWidth: 1,
-  marginLeft: 5,
-  borderColor: theme.color.chip,
+  marginLeft: -8,
 }));
 
 const ChipTitleContainer = styled.View(() => ({
   flexDirection: 'row',
   alignItems: 'center',
-  marginTop: 20,
+  marginTop: 10,
+}));
+
+const Block = styled.View(() => ({
+  height: 40,
+  justifyContent: 'center',
+  marginVertical: 10,
 }));
 
 type ModifyScreenRouteProp = RouteProp<RootStackParamList, 'Modify'>;
@@ -114,31 +115,33 @@ function ModifyScreen() {
   const user = useSelector((state: RootState) => state.auth.user);
   const posts = useSelector((state: RootState) => state.posts.posts);
 
+  console.log(JSON.stringify(posts, null, 5));
+
   const { params } = useRoute<ModifyScreenRouteProp>();
   const navigation = useNavigation<RootStackNavigationProp>();
 
   const [isLock, setIsLock] = useState<boolean>(params?.isLock ?? false);
   const [title, setTitle] = useState(params?.title ?? '');
-  const [password, setPassword] = useState(params?.password ?? '');
+  const [passwordValue, setPasswordValue] = useState(params?.password ?? '');
+  const [chipValue, setChipValue] = useState('');
   const [chips, setChips] = useState<ChipEntity[] | null>(
     params?.chips ?? null
   );
 
-  const [chipValue, setChipValue] = useState('');
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [isInputModalOpen, setIsInputModalOpen] = useState(false);
   const [error, setError] = useState(false);
 
   const onPostive = useCallback(() => {
     if (user && params && posts.data) {
-      if ((isLock && password.length < 4) || title === '') {
+      if ((isLock && passwordValue.length < 4) || title === '') {
         setError(true);
       } else {
         const prepared = {
           ...params,
           title,
-          isLock: true,
-          password,
+          isLock,
+          password: isLock ? passwordValue : null,
           modifyAt: getTimestamp(),
           chips,
         };
@@ -170,7 +173,7 @@ function ModifyScreen() {
     posts,
     isLock,
     title,
-    password,
+    passwordValue,
     chips,
     navigation,
   ]);
@@ -183,13 +186,15 @@ function ModifyScreen() {
 
   const onPostiveChipInputModal = useCallback(() => {
     if (chips && chipValue.length > 0) {
-      const create = {
+      const chip = {
         id: uuid.v4().toString(),
         title: chipValue,
       };
 
-      setChips([...chips, create]);
+      setChips([...chips, chip]);
 
+      setIsInputModalOpen(false);
+    } else {
       setIsInputModalOpen(false);
     }
   }, [chipValue, chips]);
@@ -223,32 +228,46 @@ function ModifyScreen() {
           <CommonText text="제목" fontSize={15} />
 
           <TitleInput
-            placeholder="제목을 입력해주세요..."
+            placeholder="제목을 입력해주세요."
             placeholderTextColor={theme.color.shadow}
             value={title}
             onChangeText={setTitle}
+            blurOnSubmit
           />
 
-          <CommonText text="패스워드" fontSize={15} marginTop={25} />
+          <CommonText text="패스워드" fontSize={15} marginTop={20} />
 
           <ContentContainer>
             {isLock ? (
-              <PasswordInput
-                value={password}
-                onChangeText={setPassword}
-                maxLength={4}
-                placeholder="****"
-                keyboardType="number-pad"
-                returnKeyType="done"
-                secureTextEntry
-              />
+              <Block>
+                <PasswordInput
+                  value={passwordValue}
+                  onChangeText={setPasswordValue}
+                  maxLength={4}
+                  placeholder="* * * *"
+                  placeholderTextColor={theme.color.shadow}
+                  keyboardType="number-pad"
+                  returnKeyType="done"
+                  secureTextEntry
+                />
+
+                <CommonText
+                  text="비밀번호는 찾을수 없으니, 신중하게 결정 해주세요."
+                  fontSize={12}
+                  isSpecificColor
+                  specificColor={theme.color.shadow}
+                  marginTop={5}
+                />
+              </Block>
             ) : (
-              <CommonText
-                text="패스워드가 존재하지 않습니다."
-                fontSize={12}
-                isSpecificColor
-                specificColor={theme.color.shadow}
-              />
+              <Block>
+                <CommonText
+                  text="패스워드가 존재하지 않습니다."
+                  fontSize={13}
+                  isSpecificColor
+                  specificColor={theme.color.shadow}
+                />
+              </Block>
             )}
 
             <SettingSwitch isEnabled={isLock} onValueChange={setIsLock} />
@@ -257,13 +276,17 @@ function ModifyScreen() {
           <ChipTitleContainer>
             <CommonText text="속성" fontSize={15} />
 
-            <CommonText text="1/3" fontSize={12} marginLeft={5} />
+            <CommonText
+              text={`${chips?.length}/3`}
+              fontSize={12}
+              marginLeft={5}
+            />
           </ChipTitleContainer>
 
-          <ContentContainer>
+          <ContentContainer marginTop={10}>
             <ChipContainer>
               {chips?.map((chip) => (
-                <Chip key={chip.id}>
+                <Chip isRow key={chip.id}>
                   <CommonText text={ellipsize(chip.title, 10)} fontSize={13} />
 
                   <Pressable hitSlop={10} onPress={onPressChipDelete(chip)}>
@@ -280,8 +303,10 @@ function ModifyScreen() {
               {chips?.length === 0 ? (
                 <CommonText
                   text="속성이 없습니다."
-                  fontSize={13}
+                  fontSize={12}
                   marginLeft={5}
+                  isSpecificColor
+                  specificColor={theme.color.shadow}
                 />
               ) : null}
             </ChipContainer>
@@ -301,32 +326,31 @@ function ModifyScreen() {
               fontSize={12}
               isSpecificColor
               specificColor={theme.color.shadow}
-              marginTop={3}
-              marginLeft={3}
+              marginTop={5}
             />
           ) : null}
         </ContentsContainer>
-
-        {isConfirmModalOpen && (
-          <NotificationModal
-            isOpen={isConfirmModalOpen}
-            notification="수정 하시겠습니까?"
-            onNegative={onNegative}
-            onPostive={onPostive}
-            error={error}
-          />
-        )}
-
-        {isInputModalOpen && (
-          <InputModal
-            isOpen={isInputModalOpen}
-            onNegative={() => setIsInputModalOpen(false)}
-            onPostive={onPostiveChipInputModal}
-            value={chipValue}
-            onChangeText={setChipValue}
-          />
-        )}
       </PressableContainer>
+
+      {isConfirmModalOpen && (
+        <NotificationModal
+          isOpen={isConfirmModalOpen}
+          notification="수정 하시겠습니까?"
+          onNegative={onNegative}
+          onPostive={onPostive}
+          error={error}
+        />
+      )}
+
+      {isInputModalOpen && (
+        <InputModal
+          isOpen={isInputModalOpen}
+          onNegative={() => setIsInputModalOpen(false)}
+          onPostive={onPostiveChipInputModal}
+          value={chipValue}
+          onChangeText={setChipValue}
+        />
+      )}
     </SafeAreaContainer>
   );
 }
