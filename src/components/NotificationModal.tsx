@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from 'react';
+import React, { memo } from 'react';
 import { GestureResponderEvent, Modal } from 'react-native';
 import styled from '@emotion/native';
 
@@ -58,7 +58,7 @@ interface INotificationModal {
   notification: string;
   onNegative: () => void;
   onPostive: (event: GestureResponderEvent) => void;
-  error: boolean;
+  error?: boolean;
 }
 
 function NotificationModal({
@@ -68,9 +68,6 @@ function NotificationModal({
   onPostive,
   error,
 }: INotificationModal) {
-  useEffect(() => {
-    console.log(error);
-  }, [error]);
   return (
     <Modal
       transparent
@@ -103,5 +100,9 @@ function NotificationModal({
     </Modal>
   );
 }
+
+NotificationModal.defaultProps = {
+  error: false,
+};
 
 export default memo(NotificationModal);
