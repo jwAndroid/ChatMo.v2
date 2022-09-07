@@ -118,86 +118,90 @@ function ModifyScreen() {
   const navigation = useNavigation<RootStackNavigationProp>();
 
   const [isLock, setIsLock] = useState<boolean>(params?.isLock ?? false);
-  const [title, setTitle] = useState('무제');
-  const [password, setPassword] = useState('');
-  const [chipValue, setChipValue] = useState('');
+  const [title, setTitle] = useState(params?.title ?? '');
+  const [password, setPassword] = useState(params?.password ?? '');
   const [chips, setChips] = useState<ChipEntity[] | null>(
     params?.chips ?? null
   );
 
+  const [chipValue, setChipValue] = useState('');
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [isInputModalOpen, setIsInputModalOpen] = useState(false);
-  const [isOverflow, setIsOverflow] = useState(false);
-
-  const onBackPress = useCallback(() => {
-    navigation.popToTop();
-  }, [navigation]);
-
-  const onPressConfirm = useCallback(() => {
-    setIsConfirmModalOpen(true);
-  }, []);
-
-  const onPressLayout = useCallback(() => {
-    Keyboard.dismiss();
-  }, []);
+  const [error, setError] = useState(false);
 
   const onPostive = useCallback(() => {
     if (user && params && posts.data) {
-      const prepared = {
-        ...params,
-        title,
-        isLock,
-        password: isLock ? password : null,
-        modifyAt: getTimestamp(),
-        chips,
-      };
+      if ((isLock && password.length < 4) || title === '') {
+        setError(true);
+      } else {
+        const prepared = {
+          ...params,
+          title,
+          isLock: true,
+          password,
+          modifyAt: getTimestamp(),
+          chips,
+        };
 
-      const updatedRooms = posts.data.map((post) =>
-        post.roomId === params.roomId
-          ? {
-              ...post,
-              ...prepared,
-            }
-          : post
-      );
+        const updatedRooms = posts.data.map((post) =>
+          post.roomId === params.roomId
+            ? {
+                ...post,
+                ...prepared,
+              }
+            : post
+        );
 
-      dispatch(fulfilled(updatedRooms));
+        dispatch(fulfilled(updatedRooms));
 
-      onModifyRoom(user.userId, { ...prepared });
+        onModifyRoom(user.userId, { ...prepared });
 
-      setIsConfirmModalOpen(false);
+        setIsConfirmModalOpen(false);
+
+        setError(false);
+
+        navigation.popToTop();
+      }
     }
-  }, [dispatch, user, params, posts, isLock, title, password, chips]);
+  }, [
+    dispatch,
+    user,
+    params,
+    posts,
+    isLock,
+    title,
+    password,
+    chips,
+    navigation,
+  ]);
 
-  const onPostiveInputModal = useCallback(() => {
-    if (chips) {
+  const onNegative = useCallback(() => {
+    setIsConfirmModalOpen(false);
+
+    setError(false);
+  }, []);
+
+  const onPostiveChipInputModal = useCallback(() => {
+    if (chips && chipValue.length > 0) {
       const create = {
         id: uuid.v4().toString(),
         title: chipValue,
       };
 
       setChips([...chips, create]);
-    }
 
-    setIsInputModalOpen(false);
+      setIsInputModalOpen(false);
+    }
   }, [chipValue, chips]);
 
   const onCreateChips = useCallback(() => {
-    if (params && chips && chips.length >= 3) {
-      setIsOverflow(true);
-    } else {
-      setChipValue('');
+    setChipValue('');
 
-      setIsInputModalOpen(true);
-
-      setIsOverflow(false);
-    }
-  }, [params, chips]);
+    setIsInputModalOpen(true);
+  }, []);
 
   const onPressChipDelete = useCallback(
     (item: ChipEntity) => () => {
-      setIsOverflow(false);
-
       if (chips) {
         setChips(chips.filter((chip) => chip.id !== item.id));
       }
@@ -207,19 +211,19 @@ function ModifyScreen() {
 
   return (
     <SafeAreaContainer>
-      <PressableContainer onPress={onPressLayout}>
+      <PressableContainer onPress={() => Keyboard.dismiss()}>
         <IconHeader
           isBackword
           isCheck
-          onPress={onBackPress}
-          onPressCheck={onPressConfirm}
+          onPress={() => navigation.popToTop()}
+          onPressCheck={() => setIsConfirmModalOpen(true)}
         />
 
         <ContentsContainer>
           <CommonText text="제목" fontSize={15} />
 
           <TitleInput
-            placeholder={params?.title}
+            placeholder="제목을 입력해주세요..."
             placeholderTextColor={theme.color.shadow}
             value={title}
             onChangeText={setTitle}
@@ -234,10 +238,6 @@ function ModifyScreen() {
                 onChangeText={setPassword}
                 maxLength={4}
                 placeholder="****"
-                clearTextOnFocus
-                onSubmitEditing={() => {
-                  console.log('onSubmitEditing');
-                }}
                 keyboardType="number-pad"
                 returnKeyType="done"
                 secureTextEntry
@@ -276,6 +276,14 @@ function ModifyScreen() {
                   </Pressable>
                 </Chip>
               ))}
+
+              {chips?.length === 0 ? (
+                <CommonText
+                  text="속성이 없습니다."
+                  fontSize={13}
+                  marginLeft={5}
+                />
+              ) : null}
             </ChipContainer>
 
             <PressableCircle onPress={onCreateChips}>
@@ -287,7 +295,7 @@ function ModifyScreen() {
             </PressableCircle>
           </ContentContainer>
 
-          {isOverflow ? (
+          {chips!.length >= 3 ? (
             <CommonText
               text="3개 이상 만들수 없습니다."
               fontSize={12}
@@ -303,8 +311,9 @@ function ModifyScreen() {
           <NotificationModal
             isOpen={isConfirmModalOpen}
             notification="수정 하시겠습니까?"
-            onNegative={() => setIsConfirmModalOpen(false)}
+            onNegative={onNegative}
             onPostive={onPostive}
+            error={error}
           />
         )}
 
@@ -312,7 +321,7 @@ function ModifyScreen() {
           <InputModal
             isOpen={isInputModalOpen}
             onNegative={() => setIsInputModalOpen(false)}
-            onPostive={onPostiveInputModal}
+            onPostive={onPostiveChipInputModal}
             value={chipValue}
             onChangeText={setChipValue}
           />

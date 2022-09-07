@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
 import { GestureResponderEvent, Modal } from 'react-native';
 import styled from '@emotion/native';
 
@@ -47,11 +47,18 @@ const ModalText = styled.Text(({ theme }) => ({
   color: theme.color.text,
 }));
 
+const ErrorText = styled.Text(({ theme }) => ({
+  textAlign: 'center',
+  fontSize: 13,
+  color: theme.color.red,
+}));
+
 interface INotificationModal {
   isOpen: boolean;
   notification: string;
   onNegative: () => void;
   onPostive: (event: GestureResponderEvent) => void;
+  error: boolean;
 }
 
 function NotificationModal({
@@ -59,7 +66,11 @@ function NotificationModal({
   notification,
   onNegative,
   onPostive,
+  error,
 }: INotificationModal) {
+  useEffect(() => {
+    console.log(error);
+  }, [error]);
   return (
     <Modal
       transparent
@@ -70,6 +81,9 @@ function NotificationModal({
       <Container onPress={onNegative}>
         <TextContainer>
           <ModalText>{notification}</ModalText>
+          {error ? (
+            <ErrorText>비밀번호 4자리, 제목을 입력해주세요</ErrorText>
+          ) : null}
         </TextContainer>
 
         <Divider />

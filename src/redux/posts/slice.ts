@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Post } from './type';
+import { RoomEntity } from './type';
 
 interface PostsState {
   posts: {
-    data: Post[] | null;
+    data: RoomEntity[] | null;
   };
 }
 
@@ -17,7 +17,7 @@ const postsSlice = createSlice({
   name: 'posts',
   initialState,
   reducers: {
-    fulfilled(state, action: PayloadAction<Post[]>) {
+    fulfilled(state, action: PayloadAction<RoomEntity[]>) {
       state.posts.data = action.payload;
     },
   },
