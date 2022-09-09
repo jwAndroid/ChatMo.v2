@@ -33,11 +33,12 @@ const IconContainer = styled.View(() => ({
   alignItems: 'center',
 }));
 interface IIcon {
+  size?: number;
   marginRight?: number;
 }
-const Icon = styled.Image<IIcon>(({ theme, marginRight = 0 }) => ({
-  width: 22,
-  height: 22,
+const Icon = styled.Image<IIcon>(({ theme, size = 20, marginRight = 0 }) => ({
+  width: size,
+  height: size,
   marginRight,
   tintColor: theme.color.icon,
 }));
@@ -82,7 +83,7 @@ function IconHeader({
       <IconContainer>
         {isSearch && (
           <Pressable onPress={onPressSearch} hitSlop={10}>
-            <Icon marginRight={12} source={theme.icon.search} />
+            <Icon marginRight={12} source={theme.icon.search} size={18} />
           </Pressable>
         )}
 
