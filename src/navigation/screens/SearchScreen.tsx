@@ -21,6 +21,7 @@ import {
   SearchBox,
 } from '../../components';
 import { ChipEntity, RoomEntity } from '../../../types';
+import historyStorage from '../../storages/historyStorage';
 
 const chipSample = [
   { id: '1', title: 'react-native' },
@@ -84,6 +85,40 @@ function SearchScreen() {
       setMasterData(posts.data);
     }
   }, [posts.data]);
+
+  /**
+   * const array = ['C', 'A', 'B', 'A', 'C', 'D', 'C', 'C', 'E', 'D'];
+     console.log(array); // ['C', 'A', 'B', 'A', 'C', 'D', 'C', 'C', 'E', 'D']
+
+     const result = array.filter((v, i) => array.indexOf(v) === i);
+     console.log(result); // ['C', 'A', 'B', 'D', 'E']
+   */
+
+  // TODO: 플레인 텍스트뷰 블러-> 스토리지에 저장하는 작업
+  // TODO: 불러오는 작업
+  // TODO: 새로운 값이 들어갈때 맨 앞으로 떙겨주는 작업
+  // TODO: 중복제거 하여 최종적으로 렌더링 해주는 작업.
+
+  useEffect(() => {
+    (async () => {
+      const chipSample = [
+        { id: '1', title: 'react-1' },
+        { id: '2', title: '2asdf' },
+        { id: '3', title: '3aseg' },
+        { id: '4', title: 'aseg4' },
+        { id: '5', title: 'react-aseg' },
+        { id: '6', title: 'aseg' },
+        { id: '7', title: 'efe' },
+        { id: '8', title: 'asegaseg' },
+      ];
+
+      historyStorage.set(chipSample);
+
+      const data = await historyStorage.get();
+
+      console.log(data);
+    })();
+  }, []);
 
   const onPressItem = useCallback(
     (item: RoomEntity) => () => {
