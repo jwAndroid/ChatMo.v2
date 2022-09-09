@@ -1,8 +1,12 @@
-import React, { memo, useRef } from 'react';
-import { TextInput, GestureResponderEvent, Pressable } from 'react-native';
+import React, { memo, useCallback, useEffect, useRef } from 'react';
+import {
+  TextInput,
+  GestureResponderEvent,
+  Pressable,
+  Keyboard,
+} from 'react-native';
 import styled from '@emotion/native';
 import { useTheme } from '@emotion/react';
-import { useFocusEffect } from '@react-navigation/core';
 
 import CommonText from './CommonText';
 
@@ -11,7 +15,7 @@ const SearchBarContainer = styled.View(() => ({
   flexDirection: 'row',
   justifyContent: 'center',
   alignItems: 'center',
-  paddingHorizontal: 10,
+  paddingHorizontal: 15,
 }));
 
 const SearchBar = styled.View(({ theme }) => ({
@@ -60,18 +64,31 @@ function SearchBox({
 
   const ref = useRef<TextInput>(null);
 
-  useFocusEffect(() => {
+  useEffect(() => {
     if (ref) {
       ref.current?.focus();
     }
-  });
+  }, []);
+
+  const onSubmitEditing = useCallback(() => {
+    Keyboard.dismiss();
+  }, []);
 
   return (
     <SearchBarContainer>
       <SearchBar>
         <Icon source={theme.icon.search} />
 
-        <StyledTextInput ref={ref} value={value} onChangeText={onChangeText} />
+        <StyledTextInput
+          ref={ref}
+          value={value}
+          onChangeText={onChangeText}
+          autoCapitalize="none"
+          onSubmitEditing={onSubmitEditing}
+          multiline={false}
+          placeholder="검색할 제목을 입력해주세요."
+          placeholderTextColor={theme.color.shadow}
+        />
 
         <Pressable onPress={onCancelPress}>
           <Icon source={theme.icon.cancel} size={20} />
