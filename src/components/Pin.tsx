@@ -20,8 +20,7 @@ const Container = styled.View(() => ({
 const PinCodeContainer = styled.View(() => ({
   width: '100%',
   height: 40,
-  marginTop: 10,
-  marginBottom: -30,
+  marginTop: 20,
   flexDirection: 'row',
   alignItems: 'center',
   paddingVertical: 20,
@@ -164,6 +163,7 @@ function Pin({ setPinCode, setError }: IPin) {
         numColumns={3}
         renderItem={renderItem}
         scrollEnabled={false}
+        initialNumToRender={12}
       />
     </Container>
   );

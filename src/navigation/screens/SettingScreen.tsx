@@ -62,6 +62,7 @@ function SettingScreen() {
       <IconHeader title="세팅" isBackword onPress={onBackPress} />
 
       <FlatList
+        style={{ paddingTop: 10 }}
         data={settings}
         keyExtractor={keyExtractor}
         renderItem={renderItem}

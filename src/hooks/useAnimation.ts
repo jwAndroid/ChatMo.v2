@@ -14,7 +14,7 @@ export function useShakeAnimation() {
       Animated.sequence([
         Animated.timing(anim.current, {
           useNativeDriver: true,
-          toValue: -2,
+          toValue: 5,
           duration: 50,
         }),
         Animated.timing(anim.current, {
