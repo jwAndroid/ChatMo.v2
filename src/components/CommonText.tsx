@@ -4,6 +4,7 @@ import styled from '@emotion/native';
 interface IStyledText {
   fontSize?: number;
   marginLeft?: number;
+  marginRight?: number;
   marginTop?: number;
   marginBottom?: number;
   isSpecificColor?: boolean;
@@ -15,6 +16,7 @@ const StyledText = styled.Text<IStyledText>(
     theme,
     fontSize,
     marginLeft,
+    marginRight,
     marginTop,
     marginBottom,
     isSpecificColor,
@@ -22,6 +24,7 @@ const StyledText = styled.Text<IStyledText>(
   }) => ({
     fontSize,
     marginLeft,
+    marginRight,
     marginTop,
     marginBottom,
     includeFontPadding: false,
@@ -33,6 +36,7 @@ interface ICommonText {
   text: string | undefined;
   fontSize?: number;
   marginLeft?: number;
+  marginRight?: number;
   marginTop?: number;
   marginBottom?: number;
   isSpecificColor?: boolean;
@@ -43,6 +47,7 @@ function CommonText({
   text,
   fontSize,
   marginLeft,
+  marginRight,
   marginTop,
   marginBottom,
   isSpecificColor,
@@ -52,6 +57,7 @@ function CommonText({
     <StyledText
       fontSize={fontSize}
       marginLeft={marginLeft}
+      marginRight={marginRight}
       marginTop={marginTop}
       marginBottom={marginBottom}
       isSpecificColor={isSpecificColor}
@@ -65,6 +71,7 @@ function CommonText({
 CommonText.defaultProps = {
   fontSize: 20,
   marginLeft: 0,
+  marginRight: 0,
   marginTop: 0,
   marginBottom: 0,
   isSpecificColor: false,

@@ -11,6 +11,7 @@ export { default as NotificationModal } from './NotificationModal';
 export { default as Pin } from './Pin';
 export { default as RoomsItem } from './RoomsItem';
 export { default as SafeAreaContainer } from './SafeAreaContainer';
+export { default as SearchBox } from './SearchBox';
 export { default as SettingSwitch } from './SettingSwitch';
 export { default as ShadowCard } from './ShadowCard';
 export { default as SwipeList } from './SwipeList';
