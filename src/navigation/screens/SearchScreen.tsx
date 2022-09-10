@@ -24,17 +24,6 @@ import { ChipEntity, RoomEntity } from '../../../types';
 import historyStorage from '../../storages/historyStorage';
 import deduplicationStorage from '../../storages/deduplicationStorage';
 
-const chipSample = [
-  { id: '1', title: 'react-native' },
-  { id: '2', title: 'react' },
-  { id: '3', title: 'android' },
-  { id: '4', title: 'ios' },
-  { id: '5', title: 'react-native' },
-  { id: '6', title: 'react' },
-  { id: '7', title: 'android' },
-  { id: '8', title: 'ios' },
-];
-
 const HistoryContainer = styled.View(({ theme }) => ({
   justifyContent: 'center',
   marginHorizontal: 20,
@@ -47,7 +36,7 @@ const HistoryContainer = styled.View(({ theme }) => ({
 
 const ChipContainer = styled.View(() => ({
   flexDirection: 'row',
-  marginTop: 5,
+  marginTop: 7,
 }));
 
 const InsetsContainer = styled.View(() => ({
@@ -69,6 +58,12 @@ const Icon = styled.Image(({ theme }) => ({
   tintColor: theme.color.icon,
 }));
 
+const Row = styled.View(() => ({
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+}));
+
 function SearchScreen() {
   const posts = useSelector((state: RootState) => state.posts.posts);
 
@@ -77,7 +72,7 @@ function SearchScreen() {
   const navigation = useNavigation<RootStackNavigationProp>();
 
   const [value, setValue] = useState('');
-  const [chips, setChips] = useState<ChipEntity[]>(chipSample);
+  const [chips, setChips] = useState<ChipEntity[]>([]);
   const [renderData, setRenderData] = useState<RoomEntity[]>([]);
   const [masterData, setMasterData] = useState<RoomEntity[]>([]);
 
@@ -160,6 +155,12 @@ function SearchScreen() {
     Keyboard.dismiss();
   }, [value, chips]);
 
+  const onPressClearHistory = useCallback(() => {
+    setChips([]);
+
+    historyStorage.set([]);
+  }, []);
+
   return (
     <SafeAreaContainer>
       <SearchBox
@@ -173,7 +174,18 @@ function SearchScreen() {
 
       {chips.length > 0 ? (
         <HistoryContainer>
-          <CommonText text="최근 검색" fontSize={16} marginBottom={7} />
+          <Row>
+            <CommonText
+              text="최근 검색"
+              fontSize={16}
+              marginBottom={7}
+              marginLeft={5}
+            />
+
+            <Pressable onPress={onPressClearHistory} hitSlop={10}>
+              <CommonText text="전체 삭제" fontSize={13} marginBottom={7} />
+            </Pressable>
+          </Row>
 
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
             <ChipContainer>
