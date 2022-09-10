@@ -8,8 +8,8 @@ import {
 } from 'react-native';
 import { useSelector } from 'react-redux';
 import styled from '@emotion/native';
-import { useNavigation } from '@react-navigation/core';
 import { useTheme } from '@emotion/react';
+import { useNavigation } from '@react-navigation/core';
 
 import { RootState } from '../../redux/rootReducer';
 import { RootStackNavigationProp } from '../RootStack';
@@ -22,6 +22,7 @@ import {
 } from '../../components';
 import { ChipEntity, RoomEntity } from '../../../types';
 import historyStorage from '../../storages/historyStorage';
+import deduplicationStorage from '../../storages/deduplicationStorage';
 
 const chipSample = [
   { id: '1', title: 'react-native' },
@@ -46,6 +47,7 @@ const HistoryContainer = styled.View(({ theme }) => ({
 
 const ChipContainer = styled.View(() => ({
   flexDirection: 'row',
+  marginTop: 5,
 }));
 
 const InsetsContainer = styled.View(() => ({
@@ -87,37 +89,11 @@ function SearchScreen() {
     }
   }, [posts.data]);
 
-  /**
-   * const array = ['C', 'A', 'B', 'A', 'C', 'D', 'C', 'C', 'E', 'D'];
-     console.log(array); // ['C', 'A', 'B', 'A', 'C', 'D', 'C', 'C', 'E', 'D']
-
-     const result = array.filter((v, i) => array.indexOf(v) === i);
-     console.log(result); // ['C', 'A', 'B', 'D', 'E']
-   */
-
-  // TODO: 플레인 텍스트뷰 블러-> 스토리지에 저장하는 작업
-  // TODO: 불러오는 작업
-  // TODO: 새로운 값이 들어갈때 맨 앞으로 떙겨주는 작업
-  // TODO: 중복제거 하여 최종적으로 렌더링 해주는 작업.
-
   useEffect(() => {
     (async () => {
-      const chipSample = [
-        { id: '1', title: 'react-1' },
-        { id: '2', title: '2asdf' },
-        { id: '3', title: '3aseg' },
-        { id: '4', title: 'aseg4' },
-        { id: '5', title: 'react-aseg' },
-        { id: '6', title: 'aseg' },
-        { id: '7', title: 'efe' },
-        { id: '8', title: 'asegaseg' },
-      ];
-
-      historyStorage.set(chipSample);
-
       const data = await historyStorage.get();
 
-      console.log(data);
+      setChips(data);
     })();
   }, []);
 
@@ -159,22 +135,30 @@ function SearchScreen() {
     setRenderData(masterData);
   }, [masterData]);
 
-  const onPressLayout = useCallback(() => {
-    Keyboard.dismiss();
-  }, []);
-
   const onPressChipDelete = useCallback(
     (item: ChipEntity) => () => {
       const prepared = chips.filter((chip) => chip.id !== item.id);
+
+      historyStorage.set(prepared);
 
       setChips(prepared);
     },
     [chips]
   );
 
-  const onEndEditing = useCallback(() => {}, []);
+  const onEndEditing = useCallback(() => {
+    const deduplication = deduplicationStorage(value, chips);
 
-  const onSubmitEditing = useCallback(() => {}, []);
+    if (deduplication) {
+      setChips(deduplication);
+    }
+  }, [value, chips]);
+
+  const onSubmitEditing = useCallback(() => {
+    deduplicationStorage(value, chips);
+
+    Keyboard.dismiss();
+  }, [value, chips]);
 
   return (
     <SafeAreaContainer>
@@ -214,7 +198,7 @@ function SearchScreen() {
         </HistoryContainer>
       ) : null}
 
-      <ResultsContainer onPress={onPressLayout}>
+      <ResultsContainer onPress={() => Keyboard.dismiss()}>
         <CommonText
           text="검색 결과"
           fontSize={16}
@@ -225,6 +209,8 @@ function SearchScreen() {
         <FlatList
           data={renderData}
           keyExtractor={(item) => item.roomId}
+          bounces={false}
+          initialNumToRender={13}
           renderItem={renderItem}
         />
       </ResultsContainer>
