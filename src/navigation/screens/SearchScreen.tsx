@@ -36,8 +36,9 @@ const chipSample = [
 
 const HistoryContainer = styled.View(({ theme }) => ({
   justifyContent: 'center',
-  marginHorizontal: 15,
+  marginHorizontal: 20,
   marginBottom: 10,
+  marginTop: 10,
   borderRadius: 10,
   padding: 10,
   backgroundColor: theme.color.bar,
@@ -53,7 +54,7 @@ const InsetsContainer = styled.View(() => ({
 
 const ResultsContainer = styled.Pressable(({ theme }) => ({
   flex: 1,
-  marginHorizontal: 15,
+  marginHorizontal: 20,
   borderRadius: 10,
   paddingVertical: 5,
   backgroundColor: theme.color.bar,

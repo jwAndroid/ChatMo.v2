@@ -4,9 +4,11 @@ import {
   GestureResponderEvent,
   Pressable,
   Keyboard,
+  Platform,
 } from 'react-native';
 import styled from '@emotion/native';
 import { useTheme } from '@emotion/react';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 import CommonText from './CommonText';
 
@@ -15,7 +17,8 @@ const SearchBarContainer = styled.View(() => ({
   flexDirection: 'row',
   justifyContent: 'center',
   alignItems: 'center',
-  paddingHorizontal: 15,
+  paddingHorizontal: 20,
+  marginTop: Platform.select({ android: getStatusBarHeight() + 10, ios: 10 }),
 }));
 
 const SearchBar = styled.View(({ theme }) => ({
@@ -66,7 +69,9 @@ function SearchBox({
 
   useEffect(() => {
     if (ref) {
-      ref.current?.focus();
+      setTimeout(() => {
+        ref.current?.focus();
+      }, 500);
     }
   }, []);
 
