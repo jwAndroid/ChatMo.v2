@@ -1,10 +1,11 @@
-import React, { memo, useCallback, useEffect, useRef } from 'react';
+import React, { memo, useEffect, useRef } from 'react';
 import {
   TextInput,
   GestureResponderEvent,
   Pressable,
-  Keyboard,
   Platform,
+  NativeSyntheticEvent,
+  TextInputEndEditingEventData,
 } from 'react-native';
 import styled from '@emotion/native';
 import { useTheme } from '@emotion/react';
@@ -55,6 +56,12 @@ interface ISearchBox {
   onBackPress: ((event: GestureResponderEvent) => void) | null | undefined;
   onCancelPress: ((event: GestureResponderEvent) => void) | null | undefined;
   onChangeText: ((text: string) => void) | undefined;
+  onEndEditing:
+    | ((e: NativeSyntheticEvent<TextInputEndEditingEventData>) => void)
+    | undefined;
+  onSubmitEditing:
+    | ((e: NativeSyntheticEvent<TextInputEndEditingEventData>) => void)
+    | undefined;
 }
 
 function SearchBox({
@@ -62,6 +69,8 @@ function SearchBox({
   onChangeText,
   onCancelPress,
   onBackPress,
+  onEndEditing,
+  onSubmitEditing,
 }: ISearchBox) {
   const theme = useTheme();
 
@@ -73,10 +82,6 @@ function SearchBox({
         ref.current?.focus();
       }, 500);
     }
-  }, []);
-
-  const onSubmitEditing = useCallback(() => {
-    Keyboard.dismiss();
   }, []);
 
   return (
@@ -92,6 +97,7 @@ function SearchBox({
           onSubmitEditing={onSubmitEditing}
           multiline={false}
           placeholder="검색할 제목을 입력해주세요."
+          onEndEditing={onEndEditing}
           placeholderTextColor={theme.color.shadow}
         />
 

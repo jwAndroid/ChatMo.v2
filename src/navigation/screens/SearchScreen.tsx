@@ -172,6 +172,10 @@ function SearchScreen() {
     [chips]
   );
 
+  const onEndEditing = useCallback(() => {}, []);
+
+  const onSubmitEditing = useCallback(() => {}, []);
+
   return (
     <SafeAreaContainer>
       <SearchBox
@@ -179,6 +183,8 @@ function SearchScreen() {
         onChangeText={serchFilterText}
         onBackPress={() => navigation.goBack()}
         onCancelPress={onCancelPress}
+        onEndEditing={onEndEditing}
+        onSubmitEditing={onSubmitEditing}
       />
 
       {chips.length > 0 ? (
