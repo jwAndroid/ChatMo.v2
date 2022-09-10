@@ -35,7 +35,17 @@ function RoomScreen() {
   ]);
 
   const onBackPress = useCallback(() => {
-    navigation.popToTop();
+    const routes = navigation.getState()?.routes;
+
+    const prevRouteName = routes[routes.length - 2].name;
+
+    if (prevRouteName === 'Pin') {
+      navigation.popToTop();
+    } else if (prevRouteName === 'Search') {
+      navigation.goBack();
+    } else {
+      navigation.goBack();
+    }
   }, [navigation]);
 
   const onSend = useCallback((messages: IMessage[]) => {

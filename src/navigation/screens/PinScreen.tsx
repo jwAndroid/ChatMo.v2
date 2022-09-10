@@ -51,8 +51,6 @@ function PinScreen() {
         } else if (from === 'Room') {
           navigation.navigate('Room', params);
         } else if (from === 'Delete') {
-          console.log('Delete');
-
           const prepared = posts.data.filter(
             (post) => post.roomId !== params.roomId
           );

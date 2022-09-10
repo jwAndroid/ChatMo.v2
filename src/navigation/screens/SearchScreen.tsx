@@ -12,6 +12,8 @@ import { useTheme } from '@emotion/react';
 import { useNavigation } from '@react-navigation/core';
 
 import { RootState } from '../../redux/rootReducer';
+import historyStorage from '../../storages/historyStorage';
+import deduplicationStorage from '../../storages/deduplicationStorage';
 import { RootStackNavigationProp } from '../RootStack';
 import {
   Chip,
@@ -21,8 +23,6 @@ import {
   SearchBox,
 } from '../../components';
 import { ChipEntity, RoomEntity } from '../../../types';
-import historyStorage from '../../storages/historyStorage';
-import deduplicationStorage from '../../storages/deduplicationStorage';
 
 const HistoryContainer = styled.View(({ theme }) => ({
   justifyContent: 'center',
@@ -94,9 +94,11 @@ function SearchScreen() {
 
   const onPressItem = useCallback(
     (item: RoomEntity) => () => {
-      console.log(JSON.stringify(item, null, 5));
+      if (item) {
+        navigation.navigate('Room', item);
+      }
     },
-    []
+    [navigation]
   );
 
   const renderItem = useCallback<ListRenderItem<RoomEntity>>(
