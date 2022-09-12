@@ -83,7 +83,7 @@ function IconHeader({
       <IconContainer>
         {isSearch && (
           <Pressable onPress={onPressSearch} hitSlop={10}>
-            <Icon marginRight={12} source={theme.icon.search} size={18} />
+            <Icon marginRight={15} source={theme.icon.search} size={18} />
           </Pressable>
         )}
 

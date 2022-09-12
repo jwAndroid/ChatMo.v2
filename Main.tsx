@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useLayoutEffect, useState } from 'react';
+import React, { memo, useLayoutEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import * as SystemUI from 'expo-system-ui';
 import { StatusBar } from 'expo-status-bar';
@@ -18,7 +18,7 @@ import Splash from './Splash';
 function Main() {
   const dispatch = useAppDispatch();
 
-  const systemTheme = useAppSelector((state) => state.system.isDark);
+  const isDark = useAppSelector((state) => state.system.isDark);
   const user = useAppSelector((state) => state.auth.user);
 
   useAuthLoadEffect();
@@ -40,31 +40,17 @@ function Main() {
     (async () => {
       const storage = await themeStorage.get();
 
-      if (storage) {
-        dispatch(changeTheme({ isDark: true }));
+      dispatch(changeTheme({ isDark: storage }));
 
-        await SystemUI.setBackgroundColorAsync('#000000');
-      } else {
-        dispatch(changeTheme({ isDark: false }));
-
-        await SystemUI.setBackgroundColorAsync('#ffffff');
-      }
+      await SystemUI.setBackgroundColorAsync(storage ? '#000000' : '#ffffff');
     })();
   }, [dispatch]);
 
-  useEffect(() => {
-    (async () => {
-      const color = await SystemUI.getBackgroundColorAsync();
-
-      console.log(color);
-    })();
-  }, []);
-
   return (
-    <ThemeProvider theme={systemTheme ? darkTheme : lightTheme}>
+    <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
       {appReady && user && isloadFirst ? (
         <NavigationContainer>
-          <StatusBar style={systemTheme ? 'light' : 'dark'} />
+          <StatusBar style={isDark ? 'light' : 'dark'} />
 
           <RootStack />
         </NavigationContainer>

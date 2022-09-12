@@ -1,12 +1,11 @@
-import { doc, setDoc } from 'firebase/firestore';
 import { useEffect } from 'react';
 import uuid from 'react-native-uuid';
 import { useAppDispatch } from './useRedux';
 
-import { UserEntity } from '../../types';
-import { firestore } from '../firebase/config';
 import { authorize } from '../redux/auth/slice';
 import authStorage from '../storages/authStorage';
+import { authorization } from '../firebase/auth';
+import { UserEntity } from '../../types';
 import { getTimestamp } from '../utils/date';
 
 export default function useAuthLoadEffect() {
@@ -16,19 +15,20 @@ export default function useAuthLoadEffect() {
     (async () => {
       const auth = await authStorage.get();
 
-      console.log(auth);
+      console.log(`user: ${JSON.stringify(auth, null, 5)}`);
 
-      if (!auth) {
+      if (!auth || auth === null || auth === undefined) {
         const user: UserEntity = {
           userId: uuid.v4().toString(),
           createdAt: getTimestamp(),
           status: 1,
         };
+
         authStorage.set(user);
 
         dispatch(authorize(user));
 
-        await setDoc(doc(firestore, 'user', user.userId), user);
+        authorization(user.userId, user);
       } else {
         dispatch(authorize(auth));
       }
