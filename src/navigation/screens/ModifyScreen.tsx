@@ -1,6 +1,5 @@
 import React, { memo, useCallback, useState } from 'react';
 import { Keyboard, Pressable } from 'react-native';
-import { useSelector, useDispatch } from 'react-redux';
 import styled from '@emotion/native';
 import { useTheme } from '@emotion/react';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
@@ -16,12 +15,12 @@ import {
   SettingSwitch,
 } from '../../components';
 import { RootStackNavigationProp, RootStackParamList } from '../RootStack';
-import { RootState } from '../../redux/rootReducer';
 import { fulfilled } from '../../redux/posts/slice';
 import { onModifyRoom } from '../../firebase/posts';
 import { ellipsize } from '../../utils/ellipsize';
 import { getTimestamp } from '../../utils/date';
 import { ChipEntity } from '../../../types';
+import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
 
 const PressableContainer = styled.Pressable(() => ({
   flex: 1,
@@ -108,12 +107,12 @@ const Block = styled.View(() => ({
 type ModifyScreenRouteProp = RouteProp<RootStackParamList, 'Modify'>;
 
 function ModifyScreen() {
+  const dispatch = useAppDispatch();
+
+  const user = useAppSelector((state) => state.auth.user);
+  const posts = useAppSelector((state) => state.posts.posts);
+
   const theme = useTheme();
-
-  const dispatch = useDispatch();
-
-  const user = useSelector((state: RootState) => state.auth.user);
-  const posts = useSelector((state: RootState) => state.posts.posts);
 
   const { params } = useRoute<ModifyScreenRouteProp>();
   const navigation = useNavigation<RootStackNavigationProp>();

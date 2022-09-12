@@ -1,16 +1,15 @@
 import React, { memo, useCallback, useEffect, useState } from 'react';
 import { Animated } from 'react-native';
-import { useSelector, useDispatch } from 'react-redux';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
 import styled from '@emotion/native';
 import { useTheme } from '@emotion/react';
 
-import { RootState } from '../../redux/rootReducer';
 import { RootStackNavigationProp, RootStackParamList } from '../RootStack';
 import { IconHeader, Pin, SafeAreaContainer } from '../../components';
 import { useShakeAnimation } from '../../hooks/useAnimation';
 import { deleteRoom } from '../../firebase/posts';
 import { fulfilled } from '../../redux/posts/slice';
+import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
 
 interface IIcon {
   isInvailed: boolean;
@@ -25,11 +24,11 @@ const Icon = styled.Image<IIcon>(({ theme, isInvailed }) => ({
 type PinScreenRouteProp = RouteProp<RootStackParamList, 'Pin'>;
 
 function PinScreen() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const from = useSelector((state: RootState) => state.system.from);
-  const user = useSelector((state: RootState) => state.auth.user);
-  const posts = useSelector((state: RootState) => state.posts.posts);
+  const from = useAppSelector((state) => state.system.from);
+  const user = useAppSelector((state) => state.auth.user);
+  const posts = useAppSelector((state) => state.posts.posts);
 
   const theme = useTheme();
   const { shake, style } = useShakeAnimation();

@@ -1,11 +1,10 @@
 import React, { memo, useCallback, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/core';
 import * as SystemUI from 'expo-system-ui';
 import styled from '@emotion/native';
 
+import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
 import { changeTheme } from '../../redux/system/slice';
-import { RootState } from '../../redux/rootReducer';
 import themeStorage from '../../storages/themeStorage';
 import {
   CommonText,
@@ -24,9 +23,9 @@ const Container = styled.View(() => ({
 }));
 
 function ThemeScreen() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const systemTheme = useSelector((state: RootState) => state.system.isDark);
+  const systemTheme = useAppSelector((state) => state.system.isDark);
 
   const [isDark, setIsDark] = useState(systemTheme);
 

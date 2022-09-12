@@ -1,30 +1,29 @@
 import React, { memo, useEffect, useLayoutEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import * as SystemUI from 'expo-system-ui';
 import { StatusBar } from 'expo-status-bar';
 import { ThemeProvider } from '@emotion/react';
 
-import { RootState } from './src/redux/rootReducer';
+import { useAppDispatch, useAppSelector } from './src/hooks/useRedux';
 import { changeTheme } from './src/redux/system/slice';
 import useAuthLoadEffect from './src/hooks/useAuthLoadEffect';
 import RootStack from './src/navigation/RootStack';
 import themeStorage from './src/storages/themeStorage';
 import { cacheFonts, cacheImages } from './src/utils/cache';
 import { darkTheme, font, icon, lightTheme } from './src/theme';
-import Splash from './Splash';
 import { useRoomsLoadEffect } from './src/hooks/useRoomsLoadEffect';
+import Splash from './Splash';
 
 function Main() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const systemTheme = useSelector((state: RootState) => state.system.isDark);
-  const user = useSelector((state: RootState) => state.auth.user);
-
-  const [appReady, setAppReady] = useState(false);
+  const systemTheme = useAppSelector((state) => state.system.isDark);
+  const user = useAppSelector((state) => state.auth.user);
 
   useAuthLoadEffect();
   const { isLoadData } = useRoomsLoadEffect();
+
+  const [appReady, setAppReady] = useState(false);
 
   useLayoutEffect(() => {
     (async () => {

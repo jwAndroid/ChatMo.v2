@@ -6,12 +6,10 @@ import {
   Pressable,
   ScrollView,
 } from 'react-native';
-import { useSelector } from 'react-redux';
 import styled from '@emotion/native';
 import { useTheme } from '@emotion/react';
 import { useNavigation } from '@react-navigation/core';
 
-import { RootState } from '../../redux/rootReducer';
 import historyStorage from '../../storages/historyStorage';
 import deduplicationStorage from '../../storages/deduplicationStorage';
 import { RootStackNavigationProp } from '../RootStack';
@@ -23,6 +21,7 @@ import {
   SearchBox,
 } from '../../components';
 import { ChipEntity, RoomEntity } from '../../../types';
+import { useAppSelector } from '../../hooks/useRedux';
 
 const HistoryContainer = styled.View(({ theme }) => ({
   justifyContent: 'center',
@@ -65,7 +64,7 @@ const Row = styled.View(() => ({
 }));
 
 function SearchScreen() {
-  const posts = useSelector((state: RootState) => state.posts.posts);
+  const posts = useAppSelector((state) => state.posts.posts);
 
   const theme = useTheme();
 

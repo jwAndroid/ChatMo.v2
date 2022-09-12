@@ -1,11 +1,9 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/core';
 import { RowMap } from 'react-native-swipe-list-view';
 import uuid from 'react-native-uuid';
 
 import { LayoutAnimation } from 'react-native';
-import { RootState } from '../../redux/rootReducer';
 import { RootStackNavigationProp } from '../RootStack';
 import { createRoom, deleteRoom, onFavoritesRoom } from '../../firebase/posts';
 import { fulfilled } from '../../redux/posts/slice';
@@ -19,12 +17,13 @@ import {
 import { RoomEntity } from '../../../types';
 import { getTimestamp } from '../../utils/date';
 import { fromUpdate } from '../../redux/system/slice';
+import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
 
 function RoomsScreen() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const user = useSelector((state: RootState) => state.auth.user);
-  const posts = useSelector((state: RootState) => state.posts.posts);
+  const user = useAppSelector((state) => state.auth.user);
+  const posts = useAppSelector((state) => state.posts.posts);
 
   const navigation = useNavigation<RootStackNavigationProp>();
 
@@ -105,7 +104,7 @@ function RoomsScreen() {
       }
 
       if (user && item && posts.data) {
-        const updatedRooms = posts.data.map((post) =>
+        const updatedRooms = posts.data.map((post: RoomEntity) =>
           post.roomId === item.roomId
             ? {
                 ...post,
@@ -165,7 +164,7 @@ function RoomsScreen() {
         navigation.navigate('Pin', pickedItem);
       } else {
         const prepared = posts.data.filter(
-          (post) => post.roomId !== pickedItem.roomId
+          (post: RoomEntity) => post.roomId !== pickedItem.roomId
         );
 
         deleteRoom(user.userId, pickedItem.roomId);
@@ -214,6 +213,7 @@ function RoomsScreen() {
         onModify={onModify}
         onPressItem={onPressItem}
       />
+
       {isOpen && (
         <NotificationModal
           isOpen={isOpen}

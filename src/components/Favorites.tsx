@@ -1,22 +1,21 @@
 import React, { memo, useCallback, useMemo } from 'react';
 import { FlatList, LayoutAnimation, ListRenderItem } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
 
 import { fulfilled } from '../redux/posts/slice';
-import { RootState } from '../redux/rootReducer';
 import { onFavoritesRoom } from '../firebase/posts';
 import { RoomEntity } from '../../types';
 import ShadowCard from './ShadowCard';
 import { getTimestamp } from '../utils/date';
+import { useAppDispatch, useAppSelector } from '../hooks/useRedux';
 
 interface IFavorites {
   rooms: RoomEntity[] | null;
 }
 
 function Favorites({ rooms }: IFavorites) {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const user = useSelector((state: RootState) => state.auth.user);
+  const user = useAppSelector((state) => state.auth.user);
 
   const data = useMemo(
     () =>

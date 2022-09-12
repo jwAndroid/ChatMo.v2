@@ -1,7 +1,7 @@
 import { doc, setDoc } from 'firebase/firestore';
 import { useEffect } from 'react';
 import uuid from 'react-native-uuid';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from './useRedux';
 
 import { UserEntity } from '../../types';
 import { firestore } from '../firebase/config';
@@ -10,7 +10,7 @@ import authStorage from '../storages/authStorage';
 import { getTimestamp } from '../utils/date';
 
 export default function useAuthLoadEffect() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     (async () => {

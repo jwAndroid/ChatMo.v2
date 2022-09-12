@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import {
   collection,
   DocumentData,
@@ -8,16 +7,16 @@ import {
   orderBy,
   query,
 } from 'firebase/firestore';
+import { useAppDispatch, useAppSelector } from './useRedux';
 
-import { RootState } from '../redux/rootReducer';
-import { firestore } from '../firebase/config';
 import { fulfilled } from '../redux/posts/slice';
 import { RoomEntity } from '../redux/posts/type';
+import { firestore } from '../firebase/config';
 
 export function useRoomsSnapshotEffect() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const user = useSelector((state: RootState) => state.auth.user);
+  const user = useAppSelector((state) => state.auth.user);
 
   useEffect(() => {
     console.log('useRoomsSnapshotEffect start');
@@ -45,9 +44,9 @@ export function useRoomsSnapshotEffect() {
 }
 
 export function useRoomsLoadEffect() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const user = useSelector((state: RootState) => state.auth.user);
+  const user = useAppSelector((state) => state.auth.user);
 
   const [isLoadData, setIsLoadData] = useState(false);
 
