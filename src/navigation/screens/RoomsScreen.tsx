@@ -86,7 +86,7 @@ function RoomsScreen() {
 
   const onPressItem = useCallback(
     (item: RoomEntity) => () => {
-      if (item.password) {
+      if (item && item.password) {
         navigation.navigate('Pin', item);
 
         dispatch(fromUpdate({ from: 'Room' }));

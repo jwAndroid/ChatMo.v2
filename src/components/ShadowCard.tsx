@@ -30,8 +30,8 @@ const ShadowContainer = styled.Pressable(({ theme }) => {
   });
 
   return {
-    width: width / 1.6,
-    height: height / 6.3,
+    width: width / 1.5,
+    height: height / 6.5,
     marginVertical: 3,
     marginHorizontal: 6,
     borderRadius: 10,
@@ -107,6 +107,7 @@ function ShadowCard({ item, onPressCard, onPressFavorit }: IShadowCard) {
         fontSize={12}
         marginLeft={10}
       />
+
       {item.chips ? (
         <ChipContainer>
           {item.chips.map((chip) => (
@@ -120,8 +121,9 @@ function ShadowCard({ item, onPressCard, onPressFavorit }: IShadowCard) {
       <ContentsContainer>
         <LeftContainer>
           <CommonText
-            text={lineBreak(ellipsize(item.lastMemo ?? '', 30))}
-            fontSize={17}
+            text={lineBreak(ellipsize(item.lastMemo ?? '', 50))}
+            fontSize={13}
+            marginTop={3}
           />
         </LeftContainer>
 

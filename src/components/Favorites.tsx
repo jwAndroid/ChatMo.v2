@@ -1,12 +1,14 @@
 import React, { memo, useCallback, useMemo } from 'react';
 import { FlatList, LayoutAnimation, ListRenderItem } from 'react-native';
 
+import { useAppDispatch, useAppSelector } from '../hooks/useRedux';
 import { fulfilled } from '../redux/posts/slice';
 import { onFavoritesRoom } from '../firebase/posts';
 import { RoomEntity } from '../../types';
 import ShadowCard from './ShadowCard';
 import { getTimestamp } from '../utils/date';
-import { useAppDispatch, useAppSelector } from '../hooks/useRedux';
+import { fromUpdate } from '../redux/system/slice';
+import useStack from '../hooks/useStack';
 
 interface IFavorites {
   rooms: RoomEntity[] | null;
@@ -16,6 +18,10 @@ function Favorites({ rooms }: IFavorites) {
   const dispatch = useAppDispatch();
 
   const user = useAppSelector((state) => state.auth.user);
+
+  // const navigation = useNavigation<RootStackNavigationProp>();
+
+  const { navigation } = useStack();
 
   const data = useMemo(
     () =>
@@ -67,9 +73,15 @@ function Favorites({ rooms }: IFavorites) {
 
   const onPressCard = useCallback(
     (item: RoomEntity) => () => {
-      console.log(item);
+      if (item && item.password) {
+        navigation.navigate('Pin', item);
+
+        dispatch(fromUpdate({ from: 'Room' }));
+      } else {
+        navigation.navigate('Room', item);
+      }
     },
-    []
+    [dispatch, navigation]
   );
 
   const renderItem = useCallback<ListRenderItem<RoomEntity>>(
