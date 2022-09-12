@@ -120,12 +120,14 @@ function SwipeList({
       stopLeftSwipe={150}
       stopRightSwipe={-75}
       rightOpenValue={-75}
+      initialNumToRender={15}
       renderItem={renderItem}
       renderHiddenItem={renderHiddenItem}
       ListHeaderComponent={ListHeaderComponent}
       ListEmptyComponent={ListEmptyComponent}
       ListFooterComponent={listFooterComponent}
       onEndReached={onLoadMore}
+      removeClippedSubviews
       onEndReachedThreshold={0.1}
     />
   );
