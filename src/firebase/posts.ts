@@ -1,4 +1,13 @@
-import { setDoc, doc, deleteDoc, updateDoc } from 'firebase/firestore';
+import {
+  setDoc,
+  doc,
+  deleteDoc,
+  updateDoc,
+  getDocs,
+  query,
+  collection,
+  orderBy,
+} from 'firebase/firestore';
 
 import { RoomEntity } from '../../types';
 import { getTimestamp } from '../utils/date';
@@ -59,5 +68,20 @@ export async function onModifyRoom(userId: string, room: RoomEntity) {
     );
   } else {
     throw new Error('error!');
+  }
+}
+
+export async function loadPosts(userId: string) {
+  if (userId) {
+    const ref = query(
+      collection(firestore, 'posts', 'users', userId, 'rooms', 'room'),
+      orderBy('createdAt', 'desc')
+    );
+
+    const snapshot = await getDocs(ref);
+
+    const posts = snapshot.docs.map((doc) => doc.data() as RoomEntity, []);
+
+    return posts as RoomEntity[];
   }
 }

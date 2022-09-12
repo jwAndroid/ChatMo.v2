@@ -1,10 +1,17 @@
-import React, { memo, useCallback, useEffect, useState } from 'react';
+import React, {
+  memo,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from 'react';
 import {
   FlatList,
   Keyboard,
   ListRenderItem,
   Pressable,
   ScrollView,
+  View,
 } from 'react-native';
 import styled from '@emotion/native';
 import { useTheme } from '@emotion/react';
@@ -21,7 +28,9 @@ import {
   SearchBox,
 } from '../../components';
 import { ChipEntity, RoomEntity } from '../../../types';
-import { useAppSelector } from '../../hooks/useRedux';
+import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
+import { loadPosts } from '../../firebase/posts';
+import { fromUpdate } from '../../redux/system/slice';
 
 const HistoryContainer = styled.View(({ theme }) => ({
   justifyContent: 'center',
@@ -42,7 +51,7 @@ const InsetsContainer = styled.View(() => ({
   marginRight: 7,
 }));
 
-const ResultsContainer = styled.Pressable(({ theme }) => ({
+const ResultsContainer = styled.View(({ theme }) => ({
   flex: 1,
   marginHorizontal: 20,
   borderRadius: 10,
@@ -64,7 +73,9 @@ const Row = styled.View(() => ({
 }));
 
 function SearchScreen() {
-  const posts = useAppSelector((state) => state.posts.posts);
+  const dispatch = useAppDispatch();
+
+  const user = useAppSelector((state) => state.auth.user);
 
   const theme = useTheme();
 
@@ -75,13 +86,19 @@ function SearchScreen() {
   const [renderData, setRenderData] = useState<RoomEntity[]>([]);
   const [masterData, setMasterData] = useState<RoomEntity[]>([]);
 
-  useEffect(() => {
-    if (posts.data) {
-      setRenderData(posts.data);
+  useLayoutEffect(() => {
+    (async () => {
+      if (user && user.userId) {
+        const posts = await loadPosts(user.userId);
 
-      setMasterData(posts.data);
-    }
-  }, [posts.data]);
+        if (posts) {
+          setRenderData(posts);
+
+          setMasterData(posts);
+        }
+      }
+    })();
+  }, [user]);
 
   useEffect(() => {
     (async () => {
@@ -93,16 +110,20 @@ function SearchScreen() {
 
   const onPressItem = useCallback(
     (item: RoomEntity) => () => {
-      if (item) {
+      if (item && item.password) {
+        navigation.navigate('Pin', item);
+
+        dispatch(fromUpdate({ from: 'Room' }));
+      } else {
         navigation.navigate('Room', item);
       }
     },
-    [navigation]
+    [dispatch, navigation]
   );
 
   const renderItem = useCallback<ListRenderItem<RoomEntity>>(
     ({ item }) => (
-      <Pressable onPress={onPressItem(item)} style={{ marginTop: 10 }}>
+      <Pressable onPress={onPressItem(item)} style={{ marginTop: 15 }}>
         <RoomsItem item={item} />
       </Pressable>
     ),
@@ -162,6 +183,23 @@ function SearchScreen() {
     historyStorage.set([]);
   }, []);
 
+  const ListHeaderComponent = useCallback(
+    () => (
+      <CommonText
+        text="검색 결과"
+        fontSize={16}
+        marginLeft={15}
+        marginTop={5}
+      />
+    ),
+    []
+  );
+
+  const ListFooterComponent = useCallback(
+    () => <View style={{ marginBottom: 20 }} />,
+    []
+  );
+
   return (
     <SafeAreaContainer>
       <SearchBox
@@ -184,7 +222,12 @@ function SearchScreen() {
             />
 
             <Pressable onPress={onPressClearHistory} hitSlop={10}>
-              <CommonText text="전체 삭제" fontSize={13} marginBottom={7} />
+              <CommonText
+                text="전체 삭제"
+                fontSize={13}
+                marginBottom={7}
+                marginRight={5}
+              />
             </Pressable>
           </Row>
 
@@ -211,20 +254,17 @@ function SearchScreen() {
         </HistoryContainer>
       ) : null}
 
-      <ResultsContainer onPress={() => Keyboard.dismiss()}>
-        <CommonText
-          text="검색 결과"
-          fontSize={16}
-          marginLeft={15}
-          marginTop={5}
-        />
-
+      <ResultsContainer>
         <FlatList
           data={renderData}
           keyExtractor={(item) => item.roomId}
           bounces={false}
+          ListHeaderComponent={ListHeaderComponent}
+          ListFooterComponent={ListFooterComponent}
           initialNumToRender={13}
           renderItem={renderItem}
+          showsVerticalScrollIndicator={false}
+          removeClippedSubviews
         />
       </ResultsContainer>
     </SafeAreaContainer>

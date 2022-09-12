@@ -31,7 +31,6 @@ function RoomScreen() {
   ]);
 
   const onBackPress = useCallback(() => {
-    console.log('onback');
     if (prevRouteName === 'Pin') {
       navigation.popToTop();
     } else if (prevRouteName === 'Search') {
