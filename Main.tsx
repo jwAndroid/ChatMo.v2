@@ -5,13 +5,14 @@ import { StatusBar } from 'expo-status-bar';
 import { ThemeProvider } from '@emotion/react';
 
 import { useAppDispatch, useAppSelector } from './src/hooks/useRedux';
-import { changeTheme } from './src/redux/system/slice';
 import useAuthLoadEffect from './src/hooks/useAuthLoadEffect';
+import { useRoomsLoadEffect } from './src/hooks/useRoomsLoadEffect';
+import { changeTheme } from './src/redux/system/slice';
+
 import RootStack from './src/navigation/RootStack';
 import themeStorage from './src/storages/themeStorage';
 import { cacheFonts, cacheImages } from './src/utils/cache';
 import { darkTheme, font, icon, lightTheme } from './src/theme';
-import { useRoomsLoadEffect } from './src/hooks/useRoomsLoadEffect';
 import Splash from './Splash';
 
 function Main() {
