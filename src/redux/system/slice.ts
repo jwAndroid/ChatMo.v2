@@ -17,12 +17,9 @@ const systemSlice = createSlice({
     fromUpdate(state, action: PayloadAction<INavigation>) {
       state.from = action.payload.from;
     },
-    fromReset(state) {
-      state.from = '';
-    },
   },
 });
 
 export default systemSlice.reducer;
 
-export const { changeTheme, fromUpdate, fromReset } = systemSlice.actions;
+export const { changeTheme, fromUpdate } = systemSlice.actions;
