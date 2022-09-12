@@ -22,7 +22,7 @@ function Main() {
   const user = useAppSelector((state) => state.auth.user);
 
   useAuthLoadEffect();
-  const { isLoadData } = useRoomsLoadEffect();
+  const { isloadFirst } = useRoomsLoadEffect();
 
   const [appReady, setAppReady] = useState(false);
 
@@ -62,7 +62,7 @@ function Main() {
 
   return (
     <ThemeProvider theme={systemTheme ? darkTheme : lightTheme}>
-      {appReady && user && isLoadData ? (
+      {appReady && user && isloadFirst ? (
         <NavigationContainer>
           <StatusBar style={systemTheme ? 'light' : 'dark'} />
 

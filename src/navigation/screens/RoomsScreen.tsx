@@ -64,17 +64,17 @@ function RoomsScreen() {
   const onPressFloatingButton = useCallback(() => {
     const room = {
       roomId: uuid.v4().toString(),
-      title: '5 title',
-      lastMemo: 'first memo',
-      memoCount: null,
+      title: posts.data?.length.toString() ?? '1',
+      lastMemo: `${posts.data?.length.toString()} 라스트 메모` ?? '1',
+      memoCount: 1,
       isFavorites: false,
       isCompleate: false,
-      isLock: true,
-      password: '1234',
+      isLock: false,
+      password: null,
       createdAt: getTimestamp(),
-      updatedAt: 123,
+      updatedAt: 0,
       modifyAt: null,
-      chips: [{ id: uuid.v4().toString(), title: 'asdasdasd' }],
+      chips: [{ id: uuid.v4().toString(), title: 'react' }],
     };
 
     if (user && posts.data) {

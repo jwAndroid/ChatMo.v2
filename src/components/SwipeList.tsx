@@ -4,11 +4,12 @@ import styled from '@emotion/native';
 import { useTheme } from '@emotion/react';
 import { RowMap, SwipeListView } from 'react-native-swipe-list-view';
 
+import useSwipeStyles from '../hooks/useStyles';
 import { RoomEntity } from '../../types';
 import RoomsItem from './RoomsItem';
-import useSwipeStyles from '../hooks/useStyles';
-import Empty from './Empty';
 import Favorites from './Favorites';
+import Empty from './Empty';
+import { useRoomsLoadEffect } from '../hooks/useRoomsLoadEffect';
 
 const RowBack = styled.View({
   flex: 1,
@@ -42,6 +43,8 @@ function SwipeList({
   onDelete,
 }: ISwipeList) {
   const theme = useTheme();
+
+  const { onLoadMore } = useRoomsLoadEffect();
 
   const { Row, DeleteButton, FavoritButton, LockButton } = useSwipeStyles();
 
@@ -113,16 +116,17 @@ function SwipeList({
       keyExtractor={key}
       stickySectionHeadersEnabled={false}
       showsVerticalScrollIndicator={false}
+      leftOpenValue={150}
+      stopLeftSwipe={150}
+      stopRightSwipe={-75}
+      rightOpenValue={-75}
       renderItem={renderItem}
       renderHiddenItem={renderHiddenItem}
       ListHeaderComponent={ListHeaderComponent}
       ListEmptyComponent={ListEmptyComponent}
       ListFooterComponent={listFooterComponent}
-      leftOpenValue={150}
-      stopLeftSwipe={150}
-      stopRightSwipe={-75}
-      rightOpenValue={-75}
-      initialNumToRender={10}
+      onEndReached={onLoadMore}
+      onEndReachedThreshold={0.1}
     />
   );
 }
