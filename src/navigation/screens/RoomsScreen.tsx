@@ -3,7 +3,8 @@ import { useNavigation } from '@react-navigation/core';
 import { RowMap } from 'react-native-swipe-list-view';
 import uuid from 'react-native-uuid';
 
-import { LayoutAnimation } from 'react-native';
+import { LayoutAnimation, ActivityIndicator } from 'react-native';
+import { useTheme } from '@emotion/react';
 import { RootStackNavigationProp } from '../RootStack';
 import { createRoom, deleteRoom, onFavoritesRoom } from '../../firebase/posts';
 import { fulfilled } from '../../redux/posts/slice';
@@ -26,7 +27,9 @@ function RoomsScreen() {
   const user = useAppSelector((state) => state.auth.user);
   const posts = useAppSelector((state) => state.posts.posts);
 
-  const { onLoadMore } = useRoomsLoadEffect();
+  const { onLoadMore, isLoading } = useRoomsLoadEffect();
+
+  const theme = useTheme();
 
   const navigation = useNavigation<RootStackNavigationProp>();
 
@@ -226,6 +229,10 @@ function RoomsScreen() {
           onPostive={onPostive}
         />
       )}
+
+      {isLoading ? (
+        <ActivityIndicator size="small" color={theme.color.sky_300} />
+      ) : null}
 
       <FloatingButton onPress={onPressFloatingButton} />
     </SafeAreaContainer>

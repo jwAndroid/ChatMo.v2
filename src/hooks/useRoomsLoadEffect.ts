@@ -27,8 +27,10 @@ export function useRoomsLoadEffect() {
 
   useEffect(() => {
     (async () => {
-      if (user && !isloadFirst) {
+      if (user) {
         console.log('useRoomsLoadEffect start');
+
+        setIsLoading(true);
 
         const ref = query(
           collection(firestore, 'posts', 'users', user.userId, 'rooms', 'room'),
@@ -51,7 +53,7 @@ export function useRoomsLoadEffect() {
         }
       }
     })();
-  }, [dispatch, user, isloadFirst]);
+  }, [dispatch, user]);
 
   const onLoadMore = useCallback(async () => {
     if (!!lastDoc && user && posts.data) {
