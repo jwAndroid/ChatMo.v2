@@ -6,7 +6,6 @@ import { ThemeProvider } from '@emotion/react';
 
 import { useAppDispatch, useAppSelector } from './src/hooks/useRedux';
 import useAuthLoadEffect from './src/hooks/useAuthLoadEffect';
-import { useRoomsLoadEffect } from './src/hooks/useRoomsLoadEffect';
 import { changeTheme } from './src/redux/system/slice';
 
 import RootStack from './src/navigation/RootStack';
@@ -22,7 +21,6 @@ function Main() {
   const user = useAppSelector((state) => state.auth.user);
 
   useAuthLoadEffect();
-  const { isloadFirst } = useRoomsLoadEffect();
 
   const [appReady, setAppReady] = useState(false);
 
@@ -48,7 +46,7 @@ function Main() {
 
   return (
     <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
-      {appReady && user && isloadFirst ? (
+      {appReady && user ? (
         <NavigationContainer>
           <StatusBar style={isDark ? 'light' : 'dark'} />
 

@@ -9,7 +9,6 @@ import { RoomEntity } from '../../types';
 import RoomsItem from './RoomsItem';
 import Favorites from './Favorites';
 import Empty from './Empty';
-import { useRoomsLoadEffect } from '../hooks/useRoomsLoadEffect';
 
 const RowBack = styled.View({
   flex: 1,
@@ -33,6 +32,7 @@ interface ISwipeList {
   onFavorit: (rowMap: RowMap<RoomEntity>, item: RoomEntity) => () => void;
   onModify: (rowMap: RowMap<RoomEntity>, item: RoomEntity) => () => void;
   onDelete: (rowMap: RowMap<RoomEntity>, item: RoomEntity) => () => void;
+  onEndReached: () => void;
 }
 
 function SwipeList({
@@ -41,10 +41,9 @@ function SwipeList({
   onFavorit,
   onModify,
   onDelete,
+  onEndReached,
 }: ISwipeList) {
   const theme = useTheme();
-
-  const { onLoadMore } = useRoomsLoadEffect();
 
   const { Row, DeleteButton, FavoritButton, LockButton } = useSwipeStyles();
 
@@ -126,7 +125,7 @@ function SwipeList({
       ListHeaderComponent={ListHeaderComponent}
       ListEmptyComponent={ListEmptyComponent}
       ListFooterComponent={listFooterComponent}
-      onEndReached={onLoadMore}
+      onEndReached={onEndReached}
       removeClippedSubviews
       onEndReachedThreshold={0.1}
     />

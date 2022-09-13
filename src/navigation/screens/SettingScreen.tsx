@@ -1,8 +1,9 @@
 import React, { memo, useCallback, useMemo } from 'react';
-import { FlatList, ListRenderItem } from 'react-native';
+import { FlatList, ListRenderItem, StyleProp, ViewStyle } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 
 import styled from '@emotion/native';
+import { useTheme } from '@emotion/react';
 import { RootStackNavigationProp } from '../RootStack';
 import {
   CommonText,
@@ -17,7 +18,13 @@ const StyledPressable = styled.Pressable(() => ({
   paddingVertical: 10,
 }));
 
+const VersionContainer = styled.View(() => ({
+  alignItems: 'center',
+}));
+
 function SettingScreen() {
+  const theme = useTheme();
+
   const navigation = useNavigation<RootStackNavigationProp>();
 
   const settings = useMemo(
@@ -25,8 +32,15 @@ function SettingScreen() {
       { id: 1, title: '테마설정' },
       { id: 2, title: '이용약관' },
       { id: 3, title: '개인정보보호' },
-      { id: 4, title: '앱 비밀번호 설정' },
     ],
+    []
+  );
+
+  const style = useMemo<StyleProp<ViewStyle>>(
+    () => ({
+      flex: 1,
+      paddingTop: 10,
+    }),
     []
   );
 
@@ -62,12 +76,21 @@ function SettingScreen() {
       <IconHeader title="세팅" isBackword onPress={onBackPress} />
 
       <FlatList
-        style={{ paddingTop: 10 }}
+        style={style}
         data={settings}
         keyExtractor={keyExtractor}
         renderItem={renderItem}
         ItemSeparatorComponent={divider}
       />
+
+      <VersionContainer>
+        <CommonText
+          text="version: 1.0.0"
+          isSpecificColor
+          specificColor={theme.color.shadow}
+          fontSize={12}
+        />
+      </VersionContainer>
     </SafeAreaContainer>
   );
 }

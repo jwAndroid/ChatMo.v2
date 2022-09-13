@@ -200,6 +200,21 @@ function SearchScreen() {
     []
   );
 
+  const onPressChip = useCallback(
+    (chip: ChipEntity) => () => {
+      if (chip && chip.title) {
+        setValue(chip.title);
+
+        const prepared = masterData.filter((item) =>
+          item.title.toUpperCase().includes(chip.title.toUpperCase())
+        );
+
+        setRenderData(prepared);
+      }
+    },
+    [masterData]
+  );
+
   return (
     <SafeAreaContainer>
       <SearchBox
@@ -235,7 +250,7 @@ function SearchScreen() {
             <ChipContainer>
               {chips.map((chip) => (
                 <InsetsContainer key={chip.id}>
-                  <Chip isRow marginLeft={0}>
+                  <Chip isRow marginLeft={0} onPress={onPressChip(chip)}>
                     <CommonText
                       text={chip.title}
                       fontSize={13}

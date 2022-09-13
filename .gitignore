@@ -18,3 +18,7 @@ config.ts
 
 #key
 constants.ts
+
+# Google Services
+google-services.json
+GoogleService-Info.plist

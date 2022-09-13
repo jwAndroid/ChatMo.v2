@@ -18,12 +18,15 @@ import { RoomEntity } from '../../../types';
 import { getTimestamp } from '../../utils/date';
 import { fromUpdate } from '../../redux/system/slice';
 import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
+import { useRoomsLoadEffect } from '../../hooks/useRoomsLoadEffect';
 
 function RoomsScreen() {
   const dispatch = useAppDispatch();
 
   const user = useAppSelector((state) => state.auth.user);
   const posts = useAppSelector((state) => state.posts.posts);
+
+  const { onLoadMore } = useRoomsLoadEffect();
 
   const navigation = useNavigation<RootStackNavigationProp>();
 
@@ -212,6 +215,7 @@ function RoomsScreen() {
         onFavorit={onFavorit}
         onModify={onModify}
         onPressItem={onPressItem}
+        onEndReached={onLoadMore}
       />
 
       {isOpen && (
