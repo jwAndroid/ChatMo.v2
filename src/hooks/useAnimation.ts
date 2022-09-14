@@ -9,7 +9,7 @@ export function useAnimation() {
     []
   );
 
-  const deleteConfig = useMemo(
+  const animationConfig = useMemo(
     () => ({
       duration: 200,
       update: {
@@ -24,9 +24,9 @@ export function useAnimation() {
     []
   );
 
-  const onLayoutAnimation = useCallback(
-    () => LayoutAnimation.configureNext(deleteConfig),
-    [deleteConfig]
+  const onItemAnimation = useCallback(
+    () => LayoutAnimation.configureNext(animationConfig),
+    [animationConfig]
   );
 
   const shake = useCallback(() => {
@@ -56,6 +56,6 @@ export function useAnimation() {
   return {
     style,
     shake,
-    onLayoutAnimation,
+    onItemAnimation,
   };
 }

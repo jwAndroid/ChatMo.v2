@@ -30,7 +30,7 @@ function RoomsScreen() {
   const posts = useAppSelector((state) => state.posts.posts);
 
   const { onLoadMore, isLoadMore, isloadFirst } = useRoomsLoadEffect();
-  const { onLayoutAnimation } = useAnimation();
+  const { onItemAnimation } = useAnimation();
 
   const theme = useTheme();
 
@@ -76,7 +76,9 @@ function RoomsScreen() {
 
       dispatch(fulfilled([room, ...posts.data]));
     }
-  }, [dispatch, user, posts.data]);
+
+    onItemAnimation();
+  }, [dispatch, user, posts.data, onItemAnimation]);
 
   const onPressItem = useCallback(
     (item: RoomEntity) => () => {
@@ -169,7 +171,7 @@ function RoomsScreen() {
 
         setPickedItem(null);
 
-        onLayoutAnimation();
+        onItemAnimation();
       }
     }
   }, [
@@ -179,7 +181,7 @@ function RoomsScreen() {
     posts,
     delayedModalOpen,
     navigation,
-    onLayoutAnimation,
+    onItemAnimation,
   ]);
 
   const onNegative = useCallback(() => {
