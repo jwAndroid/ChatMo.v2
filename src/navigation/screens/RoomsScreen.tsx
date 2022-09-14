@@ -1,12 +1,11 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
 import { useNavigation } from '@react-navigation/core';
 import { RowMap } from 'react-native-swipe-list-view';
-import uuid from 'react-native-uuid';
 
 import { ActivityIndicator } from 'react-native';
 import { useTheme } from '@emotion/react';
 import { RootStackNavigationProp } from '../RootStack';
-import { createRoom, deleteRoom, onFavoritesRoom } from '../../firebase/posts';
+import { deleteRoom, onFavoritesRoom } from '../../firebase/posts';
 import { fulfilled } from '../../redux/posts/slice';
 import {
   FloatingButton,
@@ -45,7 +44,7 @@ function RoomsScreen() {
     []
   );
 
-  const delayedModalOpen = useCallback((isOpen: boolean) => {
+  const delayedModal = useCallback((isOpen: boolean) => {
     setTimeout(() => {
       setIsOpen(isOpen);
     }, 200);
@@ -56,27 +55,8 @@ function RoomsScreen() {
   }, [navigation]);
 
   const onPressFloatingButton = useCallback(() => {
-    const room = {
-      roomId: uuid.v4().toString(),
-      title: posts.data?.length.toString() ?? '1',
-      lastMemo: `${posts.data?.length.toString()} 라스트 메모` ?? '1',
-      memoCount: 1,
-      isFavorites: false,
-      isCompleate: false,
-      isLock: false,
-      password: null,
-      createdAt: getTimestamp(),
-      updatedAt: 0,
-      modifyAt: null,
-      chips: [{ id: uuid.v4().toString(), title: 'react' }],
-    };
-
-    if (user && posts.data) {
-      createRoom(user.userId, room);
-
-      dispatch(fulfilled([room, ...posts.data]));
-    }
-  }, [dispatch, user, posts.data]);
+    navigation.navigate('Modify');
+  }, [navigation]);
 
   const onPressItem = useCallback(
     (item: RoomEntity) => () => {
@@ -139,11 +119,11 @@ function RoomsScreen() {
         rowMap[item.roomId].closeRow();
       }
 
-      delayedModalOpen(true);
+      delayedModal(true);
 
       setPickedItem(item);
     },
-    [delayedModalOpen]
+    [delayedModal]
   );
 
   const onPostive = useCallback(async () => {
@@ -151,7 +131,7 @@ function RoomsScreen() {
       if (pickedItem.isLock) {
         dispatch(fromUpdate({ from: 'Delete' }));
 
-        delayedModalOpen(false);
+        delayedModal(false);
 
         setPickedItem(null);
 
@@ -165,7 +145,7 @@ function RoomsScreen() {
 
         dispatch(fulfilled(prepared));
 
-        delayedModalOpen(false);
+        delayedModal(false);
 
         setPickedItem(null);
 
@@ -177,14 +157,14 @@ function RoomsScreen() {
     user,
     pickedItem,
     posts,
-    delayedModalOpen,
+    delayedModal,
     navigation,
     onItemAnimation,
   ]);
 
   const onNegative = useCallback(() => {
-    delayedModalOpen(false);
-  }, [delayedModalOpen]);
+    delayedModal(false);
+  }, [delayedModal]);
 
   const onPressSearch = useCallback(() => {
     navigation.navigate('Search');

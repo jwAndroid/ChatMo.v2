@@ -1,4 +1,5 @@
 export { default as ModifyScreen } from './ModifyScreen';
+export { default as CreateScreen } from './CreateScreen';
 export { default as PinScreen } from './PinScreen';
 export { default as RoomScreen } from './RoomScreen';
 export { default as RoomsScreen } from './RoomsScreen';

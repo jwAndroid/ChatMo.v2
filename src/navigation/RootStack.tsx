@@ -6,6 +6,7 @@ import {
 } from '@react-navigation/native-stack';
 
 import {
+  CreateScreen,
   ModifyScreen,
   PinScreen,
   RoomScreen,
@@ -24,6 +25,7 @@ export type RootStackParamList = {
   Pin: RoomEntity | undefined;
   Modify: RoomEntity | undefined;
   Search: undefined;
+  Create: undefined;
 };
 
 export type RootStackNavigationProp =
@@ -72,6 +74,11 @@ function RootStack() {
       <Screen
         name="Search"
         component={SearchScreen}
+        options={{ animation: 'fade' }}
+      />
+      <Screen
+        name="Create"
+        component={CreateScreen}
         options={{ animation: 'fade' }}
       />
     </Navigator>
