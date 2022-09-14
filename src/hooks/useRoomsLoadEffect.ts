@@ -26,6 +26,7 @@ export function useRoomsLoadEffect() {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    console.log('useEffect start');
     (async () => {
       if (user) {
         console.log('useRoomsLoadEffect start');

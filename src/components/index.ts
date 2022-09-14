@@ -4,6 +4,7 @@ export { default as Divider } from './Divider';
 export { default as Empty } from './Empty';
 export { default as Favorites } from './Favorites';
 export { default as FloatingButton } from './FloatingButton';
+export { default as GestureContainer } from './GestureContainer';
 export { default as IconHeader } from './IconHeader';
 export { default as InputModal } from './InputModal';
 export { default as KeyboardContainer } from './KeyboardContainer';

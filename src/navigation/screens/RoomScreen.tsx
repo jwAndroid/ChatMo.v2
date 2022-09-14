@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useState } from 'react';
+import React, { memo, useCallback, useEffect, useState } from 'react';
 import styled from '@emotion/native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -35,17 +35,10 @@ function RoomScreen() {
     },
   ]);
 
-  // useEffect(() => {
-  //   navigation.addListener('beforeRemove', () => {
-  //     if (prevRouteName === 'Pin') {
-  //       navigation.popToTop();
-  //     } else if (prevRouteName === 'Search') {
-  //       navigation.goBack();
-  //     } else {
-  //       navigation.goBack();
-  //     }
-  //   });
-  // }, [navigation, prevRouteName]);
+  useEffect(
+    () => navigation.addListener('beforeRemove', (e) => e.preventDefault()),
+    [navigation]
+  );
 
   const onBackPress = useCallback(() => {
     const routes = navigation.getState()?.routes;

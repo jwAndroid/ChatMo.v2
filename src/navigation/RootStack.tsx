@@ -35,7 +35,7 @@ function RootStack() {
   const screenOptions = useMemo<NativeStackNavigationOptions>(
     () => ({
       headerShown: false,
-      // gestureEnabled: false,
+      gestureEnabled: false,
     }),
     []
   );
@@ -52,7 +52,7 @@ function RootStack() {
       <Screen
         name="Room"
         component={RoomScreen}
-        options={{ animation: 'slide_from_right' }}
+        options={{ animation: 'slide_from_right', gestureEnabled: false }}
       />
       <Screen
         name="Theme"
