@@ -1,24 +1,27 @@
 import React, { memo, useCallback, useState } from 'react';
 import styled from '@emotion/native';
-import { GiftedChat, IMessage } from 'react-native-gifted-chat';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { GiftedChat, IMessage } from 'react-native-gifted-chat';
 
 import { IconHeader, SafeAreaContainer } from '../../components';
-import useStack from '../../hooks/useStack';
+import { RootStackNavigationProp, RootStackParamList } from '../RootStack';
 
 const Container = styled.View(({ theme }) => ({
   flex: 1,
   backgroundColor: theme.color.background,
 }));
 
+type RoomScreenRouteProp = RouteProp<RootStackParamList, 'Pin'>;
+
 function RoomScreen() {
   const { bottom } = useSafeAreaInsets();
 
-  const { prevRouteName, navigation, roomParams } = useStack();
-  // TODO: 유즈 스택 삭제작업 진행 .. 서치: 유즈 스택
-  // TODO: 스와이프하여 뒤로가기 .. 서치: 온백프레스
+  const navigation = useNavigation<RootStackNavigationProp>();
 
-  console.log(JSON.stringify(roomParams.params, null, 5));
+  const { params } = useRoute<RoomScreenRouteProp>();
+
+  console.log(JSON.stringify(params, null, 5));
 
   const [messages, setMessages] = useState<IMessage[]>([
     {
@@ -45,6 +48,9 @@ function RoomScreen() {
   // }, [navigation, prevRouteName]);
 
   const onBackPress = useCallback(() => {
+    const routes = navigation.getState()?.routes;
+    const prevRouteName = routes[routes.length - 2].name;
+
     if (prevRouteName === 'Pin') {
       navigation.popToTop();
     } else if (prevRouteName === 'Search') {
@@ -52,7 +58,7 @@ function RoomScreen() {
     } else {
       navigation.goBack();
     }
-  }, [navigation, prevRouteName]);
+  }, [navigation]);
 
   const onSend = useCallback((messages: IMessage[]) => {
     setMessages((prev) => GiftedChat.append(prev, messages));

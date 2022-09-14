@@ -3,12 +3,13 @@ import { Animated } from 'react-native';
 import styled from '@emotion/native';
 import { useTheme } from '@emotion/react';
 
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
 import { IconHeader, Pin, SafeAreaContainer } from '../../components';
 import { useAnimation } from '../../hooks/useAnimation';
 import { deleteRoom } from '../../firebase/posts';
 import { fulfilled } from '../../redux/posts/slice';
 import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
-import useStack from '../../hooks/useStack';
+import { RootStackNavigationProp, RootStackParamList } from '../RootStack';
 
 interface IIcon {
   isInvailed: boolean;
@@ -20,6 +21,8 @@ const Icon = styled.Image<IIcon>(({ theme, isInvailed }) => ({
   alignSelf: 'center',
 }));
 
+type PinScreenRouteProp = RouteProp<RootStackParamList, 'Pin'>;
+
 function PinScreen() {
   const dispatch = useAppDispatch();
 
@@ -28,15 +31,17 @@ function PinScreen() {
   const posts = useAppSelector((state) => state.posts.posts);
 
   const theme = useTheme();
+
+  const navigation = useNavigation<RootStackNavigationProp>();
+
+  const { params } = useRoute<PinScreenRouteProp>();
+
   const { shake, style } = useAnimation();
-  const { navigation, pinParams } = useStack();
 
   const [pinCode, setPinCode] = useState('');
   const [error, setError] = useState(false);
 
   useEffect(() => {
-    const { params } = pinParams;
-
     if (params && pinCode !== '' && from !== '' && posts.data && user) {
       if (params.password === pinCode) {
         if (from === 'Modify') {
@@ -60,7 +65,7 @@ function PinScreen() {
         setError(true);
       }
     }
-  }, [dispatch, posts.data, user, pinCode, navigation, from, shake, pinParams]);
+  }, [dispatch, posts.data, user, pinCode, navigation, from, shake, params]);
 
   const onBackPress = useCallback(() => {
     navigation.popToTop();

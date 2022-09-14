@@ -1,14 +1,15 @@
 import React, { memo, useCallback, useMemo } from 'react';
 import { FlatList, LayoutAnimation, ListRenderItem } from 'react-native';
+import { useNavigation } from '@react-navigation/core';
 
 import { useAppDispatch, useAppSelector } from '../hooks/useRedux';
 import { fulfilled } from '../redux/posts/slice';
+import { RootStackNavigationProp } from '../navigation/RootStack';
 import { onFavoritesRoom } from '../firebase/posts';
 import { RoomEntity } from '../../types';
 import ShadowCard from './ShadowCard';
 import { getTimestamp } from '../utils/date';
 import { fromUpdate } from '../redux/system/slice';
-import useStack from '../hooks/useStack';
 
 interface IFavorites {
   rooms: RoomEntity[] | null;
@@ -19,9 +20,7 @@ function Favorites({ rooms }: IFavorites) {
 
   const user = useAppSelector((state) => state.auth.user);
 
-  // const navigation = useNavigation<RootStackNavigationProp>();
-
-  const { navigation } = useStack();
+  const navigation = useNavigation<RootStackNavigationProp>();
 
   const data = useMemo(
     () =>

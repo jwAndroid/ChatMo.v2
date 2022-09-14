@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
 import { useTheme } from '@emotion/react';
 
-export default function useSwipeStyles() {
+export function SwipeStyles() {
   const theme = useTheme();
 
   const Row = useMemo<StyleProp<ViewStyle>>(

@@ -4,11 +4,11 @@ import styled from '@emotion/native';
 import { useTheme } from '@emotion/react';
 import { RowMap, SwipeListView } from 'react-native-swipe-list-view';
 
-import useSwipeStyles from '../hooks/useStyles';
 import { RoomEntity } from '../../types';
 import RoomsItem from './RoomsItem';
 import Favorites from './Favorites';
 import Empty from './Empty';
+import { SwipeStyles } from '../utils/styles';
 
 const RowBack = styled.View(({ theme }) => ({
   flex: 1,
@@ -47,7 +47,7 @@ function SwipeList({
 }: ISwipeList) {
   const theme = useTheme();
 
-  const { Row, DeleteButton, FavoritButton, LockButton } = useSwipeStyles();
+  const { Row, DeleteButton, FavoritButton, LockButton } = SwipeStyles();
 
   const data = useMemo(
     () => rooms?.filter((room) => !room.isFavorites),
