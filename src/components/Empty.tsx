@@ -1,14 +1,15 @@
 import React, { memo } from 'react';
+import { Dimensions } from 'react-native';
 import styled from '@emotion/native';
 import { useTheme } from '@emotion/react';
 
-import CommonText from './CommonText';
+const { height } = Dimensions.get('screen');
 
-const Container = styled.View(({ theme }) => ({
-  flex: 1,
+const Container = styled.View(() => ({
+  height: height / 1.5,
+  position: 'relative',
   justifyContent: 'center',
   alignItems: 'center',
-  backgroundColor: theme.color.background,
 }));
 
 const Icon = styled.Image(({ theme }) => ({
@@ -23,8 +24,6 @@ function Empty() {
   return (
     <Container>
       <Icon source={theme.icon.empty} />
-
-      <CommonText text="No Data" fontSize={25} marginTop={10} />
     </Container>
   );
 }

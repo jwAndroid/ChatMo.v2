@@ -35,10 +35,6 @@ const StyledPlaceholderLine = styled(PlaceholderLine)<IStyledPlaceholderLine>(
   })
 );
 
-interface PlaceholderEntity {
-  key: string;
-}
-
 function ListPlaceholder() {
   const style = useMemo<StyleProp<ViewStyle>>(
     () => ({
@@ -48,7 +44,7 @@ function ListPlaceholder() {
   );
 
   const keyExtractor = useCallback(
-    (item: PlaceholderEntity) => `${item.key}`,
+    (item: { key: string }) => `${item.key}`,
     []
   );
 
@@ -98,7 +94,7 @@ function ListPlaceholder() {
   return (
     <Container>
       <FlatList
-        data={Array(17)
+        data={Array(7)
           .fill('')
           .map((_, i) => ({ key: `${i}` }))}
         renderItem={renderItem}

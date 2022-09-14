@@ -1,3 +1,4 @@
+import { useTheme } from '@emotion/react';
 import React, { memo, useMemo } from 'react';
 import { Switch } from 'react-native';
 
@@ -7,12 +8,14 @@ interface ISettingSwitch {
 }
 
 function SettingSwitch({ isEnabled, onValueChange }: ISettingSwitch) {
+  const theme = useTheme();
+
   const trackColor = useMemo(
     () => ({
-      false: '#767577',
-      true: '#767577',
+      false: theme.color.divider,
+      true: theme.color.sky_300,
     }),
-    []
+    [theme]
   );
 
   return (
@@ -20,8 +23,8 @@ function SettingSwitch({ isEnabled, onValueChange }: ISettingSwitch) {
       value={isEnabled}
       onValueChange={onValueChange}
       trackColor={trackColor}
-      thumbColor={isEnabled ? '#24ddb9' : '#f4f3f4'}
-      ios_backgroundColor="#3e3e3e"
+      thumbColor={theme.color.white}
+      ios_backgroundColor={theme.color.divider}
     />
   );
 }

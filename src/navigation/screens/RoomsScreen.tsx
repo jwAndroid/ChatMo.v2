@@ -190,8 +190,6 @@ function RoomsScreen() {
     navigation.navigate('Search');
   }, [navigation]);
 
-  const test = false;
-
   return (
     <SafeAreaContainer>
       <IconHeader
@@ -202,7 +200,7 @@ function RoomsScreen() {
         onPressSearch={onPressSearch}
       />
 
-      {test ? (
+      {isloadFirst ? (
         <SwipeList
           rooms={posts.data}
           onDelete={onDelete}
