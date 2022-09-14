@@ -11,12 +11,12 @@ export function useAnimation() {
 
   const deleteConfig = useMemo(
     () => ({
-      duration: 300,
+      duration: 200,
       update: {
         type: LayoutAnimation.Types.easeInEaseOut,
       },
       delete: {
-        duration: 100,
+        duration: 50,
         type: LayoutAnimation.Types.easeInEaseOut,
         property: LayoutAnimation.Properties.opacity,
       },
