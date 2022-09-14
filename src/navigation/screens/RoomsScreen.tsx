@@ -76,9 +76,7 @@ function RoomsScreen() {
 
       dispatch(fulfilled([room, ...posts.data]));
     }
-
-    onItemAnimation();
-  }, [dispatch, user, posts.data, onItemAnimation]);
+  }, [dispatch, user, posts.data]);
 
   const onPressItem = useCallback(
     (item: RoomEntity) => () => {
