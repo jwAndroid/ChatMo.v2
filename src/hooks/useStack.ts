@@ -12,7 +12,7 @@ export default function useStack() {
   const pinParams = useRoute<RouteProp<RootStackParamList, 'Pin'>>();
 
   const routes = navigation.getState()?.routes;
-  const prevRouteName = routes.length > 1 ? routes[routes.length - 2].name : '';
+  const prevRouteName = routes.length > 2 ? routes[routes.length - 2].name : '';
 
   return {
     pinParams,

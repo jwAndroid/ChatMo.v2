@@ -108,6 +108,10 @@ function SearchScreen() {
     })();
   }, []);
 
+  const onBackPress = useCallback(() => {
+    navigation.goBack();
+  }, [navigation]);
+
   const onPressItem = useCallback(
     (item: RoomEntity) => () => {
       if (item && item.password) {
@@ -220,7 +224,7 @@ function SearchScreen() {
       <SearchBox
         value={value}
         onChangeText={serchFilterText}
-        onBackPress={() => navigation.goBack()}
+        onBackPress={onBackPress}
         onCancelPress={onCancelPress}
         onEndEditing={onEndEditing}
         onSubmitEditing={onSubmitEditing}

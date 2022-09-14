@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useState } from 'react';
+import React, { memo, useCallback, useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/core';
 import * as SystemUI from 'expo-system-ui';
 import styled from '@emotion/native';
@@ -30,6 +30,12 @@ function ThemeScreen() {
   const [isDark, setIsDark] = useState(systemTheme);
 
   const navigation = useNavigation<RootStackNavigationProp>();
+
+  useEffect(() => {
+    navigation.addListener('beforeRemove', () =>
+      themeStorage.set(isDark.toString())
+    );
+  }, [navigation, isDark]);
 
   const onBackPress = useCallback(() => {
     themeStorage.set(isDark.toString());

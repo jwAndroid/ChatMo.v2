@@ -15,6 +15,8 @@ function RoomScreen() {
   const { bottom } = useSafeAreaInsets();
 
   const { prevRouteName, navigation, roomParams } = useStack();
+  // TODO: 유즈 스택 삭제작업 진행 .. 서치: 유즈 스택
+  // TODO: 스와이프하여 뒤로가기 .. 서치: 온백프레스
 
   console.log(JSON.stringify(roomParams.params, null, 5));
 
@@ -29,6 +31,18 @@ function RoomScreen() {
       },
     },
   ]);
+
+  // useEffect(() => {
+  //   navigation.addListener('beforeRemove', () => {
+  //     if (prevRouteName === 'Pin') {
+  //       navigation.popToTop();
+  //     } else if (prevRouteName === 'Search') {
+  //       navigation.goBack();
+  //     } else {
+  //       navigation.goBack();
+  //     }
+  //   });
+  // }, [navigation, prevRouteName]);
 
   const onBackPress = useCallback(() => {
     if (prevRouteName === 'Pin') {

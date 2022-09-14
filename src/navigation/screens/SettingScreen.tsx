@@ -89,6 +89,7 @@ function SettingScreen() {
           isSpecificColor
           specificColor={theme.color.shadow}
           fontSize={12}
+          marginBottom={10}
         />
       </VersionContainer>
     </SafeAreaContainer>
