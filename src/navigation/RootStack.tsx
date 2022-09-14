@@ -52,7 +52,7 @@ function RootStack() {
       <Screen
         name="Room"
         component={RoomScreen}
-        options={{ animation: 'slide_from_right', gestureEnabled: false }}
+        options={{ animation: 'slide_from_right' }}
       />
       <Screen
         name="Theme"

@@ -1,4 +1,5 @@
-import React, { memo } from 'react';
+import React, { memo, useMemo } from 'react';
+import { StyleProp, ViewStyle } from 'react-native';
 import GestureRecognizer from 'react-native-swipe-gestures';
 
 interface IGestureContainer {
@@ -12,6 +13,8 @@ function GestureContainer({
   onSwipeLeft,
   onSwipeRight,
 }: IGestureContainer) {
+  const style = useMemo<StyleProp<ViewStyle>>(() => ({ flex: 1 }), []);
+
   return (
     <GestureRecognizer
       onSwipeLeft={onSwipeLeft}
@@ -21,9 +24,7 @@ function GestureContainer({
         directionalOffsetThreshold: 80,
         gestureIsClickThreshold: 10,
       }}
-      style={{
-        flex: 1,
-      }}
+      style={style}
     >
       {children}
     </GestureRecognizer>
