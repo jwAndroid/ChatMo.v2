@@ -11,6 +11,7 @@ import { fulfilled } from '../../redux/posts/slice';
 import {
   FloatingButton,
   IconHeader,
+  ListPlaceholder,
   NotificationModal,
   SafeAreaContainer,
   SwipeList,
@@ -28,7 +29,7 @@ function RoomsScreen() {
   const user = useAppSelector((state) => state.auth.user);
   const posts = useAppSelector((state) => state.posts.posts);
 
-  const { onLoadMore, isLoading } = useRoomsLoadEffect();
+  const { onLoadMore, isLoadMore, isloadFirst } = useRoomsLoadEffect();
   const { onLayoutAnimation } = useAnimation();
 
   const theme = useTheme();
@@ -189,6 +190,8 @@ function RoomsScreen() {
     navigation.navigate('Search');
   }, [navigation]);
 
+  const test = false;
+
   return (
     <SafeAreaContainer>
       <IconHeader
@@ -199,14 +202,18 @@ function RoomsScreen() {
         onPressSearch={onPressSearch}
       />
 
-      <SwipeList
-        rooms={posts.data}
-        onDelete={onDelete}
-        onFavorit={onFavorit}
-        onModify={onModify}
-        onPressItem={onPressItem}
-        onEndReached={onLoadMore}
-      />
+      {test ? (
+        <SwipeList
+          rooms={posts.data}
+          onDelete={onDelete}
+          onFavorit={onFavorit}
+          onModify={onModify}
+          onPressItem={onPressItem}
+          onEndReached={onLoadMore}
+        />
+      ) : (
+        <ListPlaceholder />
+      )}
 
       {isOpen && (
         <NotificationModal
@@ -217,7 +224,7 @@ function RoomsScreen() {
         />
       )}
 
-      {isLoading ? (
+      {isLoadMore ? (
         <ActivityIndicator size="small" color={theme.color.sky_300} />
       ) : null}
 

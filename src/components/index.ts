@@ -10,6 +10,7 @@ export { default as InputModal } from './InputModal';
 export { default as KeyboardContainer } from './KeyboardContainer';
 export { default as NotificationModal } from './NotificationModal';
 export { default as Pin } from './Pin';
+export { default as ListPlaceholder } from './ListPlaceholder';
 export { default as RoomsItem } from './RoomsItem';
 export { default as SafeAreaContainer } from './SafeAreaContainer';
 export { default as SearchBox } from './SearchBox';

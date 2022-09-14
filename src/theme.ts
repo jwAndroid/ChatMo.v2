@@ -42,6 +42,7 @@ export const lightTheme: Theme = {
     background: '#F9F9F9',
     pin: '#0A0A0A',
     bar: '#ebebeb',
+    placeholder: '#cccccc',
   },
   icon,
 };
@@ -68,6 +69,7 @@ export const darkTheme: Theme = {
     background: '#0A0A0A',
     pin: '#ffffff',
     bar: '#313131',
+    placeholder: '#1B2430',
   },
   icon,
 };

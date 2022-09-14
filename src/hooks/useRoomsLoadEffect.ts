@@ -23,15 +23,12 @@ export function useRoomsLoadEffect() {
 
   const [lastDoc, setLastDoc] = useState<QueryDocumentSnapshot<DocumentData>>();
   const [isloadFirst, setIsloadFirst] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadMore, setisLoadMore] = useState(false);
 
   useEffect(() => {
-    console.log('useEffect start');
     (async () => {
       if (user) {
         console.log('useRoomsLoadEffect start');
-
-        setIsLoading(true);
 
         const ref = query(
           collection(firestore, 'posts', 'users', user.userId, 'rooms', 'room'),
@@ -47,8 +44,6 @@ export function useRoomsLoadEffect() {
 
         setLastDoc(snapshot.docs[snapshot.docs.length - 1]);
 
-        setIsLoading(false);
-
         if (first) {
           setIsloadFirst(true);
         }
@@ -60,7 +55,7 @@ export function useRoomsLoadEffect() {
     if (!!lastDoc && user && posts.data) {
       console.log('onLoadMore start');
 
-      setIsLoading(true);
+      setisLoadMore(true);
 
       const next = query(
         collection(firestore, 'posts', 'users', user.userId, 'rooms', 'room'),
@@ -77,13 +72,13 @@ export function useRoomsLoadEffect() {
 
       setLastDoc(snapshot.docs[snapshot.docs.length - 1]);
 
-      setIsLoading(false);
+      setisLoadMore(false);
     }
   }, [dispatch, lastDoc, user, posts.data]);
 
   return {
     lastDoc,
-    isLoading,
+    isLoadMore,
     isloadFirst,
     onLoadMore,
   };
