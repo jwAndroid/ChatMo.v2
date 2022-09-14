@@ -7,9 +7,11 @@ export default function useSwipeStyles() {
 
   const Row = useMemo<StyleProp<ViewStyle>>(
     () => ({
-      height: 60,
+      height: 65,
       justifyContent: 'center',
       backgroundColor: theme.color.background,
+      borderBottomColor: theme.color.background,
+      borderBottomWidth: 1,
     }),
     [theme]
   );

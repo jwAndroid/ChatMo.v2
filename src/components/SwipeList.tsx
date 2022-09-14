@@ -10,10 +10,12 @@ import RoomsItem from './RoomsItem';
 import Favorites from './Favorites';
 import Empty from './Empty';
 
-const RowBack = styled.View({
+const RowBack = styled.View(({ theme }) => ({
   flex: 1,
-  flexDirection: 'row',
-});
+  borderBottomWidth: 1,
+  borderBottomColor: theme.color.background,
+  backgroundColor: theme.color.background,
+}));
 
 const ButtonIcon = styled.Image(({ theme }) => ({
   width: 17,

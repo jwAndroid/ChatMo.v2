@@ -3,7 +3,7 @@ import { useNavigation } from '@react-navigation/core';
 import { RowMap } from 'react-native-swipe-list-view';
 import uuid from 'react-native-uuid';
 
-import { LayoutAnimation, ActivityIndicator } from 'react-native';
+import { ActivityIndicator } from 'react-native';
 import { useTheme } from '@emotion/react';
 import { RootStackNavigationProp } from '../RootStack';
 import { createRoom, deleteRoom, onFavoritesRoom } from '../../firebase/posts';
@@ -20,6 +20,7 @@ import { getTimestamp } from '../../utils/date';
 import { fromUpdate } from '../../redux/system/slice';
 import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
 import { useRoomsLoadEffect } from '../../hooks/useRoomsLoadEffect';
+import { useAnimation } from '../../hooks/useAnimation';
 
 function RoomsScreen() {
   const dispatch = useAppDispatch();
@@ -28,6 +29,7 @@ function RoomsScreen() {
   const posts = useAppSelector((state) => state.posts.posts);
 
   const { onLoadMore, isLoading } = useRoomsLoadEffect();
+  const { onLayoutAnimation } = useAnimation();
 
   const theme = useTheme();
 
@@ -39,21 +41,6 @@ function RoomsScreen() {
   const notification = useMemo(
     () =>
       '삭제 하시겠습니까?\n삭제를 하면 내용이 모두 삭제되고\n목록에서도 삭제됩니다.',
-    []
-  );
-
-  const animationConfig = useMemo(
-    () => ({
-      duration: 300,
-      update: {
-        type: LayoutAnimation.Types.easeInEaseOut,
-      },
-      delete: {
-        duration: 100,
-        type: LayoutAnimation.Types.easeInEaseOut,
-        property: LayoutAnimation.Properties.opacity,
-      },
-    }),
     []
   );
 
@@ -181,7 +168,7 @@ function RoomsScreen() {
 
         setPickedItem(null);
 
-        LayoutAnimation.configureNext(animationConfig);
+        onLayoutAnimation();
       }
     }
   }, [
@@ -189,9 +176,9 @@ function RoomsScreen() {
     user,
     pickedItem,
     posts,
-    animationConfig,
     delayedModalOpen,
     navigation,
+    onLayoutAnimation,
   ]);
 
   const onNegative = useCallback(() => {

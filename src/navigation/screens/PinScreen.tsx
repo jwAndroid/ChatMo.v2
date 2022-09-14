@@ -4,7 +4,7 @@ import styled from '@emotion/native';
 import { useTheme } from '@emotion/react';
 
 import { IconHeader, Pin, SafeAreaContainer } from '../../components';
-import { useShakeAnimation } from '../../hooks/useAnimation';
+import { useAnimation } from '../../hooks/useAnimation';
 import { deleteRoom } from '../../firebase/posts';
 import { fulfilled } from '../../redux/posts/slice';
 import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
@@ -28,7 +28,7 @@ function PinScreen() {
   const posts = useAppSelector((state) => state.posts.posts);
 
   const theme = useTheme();
-  const { shake, style } = useShakeAnimation();
+  const { shake, style } = useAnimation();
   const { navigation, pinParams } = useStack();
 
   const [pinCode, setPinCode] = useState('');

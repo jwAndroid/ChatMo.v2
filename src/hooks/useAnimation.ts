@@ -1,12 +1,32 @@
 import { useCallback, useRef, useMemo } from 'react';
-import { Animated } from 'react-native';
+import { Animated, LayoutAnimation } from 'react-native';
 
-export function useShakeAnimation() {
+export function useAnimation() {
   const anim = useRef(new Animated.Value(0));
 
   const style = useMemo(
     () => ({ transform: [{ translateX: anim.current }] }),
     []
+  );
+
+  const deleteConfig = useMemo(
+    () => ({
+      duration: 300,
+      update: {
+        type: LayoutAnimation.Types.easeInEaseOut,
+      },
+      delete: {
+        duration: 100,
+        type: LayoutAnimation.Types.easeInEaseOut,
+        property: LayoutAnimation.Properties.opacity,
+      },
+    }),
+    []
+  );
+
+  const onLayoutAnimation = useCallback(
+    () => LayoutAnimation.configureNext(deleteConfig),
+    [deleteConfig]
   );
 
   const shake = useCallback(() => {
@@ -36,5 +56,6 @@ export function useShakeAnimation() {
   return {
     style,
     shake,
+    onLayoutAnimation,
   };
 }
