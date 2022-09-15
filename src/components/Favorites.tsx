@@ -14,7 +14,6 @@ import { fromUpdate } from '../redux/system/slice';
 interface IFavorites {
   rooms: RoomEntity[] | null;
 }
-
 function Favorites({ rooms }: IFavorites) {
   const dispatch = useAppDispatch();
 

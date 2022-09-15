@@ -1,3 +1,4 @@
+import { IMessage } from 'react-native-gifted-chat';
 import {
   setDoc,
   doc,
@@ -28,6 +29,32 @@ export async function createRoom(userId: string, room: RoomEntity) {
     );
 
     await setDoc(reference, room);
+  } else {
+    throw new Error('error!');
+  }
+}
+
+export async function createMessage(
+  userId: string,
+  roomId: string,
+  message: IMessage
+) {
+  console.log('createMessage start');
+
+  if (userId && roomId && message) {
+    const reference = doc(
+      firestore,
+      'posts',
+      'users',
+      userId,
+      'rooms',
+      'room',
+      roomId,
+      'messages',
+      message._id.toString()
+    );
+
+    await setDoc(reference, message);
   } else {
     throw new Error('error!');
   }

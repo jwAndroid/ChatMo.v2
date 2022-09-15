@@ -35,7 +35,7 @@ function RoomsScreen() {
 
   const navigation = useNavigation<RootStackNavigationProp>();
 
-  const [isOpen, setIsOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [pickedItem, setPickedItem] = useState<RoomEntity | null>(null);
 
   const notification = useMemo(
@@ -46,7 +46,7 @@ function RoomsScreen() {
 
   const delayedModal = useCallback((isOpen: boolean) => {
     setTimeout(() => {
-      setIsOpen(isOpen);
+      setIsDeleteModalOpen(isOpen);
     }, 200);
   }, []);
 
@@ -55,8 +55,8 @@ function RoomsScreen() {
   }, [navigation]);
 
   const onPressFloatingButton = useCallback(() => {
-    navigation.navigate('Modify');
-  }, [navigation]);
+    // TODO: create message
+  }, []);
 
   const onPressItem = useCallback(
     (item: RoomEntity) => () => {
@@ -193,9 +193,9 @@ function RoomsScreen() {
         <ListPlaceholder />
       )}
 
-      {isOpen && (
+      {isDeleteModalOpen && (
         <NotificationModal
-          isOpen={isOpen}
+          isOpen={isDeleteModalOpen}
           notification={notification}
           onNegative={onNegative}
           onPostive={onPostive}

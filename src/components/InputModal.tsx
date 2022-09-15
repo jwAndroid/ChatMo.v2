@@ -1,8 +1,8 @@
 import React, { memo } from 'react';
 import { GestureResponderEvent, Modal } from 'react-native';
 import styled from '@emotion/native';
-
 import { useTheme } from '@emotion/react';
+
 import Divider from './Divider';
 import CommonText from './CommonText';
 
@@ -60,7 +60,6 @@ interface IInputModal {
   value: string;
   onChangeText: (text: string) => void;
 }
-
 function InputModal({
   isOpen,
   onNegative,
