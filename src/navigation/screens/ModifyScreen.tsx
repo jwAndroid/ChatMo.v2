@@ -47,7 +47,7 @@ const ContentContainer = styled.View<IContentContainer>(
 const ChipContainer = styled.View(() => ({
   flexDirection: 'row',
   alignItems: 'center',
-  marginLeft: -8,
+  marginLeft: -5,
 }));
 
 const ChipTitleContainer = styled.View(() => ({
@@ -57,7 +57,6 @@ const ChipTitleContainer = styled.View(() => ({
 }));
 
 const Block = styled.View(() => ({
-  height: 40,
   justifyContent: 'center',
   marginVertical: 10,
 }));
@@ -218,14 +217,12 @@ function ModifyScreen() {
                 />
               </Block>
             ) : (
-              <Block>
-                <CommonText
-                  text="패스워드가 존재하지 않습니다."
-                  fontSize={13}
-                  isSpecificColor
-                  specificColor={theme.color.shadow}
-                />
-              </Block>
+              <CommonText
+                text="패스워드가 존재하지 않습니다."
+                fontSize={13}
+                isSpecificColor
+                specificColor={theme.color.shadow}
+              />
             )}
 
             <SettingSwitch isEnabled={isLock} onValueChange={setIsLock} />

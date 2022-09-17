@@ -64,7 +64,7 @@ export const darkTheme: Theme = {
     text: '#ffffff',
     icon: '#ffffff',
     shadow: '#fffafa',
-    card: '#0A0A0A',
+    card: '#313131',
     chip: '#0099ff',
     background: '#0A0A0A',
     pin: '#ffffff',

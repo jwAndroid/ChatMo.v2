@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import { GestureResponderEvent, Modal } from 'react-native';
 import styled from '@emotion/native';
 
+import { useTheme } from '@emotion/react';
 import Divider from './Divider';
 import CommonText from './CommonText';
 
@@ -43,8 +44,8 @@ const StyledButton = styled.Pressable(() => ({
 const ModalText = styled.Text(({ theme }) => ({
   includeFontPadding: false,
   textAlign: 'center',
-  fontSize: 15,
-  color: theme.color.text,
+  fontSize: 14,
+  color: theme.color.shadow,
 }));
 
 const ErrorText = styled.Text(({ theme }) => ({
@@ -68,6 +69,8 @@ function NotificationModal({
   onPostive,
   error,
 }: INotificationModal) {
+  const theme = useTheme();
+
   return (
     <Modal
       transparent
@@ -78,6 +81,7 @@ function NotificationModal({
       <Container onPress={onNegative}>
         <TextContainer>
           <ModalText>{notification}</ModalText>
+
           {error ? (
             <ErrorText>비밀번호 4자리 또는 제목을 입력해주세요</ErrorText>
           ) : null}
@@ -87,13 +91,23 @@ function NotificationModal({
 
         <ButtonContainer>
           <StyledButton onPress={onNegative}>
-            <CommonText fontSize={14} text="아니요" />
+            <CommonText
+              fontSize={14}
+              text="아니요"
+              isSpecificColor
+              specificColor={theme.color.shadow}
+            />
           </StyledButton>
 
           <Divider isVertical />
 
           <StyledButton onPress={onPostive}>
-            <CommonText fontSize={14} text="예" />
+            <CommonText
+              fontSize={14}
+              text="예"
+              isSpecificColor
+              specificColor={theme.color.shadow}
+            />
           </StyledButton>
         </ButtonContainer>
       </Container>
