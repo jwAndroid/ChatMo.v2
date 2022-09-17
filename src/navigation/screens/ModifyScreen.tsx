@@ -8,11 +8,14 @@ import uuid from 'react-native-uuid';
 import {
   Chip,
   CommonText,
+  Icon,
   IconHeader,
   InputModal,
   NotificationModal,
+  PasswordInput,
   SafeAreaContainer,
   SettingSwitch,
+  TitleInput,
 } from '../../components';
 import { RootStackNavigationProp, RootStackParamList } from '../RootStack';
 import { fulfilled } from '../../redux/posts/slice';
@@ -23,25 +26,10 @@ import { ChipEntity } from '../../../types';
 import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
 import useBackEffect from '../../hooks/useBackEffect';
 
-const PressableContainer = styled.Pressable(() => ({
-  flex: 1,
-}));
-
-const ContentsContainer = styled.View(() => ({
+const Container = styled.View(() => ({
   flex: 1,
   paddingHorizontal: 20,
   paddingVertical: 10,
-}));
-
-const TitleInput = styled.TextInput(({ theme }) => ({
-  borderRadius: 8,
-  borderWidth: 1,
-  fontSize: 15,
-  paddingHorizontal: 15,
-  paddingVertical: 8,
-  marginTop: 10,
-  color: theme.color.text,
-  borderColor: theme.color.shadow,
 }));
 
 interface IContentContainer {
@@ -55,37 +43,6 @@ const ContentContainer = styled.View<IContentContainer>(
     marginTop,
   })
 );
-
-const PasswordInput = styled.TextInput(({ theme }) => ({
-  width: 60,
-  borderBottomWidth: 1,
-  textAlign: 'center',
-  fontSize: 15,
-  color: theme.color.text,
-  padding: 3,
-  borderBottomColor: '#0099ff',
-}));
-
-interface IIcon {
-  size: number;
-  tintColor: string;
-  marginLeft?: number;
-}
-const Icon = styled.Image<IIcon>(({ size, tintColor, marginLeft }) => ({
-  width: size,
-  height: size,
-  tintColor,
-  marginLeft,
-}));
-
-const PressableCircle = styled.TouchableOpacity(({ theme }) => ({
-  width: 30,
-  height: 30,
-  justifyContent: 'center',
-  alignItems: 'center',
-  borderRadius: 15,
-  backgroundColor: theme.color.chip,
-}));
 
 const ChipContainer = styled.View(() => ({
   flexDirection: 'row',
@@ -118,28 +75,30 @@ function ModifyScreen() {
   const { params } = useRoute<ModifyScreenRouteProp>();
   const navigation = useNavigation<RootStackNavigationProp>();
 
-  const [isLock, setIsLock] = useState<boolean>(params?.isLock ?? false);
-  const [title, setTitle] = useState(params?.title ?? '');
+  const [titleValue, setTitleValue] = useState(params?.title ?? '');
   const [passwordValue, setPasswordValue] = useState(params?.password ?? '');
   const [chipValue, setChipValue] = useState('');
+
+  const [isLock, setIsLock] = useState<boolean>(params?.isLock ?? false);
   const [chips, setChips] = useState<ChipEntity[] | null>(
     params?.chips ?? null
   );
 
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [isInputModalOpen, setIsInputModalOpen] = useState(false);
+
   const [error, setError] = useState(false);
 
   useBackEffect();
 
   const onPostive = useCallback(() => {
     if (user && params && posts.data) {
-      if ((isLock && passwordValue.length < 4) || title === '') {
+      if ((isLock && passwordValue.length < 4) || titleValue === '') {
         setError(true);
       } else {
         const prepared = {
           ...params,
-          title,
+          title: titleValue,
           isLock,
           password: isLock ? passwordValue : null,
           modifyAt: getTimestamp(),
@@ -172,7 +131,7 @@ function ModifyScreen() {
     params,
     posts,
     isLock,
-    title,
+    titleValue,
     passwordValue,
     chips,
     navigation,
@@ -185,25 +144,32 @@ function ModifyScreen() {
   }, []);
 
   const onPostiveChipInputModal = useCallback(() => {
+    const chip = {
+      id: uuid.v4().toString(),
+      title: chipValue,
+    };
+
     if (chips && chipValue.length > 0) {
-      const chip = {
-        id: uuid.v4().toString(),
-        title: chipValue,
-      };
-
       setChips([...chips, chip]);
-
-      setIsInputModalOpen(false);
-    } else {
-      setIsInputModalOpen(false);
+    } else if (
+      chips === undefined ||
+      (chips === null && chipValue.length > 0)
+    ) {
+      setChips([chip]);
     }
+
+    setIsInputModalOpen(false);
   }, [chipValue, chips]);
 
   const onCreateChips = useCallback(() => {
-    setChipValue('');
+    if (chips && chips.length >= 3) {
+      setIsInputModalOpen(false);
+    } else {
+      setIsInputModalOpen(true);
+    }
 
-    setIsInputModalOpen(true);
-  }, []);
+    setChipValue('');
+  }, [chips]);
 
   const onPressChipDelete = useCallback(
     (item: ChipEntity) => () => {
@@ -214,26 +180,24 @@ function ModifyScreen() {
     [chips]
   );
 
+  const onBackPress = useCallback(() => {
+    navigation.popToTop();
+  }, [navigation]);
+
   return (
     <SafeAreaContainer>
-      <PressableContainer onPress={() => Keyboard.dismiss()}>
+      <Pressable style={{ flex: 1 }} onPress={() => Keyboard.dismiss()}>
         <IconHeader
           isBackword
           isCheck
-          onPress={() => navigation.popToTop()}
+          onPress={onBackPress}
           onPressCheck={() => setIsConfirmModalOpen(true)}
         />
 
-        <ContentsContainer>
+        <Container>
           <CommonText text="제목" fontSize={15} />
 
-          <TitleInput
-            placeholder="제목을 입력해주세요."
-            placeholderTextColor={theme.color.shadow}
-            value={title}
-            onChangeText={setTitle}
-            blurOnSubmit
-          />
+          <TitleInput value={titleValue} onChangeText={setTitleValue} />
 
           <CommonText text="패스워드" fontSize={15} marginTop={20} />
 
@@ -243,13 +207,6 @@ function ModifyScreen() {
                 <PasswordInput
                   value={passwordValue}
                   onChangeText={setPasswordValue}
-                  maxLength={4}
-                  placeholder="* * * *"
-                  placeholderTextColor={theme.color.shadow}
-                  keyboardType="number-pad"
-                  clearTextOnFocus
-                  returnKeyType="done"
-                  secureTextEntry
                 />
 
                 <CommonText
@@ -277,51 +234,61 @@ function ModifyScreen() {
           <ChipTitleContainer>
             <CommonText text="속성" fontSize={15} />
 
-            <CommonText
-              text={`${chips?.length}/3`}
-              fontSize={12}
-              marginLeft={5}
-            />
+            {chips && (
+              <CommonText
+                text={`${chips.length}/3`}
+                fontSize={12}
+                marginLeft={5}
+                isSpecificColor
+                specificColor={
+                  chips.length >= 3 ? theme.color.red : theme.color.text
+                }
+              />
+            )}
           </ChipTitleContainer>
 
           <ContentContainer marginTop={10}>
             <ChipContainer>
-              {chips?.map((chip) => (
-                <Chip isRow key={chip.id}>
-                  <CommonText text={ellipsize(chip.title, 10)} fontSize={13} />
+              {chips &&
+                chips.map((chip) => (
+                  <Chip isRow key={chip.id}>
+                    <CommonText
+                      text={ellipsize(chip.title, 10)}
+                      fontSize={13}
+                    />
 
-                  <Pressable hitSlop={10} onPress={onPressChipDelete(chip)}>
                     <Icon
+                      onPress={onPressChipDelete(chip)}
                       size={17}
                       tintColor={theme.color.icon}
                       source={theme.icon.cancel}
                       marginLeft={3}
                     />
-                  </Pressable>
-                </Chip>
-              ))}
+                  </Chip>
+                ))}
 
-              {chips?.length === 0 ? (
-                <CommonText
-                  text="속성이 없습니다."
-                  fontSize={12}
-                  marginLeft={5}
-                  isSpecificColor
-                  specificColor={theme.color.shadow}
-                />
-              ) : null}
+              {chips === undefined ||
+                (chips && chips.length === 0 && (
+                  <CommonText
+                    text="속성이 없습니다."
+                    fontSize={12}
+                    marginLeft={5}
+                    isSpecificColor
+                    specificColor={theme.color.shadow}
+                  />
+                ))}
             </ChipContainer>
 
-            <PressableCircle onPress={onCreateChips}>
-              <Icon
-                size={15}
-                source={theme.icon.plus}
-                tintColor={theme.color.white}
-              />
-            </PressableCircle>
+            <Icon
+              isCircle
+              onPress={onCreateChips}
+              size={15}
+              source={theme.icon.plus}
+              tintColor={theme.color.white}
+            />
           </ContentContainer>
-        </ContentsContainer>
-      </PressableContainer>
+        </Container>
+      </Pressable>
 
       {isConfirmModalOpen && (
         <NotificationModal

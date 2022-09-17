@@ -79,7 +79,7 @@ function NotificationModal({
         <TextContainer>
           <ModalText>{notification}</ModalText>
           {error ? (
-            <ErrorText>비밀번호 4자리, 제목을 입력해주세요</ErrorText>
+            <ErrorText>비밀번호 4자리 또는 제목을 입력해주세요</ErrorText>
           ) : null}
         </TextContainer>
 

@@ -46,9 +46,9 @@ const StyledInput = styled.TextInput(({ theme }) => ({
   fontSize: 13,
   justifyContent: 'center',
   alignItems: 'center',
-  paddingVertical: 5,
   paddingHorizontal: 15,
   borderRadius: 15,
+  marginBottom: 5,
   color: theme.color.text,
   borderColor: theme.color.chip,
 }));
@@ -78,6 +78,14 @@ function InputModal({
     >
       <Container onPress={onNegative}>
         <ContentContainer>
+          <CommonText
+            fontSize={13}
+            text="속성 추가"
+            isSpecificColor
+            specificColor={theme.color.shadow}
+            marginBottom={10}
+          />
+
           <StyledInput
             value={value}
             placeholder="제목 입력.."
@@ -101,13 +109,23 @@ function InputModal({
 
         <ButtonContainer>
           <StyledButton onPress={onNegative}>
-            <CommonText fontSize={14} text="취소" />
+            <CommonText
+              fontSize={14}
+              text="취소"
+              isSpecificColor
+              specificColor={theme.color.shadow}
+            />
           </StyledButton>
 
           <Divider isVertical />
 
           <StyledButton onPress={onPostive}>
-            <CommonText fontSize={14} text="확인" />
+            <CommonText
+              fontSize={14}
+              text="확인"
+              isSpecificColor
+              specificColor={theme.color.shadow}
+            />
           </StyledButton>
         </ButtonContainer>
       </Container>
