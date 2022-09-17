@@ -55,8 +55,8 @@ function RoomsScreen() {
   }, [navigation]);
 
   const onPressFloatingButton = useCallback(() => {
-    // TODO: create message
-  }, []);
+    navigation.navigate('Create');
+  }, [navigation]);
 
   const onPressItem = useCallback(
     (item: RoomEntity) => () => {

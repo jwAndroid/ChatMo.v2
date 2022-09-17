@@ -7,17 +7,18 @@ import React, {
 } from 'react';
 import styled from '@emotion/native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { GiftedChat, IMessage } from 'react-native-gifted-chat';
-import uuid from 'react-native-uuid';
-
 import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import uuid from 'react-native-uuid';
+import { GiftedChat, IMessage } from 'react-native-gifted-chat';
+
 import { useAppSelector } from '../../hooks/useRedux';
 import { createMessage } from '../../firebase/posts';
 import { RootStackNavigationProp, RootStackParamList } from '../RootStack';
 import { IconHeader, SafeAreaContainer } from '../../components';
 import { getTimestamp } from '../../utils/date';
 import { firestore } from '../../firebase/config';
+import useBackEffect from '../../hooks/useBackEffect';
 
 const Container = styled.View(({ theme }) => ({
   flex: 1,
@@ -34,7 +35,6 @@ function RoomScreen() {
   const navigation = useNavigation<RootStackNavigationProp>();
 
   const { params } = useRoute<RoomScreenRouteProp>();
-  console.log(JSON.stringify(params, null, 5));
 
   const [messages, setMessages] = useState<IMessage[]>([]);
 
@@ -44,6 +44,8 @@ function RoomScreen() {
     }),
     [user]
   );
+
+  useBackEffect();
 
   useLayoutEffect(() => {
     if (user && params && params !== undefined) {
