@@ -13,6 +13,7 @@ import {
   SettingSwitch,
 } from '../../components';
 import { RootStackNavigationProp } from '../RootStack';
+import useBackEffect from '../../hooks/useBackEffect';
 
 const Container = styled.View(() => ({
   flexDirection: 'row',
@@ -30,6 +31,8 @@ function ThemeScreen() {
   const [isDark, setIsDark] = useState(systemTheme);
 
   const navigation = useNavigation<RootStackNavigationProp>();
+
+  useBackEffect();
 
   const onBackPress = useCallback(() => {
     themeStorage.set(isDark.toString());

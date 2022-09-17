@@ -10,6 +10,7 @@ import { deleteRoom } from '../../firebase/posts';
 import { fulfilled } from '../../redux/posts/slice';
 import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
 import { RootStackNavigationProp, RootStackParamList } from '../RootStack';
+import useBackEffect from '../../hooks/useBackEffect';
 
 interface IIcon {
   isInvailed: boolean;
@@ -40,6 +41,8 @@ function PinScreen() {
 
   const [pinCode, setPinCode] = useState('');
   const [error, setError] = useState(false);
+
+  useBackEffect();
 
   useEffect(() => {
     if (params && pinCode !== '' && from !== '' && posts.data && user) {

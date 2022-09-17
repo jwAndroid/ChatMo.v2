@@ -21,6 +21,7 @@ import { ellipsize } from '../../utils/ellipsize';
 import { getTimestamp } from '../../utils/date';
 import { ChipEntity } from '../../../types';
 import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
+import useBackEffect from '../../hooks/useBackEffect';
 
 const PressableContainer = styled.Pressable(() => ({
   flex: 1,
@@ -128,6 +129,8 @@ function ModifyScreen() {
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [isInputModalOpen, setIsInputModalOpen] = useState(false);
   const [error, setError] = useState(false);
+
+  useBackEffect();
 
   const onPostive = useCallback(() => {
     if (user && params && posts.data) {
@@ -317,16 +320,6 @@ function ModifyScreen() {
               />
             </PressableCircle>
           </ContentContainer>
-
-          {chips!.length >= 3 ? (
-            <CommonText
-              text="3개 이상 만들수 없습니다."
-              fontSize={12}
-              isSpecificColor
-              specificColor={theme.color.shadow}
-              marginTop={5}
-            />
-          ) : null}
         </ContentsContainer>
       </PressableContainer>
 

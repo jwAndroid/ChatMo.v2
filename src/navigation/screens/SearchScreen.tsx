@@ -31,6 +31,7 @@ import { ChipEntity, RoomEntity } from '../../../types';
 import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
 import { loadPosts } from '../../firebase/posts';
 import { fromUpdate } from '../../redux/system/slice';
+import useBackEffect from '../../hooks/useBackEffect';
 
 const HistoryContainer = styled.View(({ theme }) => ({
   justifyContent: 'center',
@@ -85,6 +86,8 @@ function SearchScreen() {
   const [chips, setChips] = useState<ChipEntity[]>([]);
   const [renderData, setRenderData] = useState<RoomEntity[]>([]);
   const [masterData, setMasterData] = useState<RoomEntity[]>([]);
+
+  useBackEffect();
 
   useLayoutEffect(() => {
     (async () => {

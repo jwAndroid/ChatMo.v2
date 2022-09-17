@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
 import { fulfilled } from '../../redux/posts/slice';
 import { createRoom } from '../../firebase/posts';
 import { getTimestamp } from '../../utils/date';
+import useBackEffect from '../../hooks/useBackEffect';
 
 function CreateScreen() {
   const dispatch = useAppDispatch();
@@ -35,6 +36,8 @@ function CreateScreen() {
       dispatch(fulfilled([room, ...posts.data]));
     }
   }, [dispatch, user, posts.data]);
+
+  useBackEffect();
 
   return (
     <View

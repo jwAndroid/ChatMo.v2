@@ -21,6 +21,7 @@ import { fromUpdate } from '../../redux/system/slice';
 import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
 import { useRoomsLoadEffect } from '../../hooks/useRoomsLoadEffect';
 import { useAnimation } from '../../hooks/useAnimation';
+import useBackEffect from '../../hooks/useBackEffect';
 
 function RoomsScreen() {
   const dispatch = useAppDispatch();
@@ -43,6 +44,8 @@ function RoomsScreen() {
       '삭제 하시겠습니까?\n삭제를 하면 내용이 모두 삭제되고\n목록에서도 삭제됩니다.',
     []
   );
+
+  useBackEffect();
 
   const delayedModal = useCallback((isOpen: boolean) => {
     setTimeout(() => {

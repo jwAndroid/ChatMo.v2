@@ -12,6 +12,7 @@ import {
   SafeAreaContainer,
 } from '../../components';
 import { SettingEntity } from '../../../types';
+import useBackEffect from '../../hooks/useBackEffect';
 
 const StyledPressable = styled.Pressable(() => ({
   paddingHorizontal: 20,
@@ -43,6 +44,8 @@ function SettingScreen() {
     }),
     []
   );
+
+  useBackEffect();
 
   const onBackPress = useCallback(() => {
     navigation.pop();
