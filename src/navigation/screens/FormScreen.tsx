@@ -23,7 +23,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
 import useBackEffect from '../../hooks/useBackEffect';
 import { RootStackNavigationProp, RootStackParamList } from '../RootStack';
 import { fulfilled } from '../../redux/posts/slice';
-import { onModifyRoom } from '../../firebase/posts';
+import { createRoom, onModifyRoom } from '../../firebase/posts';
 import { ellipsize } from '../../utils/ellipsize';
 import { getTimestamp } from '../../utils/date';
 import { ChipEntity } from '../../../types';
@@ -81,13 +81,10 @@ function FormScreen() {
   const [chipValue, setChipValue] = useState('');
 
   const [isLock, setIsLock] = useState<boolean>(params?.isLock ?? false);
-  const [chips, setChips] = useState<ChipEntity[] | null>(
-    params?.chips ?? null
-  );
+  const [chips, setChips] = useState<ChipEntity[] | null>(params?.chips ?? []);
 
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
   const [isInputModalOpen, setIsInputModalOpen] = useState(false);
-
   const [error, setError] = useState(false);
 
   useBackEffect();
@@ -124,6 +121,37 @@ function FormScreen() {
         setError(false);
 
         navigation.popToTop();
+      }
+    } else if (user && params === undefined && posts.data) {
+      if ((isLock && passwordValue.length < 4) || titleValue === '') {
+        setError(true);
+      } else {
+        const room = {
+          roomId: uuid.v4().toString(),
+          title: titleValue,
+          lastMemo: '메세지가 존재하지 않습니다.',
+          memoCount: 1,
+          isFavorites: false,
+          isCompleate: false,
+          isLock,
+          password: isLock ? passwordValue : null,
+          createdAt: getTimestamp(),
+          updatedAt: 0,
+          modifyAt: null,
+          chips: chips === undefined || null ? [] : chips,
+        };
+
+        if (user && posts.data) {
+          createRoom(user.userId, room);
+
+          dispatch(fulfilled([room, ...posts.data]));
+
+          setIsConfirmModalOpen(false);
+
+          setError(false);
+
+          navigation.popToTop();
+        }
       }
     }
   }, [
@@ -286,30 +314,32 @@ function FormScreen() {
         </Pressable>
 
         <ButtonBar
-          onCancel={() => {}}
+          onCancel={onBackPress}
           onConfirm={() => setIsConfirmModalOpen(true)}
         />
+
+        {isConfirmModalOpen && (
+          <NotificationModal
+            isOpen={isConfirmModalOpen}
+            notification={
+              params === undefined ? '생성 하시겠습니까?' : '수정 하시겠습니가?'
+            }
+            onNegative={onNegative}
+            onPostive={onPostive}
+            error={error}
+          />
+        )}
+
+        {isInputModalOpen && (
+          <InputModal
+            isOpen={isInputModalOpen}
+            onNegative={() => setIsInputModalOpen(false)}
+            onPostive={onPostiveChipInputModal}
+            value={chipValue}
+            onChangeText={setChipValue}
+          />
+        )}
       </KeyboardContainer>
-
-      {isConfirmModalOpen && (
-        <NotificationModal
-          isOpen={isConfirmModalOpen}
-          notification="수정 하시겠습니까?"
-          onNegative={onNegative}
-          onPostive={onPostive}
-          error={error}
-        />
-      )}
-
-      {isInputModalOpen && (
-        <InputModal
-          isOpen={isInputModalOpen}
-          onNegative={() => setIsInputModalOpen(false)}
-          onPostive={onPostiveChipInputModal}
-          value={chipValue}
-          onChangeText={setChipValue}
-        />
-      )}
     </SafeAreaContainer>
   );
 }

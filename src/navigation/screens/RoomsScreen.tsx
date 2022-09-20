@@ -58,7 +58,7 @@ function RoomsScreen() {
   }, [navigation]);
 
   const onPressFloatingButton = useCallback(() => {
-    navigation.navigate('Create');
+    navigation.navigate('Form');
   }, [navigation]);
 
   const onPressItem = useCallback(
