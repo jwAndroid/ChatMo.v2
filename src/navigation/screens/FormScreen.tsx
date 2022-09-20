@@ -89,11 +89,19 @@ function FormScreen() {
 
   useBackEffect();
 
+  const confirm = useCallback(() => {
+    setIsConfirmModalOpen(false);
+
+    setError(false);
+
+    navigation.popToTop();
+  }, [navigation]);
+
   const onPostive = useCallback(() => {
-    if (user && params && posts.data) {
+    if (user && posts.data) {
       if ((isLock && passwordValue.length < 4) || titleValue === '') {
         setError(true);
-      } else {
+      } else if (params) {
         const prepared = {
           ...params,
           title: titleValue,
@@ -116,21 +124,13 @@ function FormScreen() {
 
         onModifyRoom(user.userId, { ...prepared });
 
-        setIsConfirmModalOpen(false);
-
-        setError(false);
-
-        navigation.popToTop();
-      }
-    } else if (user && params === undefined && posts.data) {
-      if ((isLock && passwordValue.length < 4) || titleValue === '') {
-        setError(true);
-      } else {
+        confirm();
+      } else if (params === undefined) {
         const room = {
           roomId: uuid.v4().toString(),
           title: titleValue,
-          lastMemo: '메세지가 존재하지 않습니다.',
-          memoCount: 1,
+          lastMemo: '메모가 존재하지 않습니다.',
+          memoCount: 0,
           isFavorites: false,
           isCompleate: false,
           isLock,
@@ -141,29 +141,23 @@ function FormScreen() {
           chips: chips === undefined || null ? [] : chips,
         };
 
-        if (user && posts.data) {
-          createRoom(user.userId, room);
+        createRoom(user.userId, room);
 
-          dispatch(fulfilled([room, ...posts.data]));
+        dispatch(fulfilled([room, ...posts.data]));
 
-          setIsConfirmModalOpen(false);
-
-          setError(false);
-
-          navigation.popToTop();
-        }
+        confirm();
       }
     }
   }, [
-    dispatch,
     user,
     params,
     posts,
+    dispatch,
     isLock,
     titleValue,
     passwordValue,
     chips,
-    navigation,
+    confirm,
   ]);
 
   const onNegative = useCallback(() => {
