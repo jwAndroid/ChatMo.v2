@@ -47,8 +47,8 @@ function PinScreen() {
   useEffect(() => {
     if (params && pinCode !== '' && from !== '' && posts.data && user) {
       if (params.password === pinCode) {
-        if (from === 'Modify') {
-          navigation.navigate('Modify', params);
+        if (from === 'Form') {
+          navigation.navigate('Form', params);
         } else if (from === 'Room') {
           navigation.navigate('Room', params);
         } else if (from === 'Delete') {

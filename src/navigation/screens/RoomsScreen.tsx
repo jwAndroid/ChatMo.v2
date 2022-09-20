@@ -107,9 +107,9 @@ function RoomsScreen() {
         if (item.password) {
           navigation.navigate('Pin', item);
 
-          dispatch(fromUpdate({ from: 'Modify' }));
+          dispatch(fromUpdate({ from: 'Form' }));
         } else {
-          navigation.navigate('Modify', item);
+          navigation.navigate('Form', item);
         }
       }
     },

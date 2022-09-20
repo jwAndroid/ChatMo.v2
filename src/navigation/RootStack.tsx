@@ -7,7 +7,7 @@ import {
 
 import {
   CreateScreen,
-  ModifyScreen,
+  FormScreen,
   PinScreen,
   RoomScreen,
   RoomsScreen,
@@ -23,7 +23,7 @@ export type RootStackParamList = {
   Room: RoomEntity | undefined;
   Theme: undefined;
   Pin: RoomEntity | undefined;
-  Modify: RoomEntity | undefined;
+  Form: RoomEntity | undefined;
   Search: undefined;
   Create: undefined;
 };
@@ -67,8 +67,8 @@ function RootStack() {
         options={{ animation: 'slide_from_bottom' }}
       />
       <Screen
-        name="Modify"
-        component={ModifyScreen}
+        name="Form"
+        component={FormScreen}
         options={{ animation: 'slide_from_right' }}
       />
       <Screen

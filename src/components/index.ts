@@ -1,3 +1,4 @@
+export { default as ButtonBar } from './ButtonBar';
 export { default as Chip } from './Chip';
 export { default as CommonText } from './CommonText';
 export { default as Divider } from './Divider';

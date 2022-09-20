@@ -17,14 +17,14 @@ import {
   SettingSwitch,
   TitleInput,
 } from '../../components';
+import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
+import useBackEffect from '../../hooks/useBackEffect';
 import { RootStackNavigationProp, RootStackParamList } from '../RootStack';
 import { fulfilled } from '../../redux/posts/slice';
 import { onModifyRoom } from '../../firebase/posts';
 import { ellipsize } from '../../utils/ellipsize';
 import { getTimestamp } from '../../utils/date';
 import { ChipEntity } from '../../../types';
-import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
-import useBackEffect from '../../hooks/useBackEffect';
 
 const Container = styled.View(() => ({
   flex: 1,
@@ -61,9 +61,9 @@ const Block = styled.View(() => ({
   marginVertical: 10,
 }));
 
-type ModifyScreenRouteProp = RouteProp<RootStackParamList, 'Modify'>;
+type FormScreenRouteProp = RouteProp<RootStackParamList, 'Form'>;
 
-function ModifyScreen() {
+function FormScreen() {
   const dispatch = useAppDispatch();
 
   const user = useAppSelector((state) => state.auth.user);
@@ -71,7 +71,7 @@ function ModifyScreen() {
 
   const theme = useTheme();
 
-  const { params } = useRoute<ModifyScreenRouteProp>();
+  const { params } = useRoute<FormScreenRouteProp>();
   const navigation = useNavigation<RootStackNavigationProp>();
 
   const [titleValue, setTitleValue] = useState(params?.title ?? '');
@@ -310,4 +310,4 @@ function ModifyScreen() {
   );
 }
 
-export default memo(ModifyScreen);
+export default memo(FormScreen);
