@@ -6,11 +6,13 @@ import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
 import uuid from 'react-native-uuid';
 
 import {
+  ButtonBar,
   Chip,
   CommonText,
   Icon,
   IconHeader,
   InputModal,
+  KeyboardContainer,
   NotificationModal,
   PasswordInput,
   SafeAreaContainer,
@@ -185,107 +187,109 @@ function FormScreen() {
 
   return (
     <SafeAreaContainer>
-      <Pressable style={{ flex: 1 }} onPress={() => Keyboard.dismiss()}>
-        <IconHeader
-          isBackword
-          isCheck
-          onPress={onBackPress}
-          onPressCheck={() => setIsConfirmModalOpen(true)}
-        />
+      <KeyboardContainer>
+        <Pressable style={{ flex: 1 }} onPress={() => Keyboard.dismiss()}>
+          <IconHeader isBackword onPress={onBackPress} />
 
-        <Container>
-          <CommonText text="제목" fontSize={15} />
+          <Container>
+            <CommonText text="제목" fontSize={15} />
 
-          <TitleInput value={titleValue} onChangeText={setTitleValue} />
+            <TitleInput value={titleValue} onChangeText={setTitleValue} />
 
-          <CommonText text="패스워드" fontSize={15} marginTop={20} />
+            <CommonText text="패스워드" fontSize={15} marginTop={20} />
 
-          <ContentContainer>
-            {isLock ? (
-              <Block>
-                <PasswordInput
-                  value={passwordValue}
-                  onChangeText={setPasswordValue}
-                />
+            <ContentContainer>
+              {isLock ? (
+                <Block>
+                  <PasswordInput
+                    value={passwordValue}
+                    onChangeText={setPasswordValue}
+                  />
 
-                <CommonText
-                  text="비밀번호는 찾을수 없으니, 신중하게 결정 해주세요."
-                  fontSize={12}
-                  isSpecificColor
-                  specificColor={theme.color.shadow}
-                  marginTop={5}
-                />
-              </Block>
-            ) : (
-              <CommonText
-                text="패스워드가 존재하지 않습니다."
-                fontSize={13}
-                isSpecificColor
-                specificColor={theme.color.shadow}
-              />
-            )}
-
-            <SettingSwitch isEnabled={isLock} onValueChange={setIsLock} />
-          </ContentContainer>
-
-          <ChipTitleContainer>
-            <CommonText text="속성" fontSize={15} />
-
-            {chips && (
-              <CommonText
-                text={`${chips.length}/3`}
-                fontSize={12}
-                marginLeft={5}
-                isSpecificColor
-                specificColor={
-                  chips.length >= 3 ? theme.color.red : theme.color.text
-                }
-              />
-            )}
-          </ChipTitleContainer>
-
-          <ContentContainer marginTop={10}>
-            <ChipContainer>
-              {chips &&
-                chips.map((chip) => (
-                  <Chip isRow key={chip.id}>
-                    <CommonText
-                      text={ellipsize(chip.title, 10)}
-                      fontSize={13}
-                    />
-
-                    <Icon
-                      onPress={onPressChipDelete(chip)}
-                      size={17}
-                      tintColor={theme.color.icon}
-                      source={theme.icon.cancel}
-                      marginLeft={3}
-                    />
-                  </Chip>
-                ))}
-
-              {chips === undefined ||
-                (chips && chips.length === 0 && (
                   <CommonText
-                    text="속성이 없습니다."
+                    text="비밀번호는 찾을수 없으니, 신중하게 결정 해주세요."
                     fontSize={12}
-                    marginLeft={5}
                     isSpecificColor
                     specificColor={theme.color.shadow}
+                    marginTop={5}
                   />
-                ))}
-            </ChipContainer>
+                </Block>
+              ) : (
+                <CommonText
+                  text="패스워드가 존재하지 않습니다."
+                  fontSize={13}
+                  isSpecificColor
+                  specificColor={theme.color.shadow}
+                />
+              )}
 
-            <Icon
-              isCircle
-              onPress={onCreateChips}
-              size={15}
-              source={theme.icon.plus}
-              tintColor={theme.color.white}
-            />
-          </ContentContainer>
-        </Container>
-      </Pressable>
+              <SettingSwitch isEnabled={isLock} onValueChange={setIsLock} />
+            </ContentContainer>
+
+            <ChipTitleContainer>
+              <CommonText text="속성" fontSize={15} />
+
+              {chips && (
+                <CommonText
+                  text={`${chips.length}/3`}
+                  fontSize={12}
+                  marginLeft={5}
+                  isSpecificColor
+                  specificColor={
+                    chips.length >= 3 ? theme.color.red : theme.color.text
+                  }
+                />
+              )}
+            </ChipTitleContainer>
+
+            <ContentContainer marginTop={10}>
+              <ChipContainer>
+                {chips &&
+                  chips.map((chip) => (
+                    <Chip isRow key={chip.id}>
+                      <CommonText
+                        text={ellipsize(chip.title, 10)}
+                        fontSize={13}
+                      />
+
+                      <Icon
+                        onPress={onPressChipDelete(chip)}
+                        size={17}
+                        tintColor={theme.color.icon}
+                        source={theme.icon.cancel}
+                        marginLeft={3}
+                      />
+                    </Chip>
+                  ))}
+
+                {chips === undefined ||
+                  (chips && chips.length === 0 && (
+                    <CommonText
+                      text="속성이 없습니다."
+                      fontSize={12}
+                      marginLeft={5}
+                      isSpecificColor
+                      specificColor={theme.color.shadow}
+                    />
+                  ))}
+              </ChipContainer>
+
+              <Icon
+                isCircle
+                onPress={onCreateChips}
+                size={15}
+                source={theme.icon.plus}
+                tintColor={theme.color.white}
+              />
+            </ContentContainer>
+          </Container>
+        </Pressable>
+
+        <ButtonBar
+          onCancel={() => {}}
+          onConfirm={() => setIsConfirmModalOpen(true)}
+        />
+      </KeyboardContainer>
 
       {isConfirmModalOpen && (
         <NotificationModal

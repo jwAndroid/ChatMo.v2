@@ -27,7 +27,7 @@ function CreateScreen() {
       createdAt: getTimestamp(),
       updatedAt: 0,
       modifyAt: null,
-      chips: null,
+      chips: [],
     };
 
     if (user && posts.data) {
