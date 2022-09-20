@@ -38,6 +38,7 @@
     "no-shadow": "off",
     "consistent-return": "off",
     "indent": "off",
-    "no-underscore-dangle": "off"
+    "no-underscore-dangle": "off",
+    "react/jsx-props-no-spreading": "off"
   }
 }

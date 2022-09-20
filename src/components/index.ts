@@ -1,6 +1,10 @@
+export { default as BubbleText } from './BubbleText';
+export { default as BubbleTicks } from './BubbleTicks';
 export { default as ButtonBar } from './ButtonBar';
+export { default as ChatBubble } from './ChatBubble';
 export { default as Chip } from './Chip';
 export { default as CommonText } from './CommonText';
+export { default as DayHeader } from './DayHeader';
 export { default as Divider } from './Divider';
 export { default as Empty } from './Empty';
 export { default as Favorites } from './Favorites';

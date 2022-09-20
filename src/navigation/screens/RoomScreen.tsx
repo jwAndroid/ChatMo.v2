@@ -1,5 +1,6 @@
 import React, {
   memo,
+  ReactNode,
   useCallback,
   useLayoutEffect,
   useMemo,
@@ -9,13 +10,23 @@ import styled from '@emotion/native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import uuid from 'react-native-uuid';
-import { GiftedChat, IMessage } from 'react-native-gifted-chat';
+import {
+  BubbleProps,
+  DayProps,
+  GiftedChat,
+  IMessage,
+} from 'react-native-gifted-chat';
 
 import { useAppSelector } from '../../hooks/useRedux';
 import { loadRoom } from '../../firebase/room';
 import { createMessage } from '../../firebase/posts';
 import { RootStackNavigationProp, RootStackParamList } from '../RootStack';
-import { IconHeader, SafeAreaContainer } from '../../components';
+import {
+  ChatBubble,
+  DayHeader,
+  IconHeader,
+  SafeAreaContainer,
+} from '../../components';
 import { getTimestamp } from '../../utils/date';
 import useBackEffect from '../../hooks/useBackEffect';
 
@@ -92,20 +103,57 @@ function RoomScreen() {
     [user, params]
   );
 
+  const renderDay = useCallback(
+    (
+      props: Readonly<DayProps<IMessage>> & Readonly<{ children?: ReactNode }>
+    ) => <DayHeader props={props} />,
+    []
+  );
+
+  const onPressBubble = useCallback((_: any, message: IMessage) => {
+    if (message) {
+      console.log(message);
+    }
+  }, []);
+
+  const onLongPressBubble = useCallback((_: any, message: IMessage) => {
+    if (message) {
+      console.log(message);
+    }
+  }, []);
+
+  const renderBubble = useCallback(
+    (
+      props: Readonly<BubbleProps<IMessage>> &
+        Readonly<{ children?: ReactNode }>
+    ) => (
+      <ChatBubble
+        props={props}
+        onPressBubble={onPressBubble}
+        onLongPressBubble={onLongPressBubble}
+      />
+    ),
+    [onPressBubble, onLongPressBubble]
+  );
+
   return (
     <Container>
       <IconHeader isBackword isIosTopInset onPress={onBackPress} />
 
       <SafeAreaContainer>
         <GiftedChat
+          user={me}
           messages={messages}
+          onSend={(messages) => onSend(messages)}
+          bottomOffset={bottom === 0 ? 0 : bottom}
           wrapInSafeArea={false}
+          showUserAvatar={false}
+          keyboardShouldPersistTaps="handled"
+          scrollToBottom
           alignTop
           alwaysShowSend
-          showUserAvatar={false}
-          bottomOffset={bottom === 0 ? 0 : bottom}
-          onSend={(messages) => onSend(messages)}
-          user={me}
+          renderDay={renderDay}
+          renderBubble={renderBubble}
         />
       </SafeAreaContainer>
     </Container>

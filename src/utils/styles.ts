@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
-import { StyleProp, ViewStyle } from 'react-native';
+import { StyleProp, TextStyle, ViewStyle } from 'react-native';
 import { useTheme } from '@emotion/react';
+import { LeftRightStyle } from 'react-native-gifted-chat';
 
 export function SwipeStyles() {
   const theme = useTheme();
@@ -63,5 +64,89 @@ export function SwipeStyles() {
     FavoritButton,
     LockButton,
     DeleteButton,
+  };
+}
+
+export function ChatBubbleStyle() {
+  const theme = useTheme();
+
+  const ContainerStyle = useMemo<LeftRightStyle<ViewStyle>>(
+    () => ({
+      right: {
+        flex: 1,
+        marginVertical: 5,
+      },
+    }),
+    []
+  );
+
+  const WrapperStyle = useMemo<LeftRightStyle<ViewStyle>>(
+    () => ({
+      right: {
+        paddingLeft: 10,
+        paddingRight: 10,
+        paddingVertical: 3,
+        backgroundColor: theme.color.sky_300,
+      },
+    }),
+    [theme]
+  );
+
+  const BottomContainerStyle = useMemo<LeftRightStyle<ViewStyle>>(
+    () => ({
+      right: {
+        alignItems: 'center',
+        marginBottom: 3,
+      },
+    }),
+    []
+  );
+
+  const TimeTextStyle = useMemo<LeftRightStyle<TextStyle>>(
+    () => ({
+      right: {
+        fontSize: 9,
+        color: theme.color.white,
+        includeFontPadding: false,
+      },
+    }),
+    [theme]
+  );
+
+  const TimeContainerStyle = useMemo<LeftRightStyle<ViewStyle>>(
+    () => ({
+      right: {
+        marginBottom: 1,
+        marginRight: 1,
+      },
+    }),
+    []
+  );
+
+  const PreviousStyle = useMemo<LeftRightStyle<ViewStyle>>(
+    () => ({
+      right: {
+        borderTopRightRadius: 2,
+        marginTop: -5,
+      },
+    }),
+    []
+  );
+
+  const NextStyle = useMemo<LeftRightStyle<ViewStyle>>(
+    () => ({
+      right: { borderBottomRightRadius: 2 },
+    }),
+    []
+  );
+
+  return {
+    ContainerStyle,
+    WrapperStyle,
+    BottomContainerStyle,
+    TimeTextStyle,
+    TimeContainerStyle,
+    PreviousStyle,
+    NextStyle,
   };
 }
