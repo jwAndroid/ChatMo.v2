@@ -89,14 +89,6 @@ function FormScreen() {
 
   useBackEffect();
 
-  const confirm = useCallback(() => {
-    setIsConfirmModalOpen(false);
-
-    setError(false);
-
-    navigation.popToTop();
-  }, [navigation]);
-
   const onPostive = useCallback(() => {
     if (user && posts.data) {
       if ((isLock && passwordValue.length < 4) || titleValue === '') {
@@ -108,7 +100,7 @@ function FormScreen() {
           isLock,
           password: isLock ? passwordValue : null,
           modifyAt: getTimestamp(),
-          chips,
+          chips: chips === undefined || null ? [] : chips,
         };
 
         const updatedRooms = posts.data.map((post) =>
@@ -124,13 +116,17 @@ function FormScreen() {
 
         onModifyRoom(user.userId, { ...prepared });
 
-        confirm();
+        setIsConfirmModalOpen(false);
+
+        setError(false);
+
+        navigation.popToTop();
       } else if (params === undefined) {
         const room = {
           roomId: uuid.v4().toString(),
           title: titleValue,
-          lastMemo: '메모가 존재하지 않습니다.',
-          memoCount: 0,
+          lastMemo: null,
+          memoCount: 1,
           isFavorites: false,
           isCompleate: false,
           isLock,
@@ -145,7 +141,11 @@ function FormScreen() {
 
         dispatch(fulfilled([room, ...posts.data]));
 
-        confirm();
+        setIsConfirmModalOpen(false);
+
+        setError(false);
+
+        navigation.popToTop();
       }
     }
   }, [
@@ -157,7 +157,7 @@ function FormScreen() {
     titleValue,
     passwordValue,
     chips,
-    confirm,
+    navigation,
   ]);
 
   const onNegative = useCallback(() => {

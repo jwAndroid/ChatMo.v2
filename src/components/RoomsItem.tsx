@@ -2,7 +2,6 @@ import React, { memo } from 'react';
 import styled from '@emotion/native';
 import { useTheme } from '@emotion/react';
 
-import { Text } from 'react-native';
 import CommonText from './CommonText';
 import { ellipsize } from '../utils/ellipsize';
 import { RoomEntity } from '../../types';
@@ -30,7 +29,7 @@ const CountContainer = styled.View(() => ({
   justifyContent: 'center',
 }));
 
-const CircleContainer = styled.View(({ theme }) => ({
+const Circle = styled.View(({ theme }) => ({
   width: 16,
   height: 16,
   borderRadius: 5,
@@ -65,23 +64,34 @@ function RoomsItem({ item }: IRoomsItem) {
           {isLock && <Icon source={theme.icon.lock} />}
         </TitleContainer>
 
-        <CommonText
-          text={ellipsize(lastMemo ?? '', 20)}
-          fontSize={12}
-          marginTop={3}
-        />
+        {lastMemo ? (
+          <CommonText
+            text={ellipsize(lastMemo ?? '', 20)}
+            fontSize={12}
+            marginTop={3}
+          />
+        ) : (
+          <CommonText
+            text="작성된 메모가 존재하지 않습니다."
+            fontSize={12}
+            marginTop={3}
+          />
+        )}
       </ContentsContainer>
 
       <CountContainer>
         <CommonText text={getFormatTime(createdAt)} fontSize={10} />
 
-        {memoCount && (
-          <CircleContainer>
-            <Text style={{ fontSize: 12, color: theme.color.white }}>
-              {memoCount.toString()}
-            </Text>
-          </CircleContainer>
-        )}
+        {memoCount !== 0 ? (
+          <Circle>
+            <CommonText
+              text={memoCount?.toString()}
+              fontSize={12}
+              isSpecificColor
+              specificColor={theme.color.white}
+            />
+          </Circle>
+        ) : null}
       </CountContainer>
     </Container>
   );
