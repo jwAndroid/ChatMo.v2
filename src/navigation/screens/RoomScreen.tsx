@@ -7,17 +7,16 @@ import React, {
 } from 'react';
 import styled from '@emotion/native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
-import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import uuid from 'react-native-uuid';
 import { GiftedChat, IMessage } from 'react-native-gifted-chat';
 
 import { useAppSelector } from '../../hooks/useRedux';
+import { loadRoom } from '../../firebase/room';
 import { createMessage } from '../../firebase/posts';
 import { RootStackNavigationProp, RootStackParamList } from '../RootStack';
 import { IconHeader, SafeAreaContainer } from '../../components';
 import { getTimestamp } from '../../utils/date';
-import { firestore } from '../../firebase/config';
 import useBackEffect from '../../hooks/useBackEffect';
 
 const Container = styled.View(({ theme }) => ({
@@ -36,51 +35,37 @@ function RoomScreen() {
 
   const { params } = useRoute<RoomScreenRouteProp>();
 
-  const [messages, setMessages] = useState<IMessage[]>([]);
+  const [messages, setMessages] = useState<IMessage[] | undefined>([]);
 
-  const me = useMemo(
-    () => ({
-      _id: user!!.userId,
-    }),
-    [user]
-  );
+  const me = useMemo(() => {
+    if (user) {
+      return {
+        _id: user.userId,
+      };
+    }
+  }, [user]);
+
+  useLayoutEffect(() => {
+    (async () => {
+      if (user && params) {
+        const chats = await loadRoom(user.userId, params.roomId);
+
+        if (chats) {
+          setMessages(chats);
+        }
+      }
+    })();
+  }, [user, params]);
 
   useBackEffect();
 
-  useLayoutEffect(() => {
-    if (user && params && params !== undefined) {
-      const ref = query(
-        collection(
-          firestore,
-          'posts',
-          'users',
-          user.userId,
-          'rooms',
-          'room',
-          params?.roomId,
-          'messages'
-        ),
-        orderBy('createdAt', 'desc')
-      );
-
-      const unsubscribe = onSnapshot(ref, (snopshot) => {
-        const prepared = snopshot.docs.map((doc) => doc.data() as IMessage);
-
-        setMessages(prepared);
-        // TODO: dispatch message
-      });
-
-      return () => unsubscribe();
-    }
-  }, [user, params]);
-
   const onBackPress = useCallback(() => {
     const routes = navigation.getState()?.routes;
-    const prevRouteName = routes[routes.length - 2].name;
+    const prev = routes[routes.length - 2].name;
 
-    if (prevRouteName === 'Pin') {
+    if (prev === 'Pin') {
       navigation.popToTop();
-    } else if (prevRouteName === 'Search') {
+    } else if (prev === 'Search') {
       navigation.goBack();
     } else {
       navigation.goBack();
@@ -89,7 +74,7 @@ function RoomScreen() {
 
   const onSend = useCallback(
     (messages: IMessage[]) => {
-      if (user && params && params !== undefined) {
+      if (user && params) {
         const message = {
           _id: uuid.v4().toString(),
           text: messages[0].text,
