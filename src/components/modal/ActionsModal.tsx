@@ -68,24 +68,41 @@ function ActionsModal({
       onDismiss={onNegative}
       animationType="slide"
     >
-      <Container onPress={onNegative}>
-        <ShadowButton onPress={onPressFirst}>
-          <CommonText text={items[0].text} fontSize={14} />
-        </ShadowButton>
+      {items.length === 2 ? (
+        <Container onPress={onNegative}>
+          <ShadowButton onPress={onPressFirst}>
+            <CommonText text={items[0].text} fontSize={14} />
+          </ShadowButton>
 
-        <ShadowButton onPress={onPressSecond}>
-          <CommonText text={items[1].text} fontSize={14} />
-        </ShadowButton>
+          <ShadowButton onPress={onNegative} marginTop={20}>
+            <CommonText
+              text={items[1].text}
+              fontSize={14}
+              isSpecificColor
+              specificColor={theme.color.red}
+            />
+          </ShadowButton>
+        </Container>
+      ) : (
+        <Container onPress={onNegative}>
+          <ShadowButton onPress={onPressFirst}>
+            <CommonText text={items[0].text} fontSize={14} />
+          </ShadowButton>
 
-        <ShadowButton onPress={onNegative} marginTop={20}>
-          <CommonText
-            text={items[2].text}
-            fontSize={14}
-            isSpecificColor
-            specificColor={theme.color.red}
-          />
-        </ShadowButton>
-      </Container>
+          <ShadowButton onPress={onPressSecond}>
+            <CommonText text={items[1].text} fontSize={14} />
+          </ShadowButton>
+
+          <ShadowButton onPress={onNegative} marginTop={20}>
+            <CommonText
+              text={items[2].text}
+              fontSize={14}
+              isSpecificColor
+              specificColor={theme.color.red}
+            />
+          </ShadowButton>
+        </Container>
+      )}
     </Modal>
   );
 }

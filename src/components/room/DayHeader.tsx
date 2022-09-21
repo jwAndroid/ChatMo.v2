@@ -29,7 +29,7 @@ function DayHeader({ props }: IDayHeader) {
     () => ({
       fontSize: 12,
       textAlignVertical: 'center',
-      color: theme.color.text,
+      color: theme.color.shadow,
       fontWeight: '500',
     }),
     [theme]
