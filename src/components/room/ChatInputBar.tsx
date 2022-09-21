@@ -9,7 +9,6 @@ import {
   SendProps,
 } from 'react-native-gifted-chat';
 
-import ActionButton from './ActionButton';
 import ChatInput from './ChatInput';
 import SendButton from './SendButton';
 
@@ -45,20 +44,10 @@ function ChatInputBar({ props }: IChatInputBar) {
     []
   );
 
-  const onPress = useCallback(() => {
-    console.log('onPress');
-  }, []);
-
-  const renderActions = useCallback(
-    () => <ActionButton onPress={onPress} />,
-    [onPress]
-  );
-
   return (
     <InputToolbar
       {...props}
       primaryStyle={PrimaryStyle}
-      renderActions={renderActions}
       renderComposer={renderComposer}
       renderSend={renderSend}
     />

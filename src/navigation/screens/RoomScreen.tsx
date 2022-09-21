@@ -21,12 +21,18 @@ import {
 import { useAppSelector } from '../../hooks/useRedux';
 import { loadRoom } from '../../firebase/room';
 import { createMessage } from '../../firebase/posts';
-import { ChatBubble, ChatInputBar, DayHeader } from '../../components/room';
+import {
+  ActionButton,
+  ChatBubble,
+  ChatInputBar,
+  DayHeader,
+} from '../../components/room';
 import { IconHeader } from '../../components/accessory';
 import { SafeAreaContainer } from '../../components/layout';
 import { RootStackNavigationProp, RootStackParamList } from '../RootStack';
 import { getTimestamp } from '../../utils/date';
 import useBackEffect from '../../hooks/useBackEffect';
+import { BottomSheetModal } from '../../components/modal';
 
 const Container = styled.View(({ theme }) => ({
   flex: 1,
@@ -38,15 +44,14 @@ type RoomScreenRouteProp = RouteProp<RootStackParamList, 'Pin'>;
 function RoomScreen() {
   const user = useAppSelector((state) => state.auth.user);
 
+  const navigation = useNavigation<RootStackNavigationProp>();
+  const { params } = useRoute<RoomScreenRouteProp>();
   const { bottom } = useSafeAreaInsets();
 
-  const navigation = useNavigation<RootStackNavigationProp>();
-
-  const { params } = useRoute<RoomScreenRouteProp>();
-
   const [messages, setMessages] = useState<IMessage[] | undefined>([]);
+  const [isOpen, setIsOpen] = useState(false);
 
-  const me = useMemo(() => {
+  const userId = useMemo(() => {
     if (user) {
       return {
         _id: user.userId,
@@ -142,13 +147,30 @@ function RoomScreen() {
     []
   );
 
+  const onPressAction = useCallback(() => {
+    setIsOpen(true);
+  }, []);
+
+  const renderActions = useCallback(
+    () => <ActionButton onPress={onPressAction} />,
+    [onPressAction]
+  );
+
+  const onPostive = useCallback(() => {
+    setIsOpen(false);
+  }, []);
+
+  const onNegative = useCallback(() => {
+    setIsOpen(false);
+  }, []);
+
   return (
     <Container>
       <IconHeader isBackword isIosTopInset onPress={onBackPress} />
 
       <SafeAreaContainer>
         <GiftedChat
-          user={me}
+          user={userId}
           messages={messages}
           onSend={(messages) => onSend(messages)}
           bottomOffset={bottom === 0 ? 0 : bottom - 3}
@@ -160,8 +182,17 @@ function RoomScreen() {
           renderDay={renderDay}
           renderBubble={renderBubble}
           renderInputToolbar={renderInputToolbar}
+          renderActions={renderActions}
         />
       </SafeAreaContainer>
+
+      {isOpen && (
+        <BottomSheetModal
+          isOpen
+          onNegative={onNegative}
+          onPostive={onPostive}
+        />
+      )}
     </Container>
   );
 }

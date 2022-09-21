@@ -1,8 +1,11 @@
-import React, { memo } from 'react';
+import React, { memo, useCallback, useState } from 'react';
 import styled from '@emotion/native';
 import { useTheme } from '@emotion/react';
 
-const StyledInput = styled.TextInput(({ theme }) => ({
+interface IStyledInput {
+  isFocus: boolean;
+}
+const StyledInput = styled.TextInput<IStyledInput>(({ theme, isFocus }) => ({
   borderRadius: 8,
   borderWidth: 1,
   fontSize: 15,
@@ -10,7 +13,7 @@ const StyledInput = styled.TextInput(({ theme }) => ({
   paddingVertical: 8,
   marginTop: 10,
   color: theme.color.text,
-  borderColor: theme.color.shadow,
+  borderColor: isFocus ? theme.color.sky_300 : theme.color.shadow,
 }));
 
 interface ITitleInput {
@@ -20,12 +23,25 @@ interface ITitleInput {
 function TitleInput({ value, onChangeText }: ITitleInput) {
   const theme = useTheme();
 
+  const [isFocus, setIsFocus] = useState(false);
+
+  const onFocus = useCallback(() => {
+    setIsFocus(true);
+  }, []);
+
+  const onBlur = useCallback(() => {
+    setIsFocus(false);
+  }, []);
+
   return (
     <StyledInput
       placeholder="제목을 입력해주세요."
       placeholderTextColor={theme.color.shadow}
       value={value}
       onChangeText={onChangeText}
+      onFocus={onFocus}
+      onBlur={onBlur}
+      isFocus={isFocus}
       blurOnSubmit
     />
   );
