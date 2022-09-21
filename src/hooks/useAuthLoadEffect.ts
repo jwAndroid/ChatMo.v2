@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 import uuid from 'react-native-uuid';
-import { useAppDispatch } from './useRedux';
 
+import { useAppDispatch } from './useRedux';
 import { authorize } from '../redux/auth/slice';
-import authStorage from '../storages/authStorage';
 import { authorization } from '../firebase/auth';
+import authStorage from '../storages/authStorage';
 import { UserEntity } from '../../types';
 import { getTimestamp } from '../utils/date';
 

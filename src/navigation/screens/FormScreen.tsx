@@ -5,28 +5,20 @@ import { useTheme } from '@emotion/react';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
 import uuid from 'react-native-uuid';
 
-import {
-  ButtonBar,
-  Chip,
-  CommonText,
-  Icon,
-  IconHeader,
-  InputModal,
-  KeyboardContainer,
-  NotificationModal,
-  PasswordInput,
-  SafeAreaContainer,
-  SettingSwitch,
-  TitleInput,
-} from '../../components';
+import { KeyboardContainer, SafeAreaContainer } from '../../components/layout';
+import { Chip, Icon, IconHeader } from '../../components/accessory';
+import { CommonText } from '../../components/text';
+import { PasswordInput, TitleInput } from '../../components/input';
+import { ButtonBar, SettingSwitch } from '../../components/button';
+import { InputModal, NotificationModal } from '../../components/modal';
 import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
-import useBackEffect from '../../hooks/useBackEffect';
-import { RootStackNavigationProp, RootStackParamList } from '../RootStack';
 import { fulfilled } from '../../redux/posts/slice';
 import { createRoom, onModifyRoom } from '../../firebase/posts';
-import { ellipsize } from '../../utils/ellipsize';
-import { getTimestamp } from '../../utils/date';
+import useBackEffect from '../../hooks/useBackEffect';
+import { RootStackNavigationProp, RootStackParamList } from '../RootStack';
 import { ChipEntity } from '../../../types';
+import { getTimestamp } from '../../utils/date';
+import { ellipsize } from '../../utils/text';
 
 const Container = styled.View(() => ({
   flex: 1,

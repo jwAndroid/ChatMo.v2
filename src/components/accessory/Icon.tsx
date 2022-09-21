@@ -1,6 +1,6 @@
-import styled from '@emotion/native';
 import React, { memo } from 'react';
 import { ImageSourcePropType, Pressable } from 'react-native';
+import styled from '@emotion/native';
 
 interface IStyledIcon {
   size: number;

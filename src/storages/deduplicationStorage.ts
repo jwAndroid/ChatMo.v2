@@ -1,6 +1,7 @@
 import uuid from 'react-native-uuid';
-import { ChipEntity } from '../../types';
+
 import historyStorage from './historyStorage';
+import { ChipEntity } from '../../types';
 
 export default function deduplicationStorage(
   value: string,
@@ -22,26 +23,3 @@ export default function deduplicationStorage(
     return deduplication;
   }
 }
-
-/**
- *   const onEndEditing = useCallback(() => {
-    // const prepared = {
-    //   id: uuid.v4().toString(),
-    //   title: value,
-    // };
-
-    // if (prepared.title && prepared.id) {
-    //   const deduplication = [prepared, ...chips].filter(
-    //     (arr, index, callback) =>
-    //       index === callback.findIndex((t) => t.title === arr.title)
-    //   );
-
-    //   historyStorage.set(deduplication);
-
-    const deduplication = deduplicationStorage(value, chips);
-
-    if (deduplication) {
-      setChips(deduplication);
-    }
-  }, [value, chips]);
- */

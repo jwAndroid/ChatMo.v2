@@ -7,14 +7,6 @@ import { useTheme } from '@emotion/react';
 import { RootStackNavigationProp } from '../RootStack';
 import { deleteRoom, onFavoritesRoom } from '../../firebase/posts';
 import { fulfilled } from '../../redux/posts/slice';
-import {
-  FloatingButton,
-  IconHeader,
-  ListPlaceholder,
-  NotificationModal,
-  SafeAreaContainer,
-  SwipeList,
-} from '../../components';
 import { RoomEntity } from '../../../types';
 import { getTimestamp } from '../../utils/date';
 import { fromUpdate } from '../../redux/system/slice';
@@ -22,6 +14,11 @@ import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
 import { useRoomsLoadEffect } from '../../hooks/useRoomsLoadEffect';
 import { useAnimation } from '../../hooks/useAnimation';
 import useBackEffect from '../../hooks/useBackEffect';
+import { SafeAreaContainer } from '../../components/layout';
+import { IconHeader, ListPlaceholder } from '../../components/accessory';
+import { SwipeList } from '../../components/common';
+import { NotificationModal } from '../../components/modal';
+import { FloatingButton } from '../../components/button';
 
 function RoomsScreen() {
   const dispatch = useAppDispatch();

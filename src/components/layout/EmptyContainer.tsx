@@ -18,7 +18,7 @@ const Icon = styled.Image(({ theme }) => ({
   tintColor: theme.color.icon,
 }));
 
-function Empty() {
+function EmptyContainer() {
   const theme = useTheme();
 
   return (
@@ -28,4 +28,4 @@ function Empty() {
   );
 }
 
-export default memo(Empty);
+export default memo(EmptyContainer);

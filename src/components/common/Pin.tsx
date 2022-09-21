@@ -3,7 +3,7 @@ import { Dimensions, FlatList, ListRenderItem } from 'react-native';
 import styled from '@emotion/native';
 import { useTheme } from '@emotion/react';
 
-import { keypads } from '../utils/keypads';
+import { keypads } from '../../utils/constants';
 
 const size = Dimensions.get('screen').width / 3;
 const center = Dimensions.get('screen').width / 2.5;

@@ -1,22 +1,22 @@
 import React, { memo } from 'react';
 import { GestureResponderEvent, Modal } from 'react-native';
 import styled from '@emotion/native';
-
 import { useTheme } from '@emotion/react';
-import Divider from './Divider';
-import CommonText from './CommonText';
+
+import { CommonText } from '../text';
+import { Divider } from '../accessory';
 
 const Container = styled.Pressable({
   flex: 1,
   justifyContent: 'center',
   alignItems: 'center',
   paddingHorizontal: 30,
-  backgroundColor: 'rgba(0, 0, 0, 0.4)',
+  backgroundColor: 'rgba(0, 0, 0, 0.5)',
 });
 
-const TextContainer = styled.View(({ theme }) => ({
+const ContentContainer = styled.View(({ theme }) => ({
   width: '100%',
-  paddingVertical: 25,
+  paddingVertical: 20,
   paddingHorizontal: 30,
   justifyContent: 'center',
   alignItems: 'center',
@@ -41,34 +41,33 @@ const StyledButton = styled.Pressable(() => ({
   alignItems: 'center',
 }));
 
-const ModalText = styled.Text(({ theme }) => ({
-  includeFontPadding: false,
-  textAlign: 'center',
-  fontSize: 14,
-  color: theme.color.shadow,
-}));
-
-const ErrorText = styled.Text(({ theme }) => ({
-  textAlign: 'center',
+const StyledInput = styled.TextInput(({ theme }) => ({
+  borderWidth: 1,
   fontSize: 13,
-  color: theme.color.red,
+  justifyContent: 'center',
+  alignItems: 'center',
+  paddingHorizontal: 20,
+  paddingVertical: 5,
+  borderRadius: 13,
+  marginBottom: 5,
+  color: theme.color.text,
+  borderColor: theme.color.chip,
 }));
 
-interface INotificationModal {
+interface IInputModal {
   isOpen: boolean;
-  notification: string;
   onNegative: () => void;
   onPostive: (event: GestureResponderEvent) => void;
-  error?: boolean;
+  value: string;
+  onChangeText: (text: string) => void;
 }
-
-function NotificationModal({
+function InputModal({
   isOpen,
-  notification,
   onNegative,
   onPostive,
-  error,
-}: INotificationModal) {
+  value,
+  onChangeText,
+}: IInputModal) {
   const theme = useTheme();
 
   return (
@@ -79,13 +78,33 @@ function NotificationModal({
       animationType="fade"
     >
       <Container onPress={onNegative}>
-        <TextContainer>
-          <ModalText>{notification}</ModalText>
+        <ContentContainer>
+          <CommonText
+            fontSize={13}
+            text="속성 추가"
+            isSpecificColor
+            specificColor={theme.color.shadow}
+            marginBottom={10}
+          />
 
-          {error ? (
-            <ErrorText>비밀번호 4자리 또는 제목을 입력해주세요</ErrorText>
+          <StyledInput
+            value={value}
+            placeholder="제목 입력.."
+            placeholderTextColor={theme.color.shadow}
+            onChangeText={onChangeText}
+            maxLength={15}
+          />
+
+          {value.length >= 15 ? (
+            <CommonText
+              fontSize={12}
+              text="제목은 15자 까지 입력 가능 합니다."
+              isSpecificColor
+              specificColor={theme.color.shadow}
+              marginTop={5}
+            />
           ) : null}
-        </TextContainer>
+        </ContentContainer>
 
         <Divider />
 
@@ -93,7 +112,7 @@ function NotificationModal({
           <StyledButton onPress={onNegative}>
             <CommonText
               fontSize={14}
-              text="아니요"
+              text="취소"
               isSpecificColor
               specificColor={theme.color.shadow}
             />
@@ -104,7 +123,7 @@ function NotificationModal({
           <StyledButton onPress={onPostive}>
             <CommonText
               fontSize={14}
-              text="예"
+              text="확인"
               isSpecificColor
               specificColor={theme.color.shadow}
             />
@@ -115,8 +134,4 @@ function NotificationModal({
   );
 }
 
-NotificationModal.defaultProps = {
-  error: false,
-};
-
-export default memo(NotificationModal);
+export default memo(InputModal);

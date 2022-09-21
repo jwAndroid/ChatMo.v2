@@ -1,18 +1,15 @@
 import React, { memo, useCallback, useMemo } from 'react';
 import { FlatList, ListRenderItem, StyleProp, ViewStyle } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
-
 import styled from '@emotion/native';
 import { useTheme } from '@emotion/react';
+
 import { RootStackNavigationProp } from '../RootStack';
-import {
-  CommonText,
-  Divider,
-  IconHeader,
-  SafeAreaContainer,
-} from '../../components';
-import { SettingEntity } from '../../../types';
 import useBackEffect from '../../hooks/useBackEffect';
+import { CommonText } from '../../components/text';
+import { Divider, IconHeader } from '../../components/accessory';
+import { SafeAreaContainer } from '../../components/layout';
+import { SettingEntity } from '../../../types';
 
 const StyledPressable = styled.Pressable(() => ({
   paddingHorizontal: 20,

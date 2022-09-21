@@ -7,10 +7,10 @@ import {
   SendProps,
 } from 'react-native-gifted-chat';
 
+import ActionButton from './ActionButton';
 import ChatInput from './ChatInput';
 import SendButton from './SendButton';
-import ActionButton from './ActionButton';
-import { ChatInputBarStyles } from '../utils/styles';
+import { ChatInputBarStyles } from '../../utils/styles';
 
 interface IChatInputBar {
   props: Readonly<InputToolbarProps<IMessage>>;

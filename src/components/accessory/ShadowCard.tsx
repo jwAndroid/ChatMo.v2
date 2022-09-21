@@ -4,11 +4,10 @@ import styled from '@emotion/native';
 import { useTheme } from '@emotion/react';
 
 import Chip from './Chip';
-import CommonText from './CommonText';
-import { RoomEntity } from '../../types';
-import { getFormatTime } from '../utils/date';
-import { ellipsize } from '../utils/ellipsize';
-import { lineBreak } from '../utils/text';
+import { RoomEntity } from '../../../types';
+import { CommonText } from '../text';
+import { ellipsize, lineBreak } from '../../utils/text';
+import { getFormatTime } from '../../utils/date';
 
 const { width, height } = Dimensions.get('screen');
 

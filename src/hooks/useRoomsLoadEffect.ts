@@ -10,8 +10,8 @@ import {
   startAfter,
 } from 'firebase/firestore';
 import { firestore } from '../firebase/config';
-import { useAppDispatch, useAppSelector } from './useRedux';
 
+import { useAppDispatch, useAppSelector } from './useRedux';
 import { fulfilled } from '../redux/posts/slice';
 import { RoomEntity } from '../redux/posts/type';
 

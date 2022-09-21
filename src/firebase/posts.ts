@@ -1,4 +1,3 @@
-import { IMessage } from 'react-native-gifted-chat';
 import {
   setDoc,
   doc,
@@ -9,10 +8,11 @@ import {
   collection,
   orderBy,
 } from 'firebase/firestore';
+import { IMessage } from 'react-native-gifted-chat';
 
+import { firestore } from './config';
 import { RoomEntity } from '../../types';
 import { getTimestamp } from '../utils/date';
-import { firestore } from './config';
 
 export async function createRoom(userId: string, room: RoomEntity) {
   console.log('createRoom start');
@@ -105,10 +105,14 @@ export async function loadPosts(userId: string) {
       orderBy('createdAt', 'desc')
     );
 
-    const snapshot = await getDocs(ref);
+    try {
+      const snapshot = await getDocs(ref);
 
-    const posts = snapshot.docs.map((doc) => doc.data() as RoomEntity, []);
+      const posts = snapshot.docs.map((doc) => doc.data() as RoomEntity, []);
 
-    return posts as RoomEntity[];
+      return posts as RoomEntity[];
+    } catch (error) {
+      Error('some error!');
+    }
   }
 }

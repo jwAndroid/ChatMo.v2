@@ -1,7 +1,8 @@
 import React, { memo } from 'react';
 import styled from '@emotion/native';
 import { useTheme } from '@emotion/react';
-import CommonText from './CommonText';
+
+import { CommonText } from '../text';
 
 const Block = styled.View(() => ({
   width: '100%',

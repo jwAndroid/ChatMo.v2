@@ -3,12 +3,12 @@ import { BackHandler } from 'react-native';
 
 export default function useBackEffect() {
   useEffect(() => {
-    const handler = BackHandler.addEventListener('hardwareBackPress', () => {
-      console.log('back swipe event start');
-
-      // some todo navigation back actions
-      return true;
-    });
+    const handler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      () =>
+        // some todo navigation back actions
+        true
+    );
 
     return () => handler.remove();
   }, []);

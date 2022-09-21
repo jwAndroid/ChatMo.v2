@@ -4,11 +4,10 @@ import styled from '@emotion/native';
 import { useTheme } from '@emotion/react';
 import { RowMap, SwipeListView } from 'react-native-swipe-list-view';
 
-import { RoomEntity } from '../../types';
-import RoomsItem from './RoomsItem';
-import Favorites from './Favorites';
-import Empty from './Empty';
-import { SwipeStyles } from '../utils/styles';
+import { FavoritesItem, RoomsItem } from '../item';
+import { EmptyContainer } from '../layout';
+import { RoomEntity } from '../../../types';
+import { SwipeStyles } from '../../utils/styles';
 
 const RowBack = styled.View(({ theme }) => ({
   flex: 1,
@@ -66,7 +65,7 @@ function SwipeList({
   );
 
   const ListHeaderComponent = useCallback(
-    () => <Favorites rooms={rooms} />,
+    () => <FavoritesItem rooms={rooms} />,
     [rooms]
   );
 
@@ -106,7 +105,7 @@ function SwipeList({
   const ListEmptyComponent = useCallback(
     () =>
       rooms?.filter((room) => !room.isFavorites).length === 0 ? (
-        <Empty />
+        <EmptyContainer />
       ) : null,
     [rooms]
   );

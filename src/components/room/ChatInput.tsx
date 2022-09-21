@@ -1,7 +1,7 @@
-import { StyleProp, TextStyle, Platform, TextInputProps } from 'react-native';
 import React, { memo, useMemo } from 'react';
-import { Composer, ComposerProps } from 'react-native-gifted-chat';
+import { StyleProp, TextStyle, Platform, TextInputProps } from 'react-native';
 import { useTheme } from '@emotion/react';
+import { Composer, ComposerProps } from 'react-native-gifted-chat';
 
 interface IChatInput {
   props: Readonly<ComposerProps>;

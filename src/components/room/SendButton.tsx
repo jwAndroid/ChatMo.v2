@@ -1,8 +1,8 @@
 import React, { memo, useMemo } from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
-import { IMessage, Send, SendProps } from 'react-native-gifted-chat';
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/native';
+import { IMessage, Send, SendProps } from 'react-native-gifted-chat';
 
 const Icon = styled.Image({
   width: 15,

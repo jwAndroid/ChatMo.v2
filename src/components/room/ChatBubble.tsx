@@ -10,7 +10,7 @@ import {
 
 import BubbleText from './BubbleText';
 import BubbleTicks from './BubbleTicks';
-import { ChatBubbleStyle } from '../utils/styles';
+import { ChatBubbleStyle } from '../../utils/styles';
 
 interface IChatBubble {
   props: Readonly<BubbleProps<IMessage>> & Readonly<{ children?: ReactNode }>;

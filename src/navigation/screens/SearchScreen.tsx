@@ -1,10 +1,4 @@
-import React, {
-  memo,
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useState,
-} from 'react';
+import React, { memo, useCallback, useLayoutEffect, useState } from 'react';
 import {
   FlatList,
   Keyboard,
@@ -17,21 +11,18 @@ import styled from '@emotion/native';
 import { useTheme } from '@emotion/react';
 import { useNavigation } from '@react-navigation/core';
 
+import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
+import { fromUpdate } from '../../redux/system/slice';
 import historyStorage from '../../storages/historyStorage';
 import deduplicationStorage from '../../storages/deduplicationStorage';
 import { RootStackNavigationProp } from '../RootStack';
-import {
-  Chip,
-  CommonText,
-  RoomsItem,
-  SafeAreaContainer,
-  SearchBox,
-} from '../../components';
-import { ChipEntity, RoomEntity } from '../../../types';
-import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
 import { loadPosts } from '../../firebase/posts';
-import { fromUpdate } from '../../redux/system/slice';
 import useBackEffect from '../../hooks/useBackEffect';
+import { RoomsItem } from '../../components/item';
+import { CommonText } from '../../components/text';
+import { SafeAreaContainer } from '../../components/layout';
+import { Chip, SearchBox } from '../../components/accessory';
+import { ChipEntity, RoomEntity } from '../../../types';
 
 const HistoryContainer = styled.View(({ theme }) => ({
   justifyContent: 'center',
@@ -92,7 +83,7 @@ function SearchScreen() {
   useLayoutEffect(() => {
     (async () => {
       if (user && user.userId) {
-        const posts = await loadPosts(user.userId);
+        const posts = await loadPosts(user.userId).catch();
 
         if (posts) {
           setRenderData(posts);
@@ -103,7 +94,7 @@ function SearchScreen() {
     })();
   }, [user]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     (async () => {
       const data = await historyStorage.get();
 

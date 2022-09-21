@@ -3,7 +3,7 @@ import styled from '@emotion/native';
 import { useTheme } from '@emotion/react';
 import { IMessage, MessageTextProps } from 'react-native-gifted-chat';
 
-import CommonText from './CommonText';
+import { CommonText } from '../text';
 
 const Container = styled.View(() => ({
   paddingVertical: 3,

@@ -1,6 +1,6 @@
-import { useTheme } from '@emotion/react';
 import React, { memo, useMemo } from 'react';
 import { Switch } from 'react-native';
+import { useTheme } from '@emotion/react';
 
 interface ISettingSwitch {
   isEnabled: boolean;

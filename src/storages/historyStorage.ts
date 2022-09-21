@@ -10,21 +10,21 @@ const historyStorage = {
       const raw = await AsyncStorage.getItem(key);
 
       if (!raw) {
-        throw new Error('No saved data');
+        return null;
       }
 
       const parsed = JSON.parse(raw);
 
       return parsed;
     } catch (e) {
-      throw new Error('Failed to load');
+      return null;
     }
   },
   async set(data: ChipEntity[]) {
     try {
       await AsyncStorage.setItem(key, JSON.stringify(data));
     } catch (e) {
-      throw new Error('Failed to save');
+      return null;
     }
   },
 };

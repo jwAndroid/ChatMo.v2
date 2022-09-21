@@ -21,14 +21,10 @@ import {
 import { useAppSelector } from '../../hooks/useRedux';
 import { loadRoom } from '../../firebase/room';
 import { createMessage } from '../../firebase/posts';
+import { ChatBubble, ChatInputBar, DayHeader } from '../../components/room';
+import { IconHeader } from '../../components/accessory';
+import { SafeAreaContainer } from '../../components/layout';
 import { RootStackNavigationProp, RootStackParamList } from '../RootStack';
-import {
-  ChatBubble,
-  ChatInputBar,
-  DayHeader,
-  IconHeader,
-  SafeAreaContainer,
-} from '../../components';
 import { getTimestamp } from '../../utils/date';
 import useBackEffect from '../../hooks/useBackEffect';
 
