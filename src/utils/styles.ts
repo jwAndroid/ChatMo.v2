@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { StyleProp, TextStyle, ViewStyle } from 'react-native';
+import { Platform, StyleProp, TextStyle, ViewStyle } from 'react-native';
 import { useTheme } from '@emotion/react';
 import { LeftRightStyle } from 'react-native-gifted-chat';
 
@@ -148,5 +148,34 @@ export function ChatBubbleStyle() {
     TimeContainerStyle,
     PreviousStyle,
     NextStyle,
+  };
+}
+
+export function ChatInputBarStyles() {
+  const theme = useTheme();
+
+  const PrimaryStyle = useMemo<StyleProp<ViewStyle>>(
+    () => ({
+      flex: 1,
+      alignItems: 'center',
+      paddingTop: Platform.OS === 'ios' ? undefined : 7,
+      paddingBottom: Platform.OS === 'ios' ? undefined : 3,
+      paddingLeft: 10,
+      paddingRight: 20,
+      backgroundColor: theme.color.background,
+    }),
+    [theme]
+  );
+
+  const ContainerStyle = useMemo<StyleProp<ViewStyle>>(
+    () => ({
+      marginBottom: 5,
+    }),
+    []
+  );
+
+  return {
+    PrimaryStyle,
+    ContainerStyle,
   };
 }

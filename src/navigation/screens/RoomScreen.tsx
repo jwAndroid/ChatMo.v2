@@ -15,6 +15,7 @@ import {
   DayProps,
   GiftedChat,
   IMessage,
+  InputToolbarProps,
 } from 'react-native-gifted-chat';
 
 import { useAppSelector } from '../../hooks/useRedux';
@@ -23,6 +24,7 @@ import { createMessage } from '../../firebase/posts';
 import { RootStackNavigationProp, RootStackParamList } from '../RootStack';
 import {
   ChatBubble,
+  ChatInputBar,
   DayHeader,
   IconHeader,
   SafeAreaContainer,
@@ -85,7 +87,7 @@ function RoomScreen() {
 
   const onSend = useCallback(
     (messages: IMessage[]) => {
-      if (user && params) {
+      if (user && params && messages[0].text.length > 0) {
         const message = {
           _id: uuid.v4().toString(),
           text: messages[0].text,
@@ -136,6 +138,14 @@ function RoomScreen() {
     [onPressBubble, onLongPressBubble]
   );
 
+  const renderInputToolbar = useCallback(
+    (
+      props: Readonly<InputToolbarProps<IMessage>> &
+        Readonly<{ children?: ReactNode }>
+    ) => <ChatInputBar props={props} />,
+    []
+  );
+
   return (
     <Container>
       <IconHeader isBackword isIosTopInset onPress={onBackPress} />
@@ -154,6 +164,7 @@ function RoomScreen() {
           alwaysShowSend
           renderDay={renderDay}
           renderBubble={renderBubble}
+          renderInputToolbar={renderInputToolbar}
         />
       </SafeAreaContainer>
     </Container>

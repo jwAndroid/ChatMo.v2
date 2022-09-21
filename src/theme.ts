@@ -48,7 +48,7 @@ export const lightTheme: Theme = {
 };
 
 export const darkTheme: Theme = {
-  name: 'lightTheme',
+  name: 'darkTheme',
   font: {
     // YoonGothicRegular: 'YoonGothicRegular',
   },
