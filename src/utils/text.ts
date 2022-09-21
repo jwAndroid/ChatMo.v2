@@ -7,3 +7,10 @@ export function ellipsize(text: string, size: number) {
 
   return `${text.substring(0, size)}...`;
 }
+
+export function regexUrl(url: string) {
+  const regex =
+    /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/;
+
+  return regex.test(url) ? url : undefined;
+}
