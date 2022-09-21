@@ -27,8 +27,6 @@ function RoomsScreen() {
   const user = useAppSelector((state) => state.auth.user);
   const posts = useAppSelector((state) => state.posts.posts);
 
-  console.log(JSON.stringify(posts.data, null, 5));
-
   const { onLoadMore, isLoadMore, isloadFirst } = useRoomsLoadEffect();
   const { onItemAnimation } = useAnimation();
 

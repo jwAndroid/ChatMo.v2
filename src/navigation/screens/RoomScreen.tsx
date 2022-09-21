@@ -34,7 +34,11 @@ import { ActionsModal } from '../../components/modal';
 import { actionsModal, bubbleModal } from '../../utils/constants';
 import { MessageEntity } from '../../../types';
 import { fulfilledChat } from '../../redux/chat/slice';
-import { loadMessages, onModifyMessage } from '../../firebase/room';
+import {
+  deleteMessage,
+  loadMessages,
+  onModifyMessage,
+} from '../../firebase/room';
 
 const Container = styled.View(({ theme }) => ({
   flex: 1,
@@ -55,6 +59,7 @@ function RoomScreen() {
 
   const [isOpen, setIsOpen] = useState(false);
   const [isBubblePress, setIsBubblePress] = useState(false);
+  const [pickedItem, setPickedItem] = useState<MessageEntity | null>(null);
 
   const userId = useMemo(() => {
     if (user) {
@@ -158,6 +163,8 @@ function RoomScreen() {
     if (message) {
       setIsBubblePress(true);
 
+      setPickedItem(message);
+
       setIsOpen(true);
     }
   }, []);
@@ -205,11 +212,23 @@ function RoomScreen() {
 
   const onPressSecond = useCallback(() => {
     if (isBubblePress) {
-      setIsOpen(false);
+      if (chat.data && user && params && pickedItem) {
+        const prepared = chat.data.filter(
+          (item: MessageEntity) => item._id !== pickedItem._id
+        );
+
+        dispatch(fulfilledChat(prepared));
+
+        deleteMessage(user.userId, params, pickedItem);
+
+        setIsOpen(false);
+
+        setPickedItem(null);
+      }
     } else {
       setIsOpen(false);
     }
-  }, [isBubblePress]);
+  }, [dispatch, chat.data, params, user, pickedItem, isBubblePress]);
 
   const onNegative = useCallback(() => {
     setIsOpen(false);

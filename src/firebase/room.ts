@@ -1,5 +1,6 @@
 import {
   collection,
+  deleteDoc,
   doc,
   getDocs,
   orderBy,
@@ -53,6 +54,32 @@ export async function onModifyMessage(
         message._id.toString()
       ),
       { ...message }
+    );
+  } else {
+    console.log('onModifyMessage error!');
+  }
+}
+
+export async function deleteMessage(
+  userId: string,
+  room: RoomEntity,
+  message: MessageEntity
+) {
+  console.log('deleteMessage start');
+
+  if (userId && room && message) {
+    await deleteDoc(
+      doc(
+        firestore,
+        'posts',
+        'users',
+        userId,
+        'rooms',
+        'room',
+        room.roomId,
+        'messages',
+        message._id.toString()
+      )
     );
   } else {
     console.log('onModifyMessage error!');
