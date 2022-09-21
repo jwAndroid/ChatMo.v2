@@ -1,4 +1,6 @@
-import React, { memo, ReactNode, useCallback } from 'react';
+import React, { memo, ReactNode, useCallback, useMemo } from 'react';
+import { Platform, StyleProp, ViewStyle } from 'react-native';
+import { useTheme } from '@emotion/react';
 import {
   ComposerProps,
   IMessage,
@@ -10,13 +12,24 @@ import {
 import ActionButton from './ActionButton';
 import ChatInput from './ChatInput';
 import SendButton from './SendButton';
-import { ChatInputBarStyles } from '../../utils/styles';
 
 interface IChatInputBar {
   props: Readonly<InputToolbarProps<IMessage>>;
 }
 function ChatInputBar({ props }: IChatInputBar) {
-  const { PrimaryStyle, ContainerStyle } = ChatInputBarStyles();
+  const theme = useTheme();
+
+  const PrimaryStyle = useMemo<StyleProp<ViewStyle>>(
+    () => ({
+      alignItems: 'center',
+      paddingTop: Platform.OS === 'ios' ? undefined : 7,
+      paddingBottom: Platform.OS === 'ios' ? undefined : 3,
+      paddingLeft: 10,
+      paddingRight: 15,
+      backgroundColor: theme.color.background,
+    }),
+    [theme]
+  );
 
   const renderComposer = useCallback(
     (props: Readonly<ComposerProps> & Readonly<{ children?: ReactNode }>) => (
@@ -46,7 +59,6 @@ function ChatInputBar({ props }: IChatInputBar) {
       {...props}
       primaryStyle={PrimaryStyle}
       renderActions={renderActions}
-      containerStyle={ContainerStyle}
       renderComposer={renderComposer}
       renderSend={renderSend}
     />

@@ -151,10 +151,9 @@ function RoomScreen() {
           user={me}
           messages={messages}
           onSend={(messages) => onSend(messages)}
-          bottomOffset={bottom === 0 ? 0 : bottom}
+          bottomOffset={bottom === 0 ? 0 : bottom - 3}
           wrapInSafeArea={false}
           showUserAvatar={false}
-          keyboardShouldPersistTaps="handled"
           scrollToBottom
           alignTop
           alwaysShowSend
