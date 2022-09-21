@@ -27,3 +27,8 @@ export interface RoomEntity {
   modifyAt: number | null;
   chips: ChipEntity[] | null;
 }
+
+export interface ModalEntity {
+  id: number;
+  text: string;
+}

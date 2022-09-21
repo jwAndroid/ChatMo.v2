@@ -32,7 +32,8 @@ import { SafeAreaContainer } from '../../components/layout';
 import { RootStackNavigationProp, RootStackParamList } from '../RootStack';
 import { getTimestamp } from '../../utils/date';
 import useBackEffect from '../../hooks/useBackEffect';
-import { BottomSheetModal } from '../../components/modal';
+import { ActionsModal } from '../../components/modal';
+import { actionsModal, bubbleModal } from '../../utils/constants';
 
 const Container = styled.View(({ theme }) => ({
   flex: 1,
@@ -50,6 +51,7 @@ function RoomScreen() {
 
   const [messages, setMessages] = useState<IMessage[] | undefined>([]);
   const [isOpen, setIsOpen] = useState(false);
+  const [isBubblePress, setIsBubblePress] = useState(false);
 
   const userId = useMemo(() => {
     if (user) {
@@ -121,6 +123,10 @@ function RoomScreen() {
 
   const onLongPressBubble = useCallback((_: any, message: IMessage) => {
     if (message) {
+      setIsBubblePress(true);
+
+      setIsOpen(true);
+
       console.log(message);
     }
   }, []);
@@ -148,6 +154,8 @@ function RoomScreen() {
   );
 
   const onPressAction = useCallback(() => {
+    setIsBubblePress(false);
+
     setIsOpen(true);
   }, []);
 
@@ -156,7 +164,11 @@ function RoomScreen() {
     [onPressAction]
   );
 
-  const onPostive = useCallback(() => {
+  const onPressFirst = useCallback(() => {
+    setIsOpen(false);
+  }, []);
+
+  const onPressSecond = useCallback(() => {
     setIsOpen(false);
   }, []);
 
@@ -187,10 +199,12 @@ function RoomScreen() {
       </SafeAreaContainer>
 
       {isOpen && (
-        <BottomSheetModal
+        <ActionsModal
+          items={isBubblePress ? bubbleModal : actionsModal}
           isOpen
           onNegative={onNegative}
-          onPostive={onPostive}
+          onPressFirst={onPressFirst}
+          onPressSecond={onPressSecond}
         />
       )}
     </Container>

@@ -3,6 +3,7 @@ import { GestureResponderEvent, Modal, Platform } from 'react-native';
 import styled from '@emotion/native';
 import { useTheme } from '@emotion/react';
 import { CommonText } from '../text';
+import { ModalEntity } from '../../../types';
 
 const Container = styled.Pressable({
   flex: 1,
@@ -43,17 +44,21 @@ const ShadowButton = styled.Pressable<IButton>(({ theme, marginTop = 10 }) => {
   };
 });
 
-interface IBottomSheetModal {
+interface IActionsModal {
+  items: ModalEntity[];
   isOpen: boolean;
   onNegative: () => void;
-  onPostive: (event: GestureResponderEvent) => void;
+  onPressFirst: (event: GestureResponderEvent) => void;
+  onPressSecond: (event: GestureResponderEvent) => void;
 }
 
-function BottomSheetModal({
+function ActionsModal({
+  items,
   isOpen,
   onNegative,
-  onPostive,
-}: IBottomSheetModal) {
+  onPressFirst,
+  onPressSecond,
+}: IActionsModal) {
   const theme = useTheme();
 
   return (
@@ -64,18 +69,18 @@ function BottomSheetModal({
       animationType="slide"
     >
       <Container onPress={onNegative}>
-        <ShadowButton onPress={onPostive}>
-          <CommonText text="카메라" fontSize={15} />
+        <ShadowButton onPress={onPressFirst}>
+          <CommonText text={items[0].text} fontSize={14} />
         </ShadowButton>
 
-        <ShadowButton onPress={onNegative}>
-          <CommonText text="갤러리" fontSize={15} />
+        <ShadowButton onPress={onPressSecond}>
+          <CommonText text={items[1].text} fontSize={14} />
         </ShadowButton>
 
         <ShadowButton onPress={onNegative} marginTop={20}>
           <CommonText
-            text="취소"
-            fontSize={15}
+            text={items[2].text}
+            fontSize={14}
             isSpecificColor
             specificColor={theme.color.red}
           />
@@ -85,4 +90,4 @@ function BottomSheetModal({
   );
 }
 
-export default memo(BottomSheetModal);
+export default memo(ActionsModal);
