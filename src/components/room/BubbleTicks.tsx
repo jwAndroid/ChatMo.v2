@@ -3,14 +3,17 @@ import styled from '@emotion/native';
 import { useTheme } from '@emotion/react';
 
 const Container = styled.View(() => ({
-  paddingLeft: 2,
+  marginLeft: 3,
+  marginRight: -3,
+  justifyContent: 'center',
+  alignItems: 'center',
 }));
 
 const Tick = styled.Image(({ theme }) => ({
-  width: 8,
-  height: 8,
-  marginBottom: 0.6,
-  tintColor: theme.color.white,
+  width: 15,
+  height: 15,
+  marginBottom: 1.5,
+  tintColor: theme.color.red,
 }));
 
 function BubbleTicks() {

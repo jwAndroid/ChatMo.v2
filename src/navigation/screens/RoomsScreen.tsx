@@ -1,9 +1,9 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
-import { useNavigation } from '@react-navigation/core';
-import { RowMap } from 'react-native-swipe-list-view';
-
 import { ActivityIndicator } from 'react-native';
 import { useTheme } from '@emotion/react';
+import { useFocusEffect, useNavigation } from '@react-navigation/core';
+import { RowMap } from 'react-native-swipe-list-view';
+
 import { RootStackNavigationProp } from '../RootStack';
 import { deleteRoom, onFavoritesRoom } from '../../firebase/posts';
 import { fulfilled } from '../../redux/posts/slice';
@@ -19,12 +19,15 @@ import { IconHeader, ListPlaceholder } from '../../components/accessory';
 import { SwipeList } from '../../components/common';
 import { NotificationModal } from '../../components/modal';
 import { FloatingButton } from '../../components/button';
+import { reset } from '../../redux/chat/slice';
 
 function RoomsScreen() {
   const dispatch = useAppDispatch();
 
   const user = useAppSelector((state) => state.auth.user);
   const posts = useAppSelector((state) => state.posts.posts);
+
+  console.log(JSON.stringify(posts.data, null, 5));
 
   const { onLoadMore, isLoadMore, isloadFirst } = useRoomsLoadEffect();
   const { onItemAnimation } = useAnimation();
@@ -43,6 +46,10 @@ function RoomsScreen() {
   );
 
   useBackEffect();
+
+  useFocusEffect(() => {
+    dispatch(reset());
+  });
 
   const delayedModal = useCallback((isOpen: boolean) => {
     setTimeout(() => {

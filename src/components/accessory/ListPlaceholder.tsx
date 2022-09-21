@@ -94,7 +94,7 @@ function ListPlaceholder() {
   return (
     <Container>
       <FlatList
-        data={Array(7)
+        data={Array(15)
           .fill('')
           .map((_, i) => ({ key: `${i}` }))}
         renderItem={renderItem}

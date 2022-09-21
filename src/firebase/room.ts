@@ -1,9 +1,16 @@
-import { collection, getDocs, orderBy, query } from 'firebase/firestore';
-import { IMessage } from 'react-native-gifted-chat';
+import {
+  collection,
+  doc,
+  getDocs,
+  orderBy,
+  query,
+  updateDoc,
+} from 'firebase/firestore';
 
+import { MessageEntity, RoomEntity } from '../../types';
 import { firestore } from './config';
 
-export async function loadRoom(userId: string, roomId: string) {
+export async function loadMessages(userId: string, roomId: string) {
   if (userId) {
     const ref = query(
       collection(
@@ -21,6 +28,33 @@ export async function loadRoom(userId: string, roomId: string) {
 
     const snapshot = await getDocs(ref);
 
-    return snapshot.docs.map((doc) => doc.data() as IMessage, []);
+    return snapshot.docs.map((doc) => doc.data() as MessageEntity, []);
+  }
+}
+
+export async function onModifyMessage(
+  userId: string,
+  room: RoomEntity,
+  message: MessageEntity
+) {
+  console.log('onModifyMessage start');
+
+  if (userId && room && message) {
+    await updateDoc(
+      doc(
+        firestore,
+        'posts',
+        'users',
+        userId,
+        'rooms',
+        'room',
+        room.roomId,
+        'messages',
+        message._id.toString()
+      ),
+      { ...message }
+    );
+  } else {
+    console.log('onModifyMessage error!');
   }
 }

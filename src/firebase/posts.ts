@@ -8,10 +8,9 @@ import {
   collection,
   orderBy,
 } from 'firebase/firestore';
-import { IMessage } from 'react-native-gifted-chat';
 
 import { firestore } from './config';
-import { RoomEntity } from '../../types';
+import { MessageEntity, RoomEntity } from '../../types';
 import { getTimestamp } from '../utils/date';
 
 export async function createRoom(userId: string, room: RoomEntity) {
@@ -37,7 +36,7 @@ export async function createRoom(userId: string, room: RoomEntity) {
 export async function createMessage(
   userId: string,
   roomId: string,
-  message: IMessage
+  message: MessageEntity
 ) {
   console.log('createMessage start');
 

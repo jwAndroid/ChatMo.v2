@@ -14,12 +14,10 @@ import {
   BubbleProps,
   DayProps,
   GiftedChat,
-  IMessage,
   InputToolbarProps,
 } from 'react-native-gifted-chat';
 
-import { useAppSelector } from '../../hooks/useRedux';
-import { loadRoom } from '../../firebase/room';
+import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
 import { createMessage } from '../../firebase/posts';
 import {
   ActionButton,
@@ -34,6 +32,9 @@ import { getTimestamp } from '../../utils/date';
 import useBackEffect from '../../hooks/useBackEffect';
 import { ActionsModal } from '../../components/modal';
 import { actionsModal, bubbleModal } from '../../utils/constants';
+import { MessageEntity } from '../../../types';
+import { fulfilledChat } from '../../redux/chat/slice';
+import { loadMessages, onModifyMessage } from '../../firebase/room';
 
 const Container = styled.View(({ theme }) => ({
   flex: 1,
@@ -43,13 +44,15 @@ const Container = styled.View(({ theme }) => ({
 type RoomScreenRouteProp = RouteProp<RootStackParamList, 'Pin'>;
 
 function RoomScreen() {
+  const dispatch = useAppDispatch();
+
   const user = useAppSelector((state) => state.auth.user);
+  const chat = useAppSelector((state) => state.chat.chat);
 
   const navigation = useNavigation<RootStackNavigationProp>();
   const { params } = useRoute<RoomScreenRouteProp>();
   const { bottom } = useSafeAreaInsets();
 
-  const [messages, setMessages] = useState<IMessage[] | undefined>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [isBubblePress, setIsBubblePress] = useState(false);
 
@@ -61,17 +64,23 @@ function RoomScreen() {
     }
   }, [user]);
 
+  console.log(JSON.stringify(chat.data, null, 5));
+
+  // useEffect(() => {
+  //   console.log('useEffect!!!!');
+  // }, [chat.data]);
+
   useLayoutEffect(() => {
     (async () => {
       if (user && params) {
-        const chats = await loadRoom(user.userId, params.roomId);
+        const chats = await loadMessages(user.userId, params.roomId);
 
         if (chats) {
-          setMessages(chats);
+          dispatch(fulfilledChat(chats));
         }
       }
     })();
-  }, [user, params]);
+  }, [dispatch, user, params]);
 
   useBackEffect();
 
@@ -89,12 +98,19 @@ function RoomScreen() {
   }, [navigation]);
 
   const onSend = useCallback(
-    (messages: IMessage[]) => {
-      if (user && params && messages[0].text.length > 0) {
+    (messages: MessageEntity[]) => {
+      if (
+        user &&
+        params &&
+        messages.length > 0 &&
+        messages[0].text.length > 0
+      ) {
         const message = {
           _id: uuid.v4().toString(),
           text: messages[0].text,
           createdAt: getTimestamp(),
+          received: false,
+          image: '',
           user: {
             _id: user.userId,
           },
@@ -102,38 +118,53 @@ function RoomScreen() {
 
         createMessage(user.userId, params.roomId, message);
 
-        setMessages((prev) => GiftedChat.append(prev, messages));
+        if (message && chat.data) {
+          dispatch(fulfilledChat([message, ...chat.data]));
+        }
       }
     },
-    [user, params]
+    [dispatch, chat.data, user, params]
   );
 
   const renderDay = useCallback(
     (
-      props: Readonly<DayProps<IMessage>> & Readonly<{ children?: ReactNode }>
+      props: Readonly<DayProps<MessageEntity>> &
+        Readonly<{ children?: ReactNode }>
     ) => <DayHeader props={props} />,
     []
   );
 
-  const onPressBubble = useCallback((_: any, message: IMessage) => {
-    if (message) {
-      console.log(message);
-    }
-  }, []);
+  const onPressBubble = useCallback(
+    (_: any, message: MessageEntity) => {
+      if (user && params && message && chat.data) {
+        const prepared = {
+          ...message,
+          received: !message.received,
+        };
 
-  const onLongPressBubble = useCallback((_: any, message: IMessage) => {
+        const filtered = chat.data.map((item) =>
+          message._id === item._id ? prepared : item
+        );
+
+        dispatch(fulfilledChat(filtered));
+
+        onModifyMessage(user.userId, params, prepared);
+      }
+    },
+    [dispatch, chat.data, user, params]
+  );
+
+  const onLongPressBubble = useCallback((_: any, message: MessageEntity) => {
     if (message) {
       setIsBubblePress(true);
 
       setIsOpen(true);
-
-      console.log(message);
     }
   }, []);
 
   const renderBubble = useCallback(
     (
-      props: Readonly<BubbleProps<IMessage>> &
+      props: Readonly<BubbleProps<MessageEntity>> &
         Readonly<{ children?: ReactNode }>
     ) => (
       <ChatBubble
@@ -147,7 +178,7 @@ function RoomScreen() {
 
   const renderInputToolbar = useCallback(
     (
-      props: Readonly<InputToolbarProps<IMessage>> &
+      props: Readonly<InputToolbarProps<MessageEntity>> &
         Readonly<{ children?: ReactNode }>
     ) => <ChatInputBar props={props} />,
     []
@@ -165,12 +196,20 @@ function RoomScreen() {
   );
 
   const onPressFirst = useCallback(() => {
-    setIsOpen(false);
-  }, []);
+    if (isBubblePress) {
+      setIsOpen(false);
+    } else {
+      setIsOpen(false);
+    }
+  }, [isBubblePress]);
 
   const onPressSecond = useCallback(() => {
-    setIsOpen(false);
-  }, []);
+    if (isBubblePress) {
+      setIsOpen(false);
+    } else {
+      setIsOpen(false);
+    }
+  }, [isBubblePress]);
 
   const onNegative = useCallback(() => {
     setIsOpen(false);
@@ -183,7 +222,7 @@ function RoomScreen() {
       <SafeAreaContainer>
         <GiftedChat
           user={userId}
-          messages={messages}
+          messages={chat.data}
           onSend={(messages) => onSend(messages)}
           bottomOffset={bottom === 0 ? 0 : bottom - 3}
           wrapInSafeArea={false}
