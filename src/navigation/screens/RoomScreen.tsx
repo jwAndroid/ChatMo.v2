@@ -69,12 +69,6 @@ function RoomScreen() {
     }
   }, [user]);
 
-  console.log(JSON.stringify(chat.data, null, 5));
-
-  // useEffect(() => {
-  //   console.log('useEffect!!!!');
-  // }, [chat.data]);
-
   useLayoutEffect(() => {
     (async () => {
       if (user && params) {

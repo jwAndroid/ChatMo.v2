@@ -1,9 +1,10 @@
-import React, { memo, ReactNode } from 'react';
+import React, { memo, ReactNode, useMemo } from 'react';
 import styled from '@emotion/native';
 import { useTheme } from '@emotion/react';
 import { IMessage, MessageTextProps } from 'react-native-gifted-chat';
 
-import { CommonText } from '../text';
+import { CommonText, LinkPreviewer } from '../text';
+import { regexUrl } from '../../utils/text';
 
 const Container = styled.View(() => ({
   paddingVertical: 3,
@@ -16,16 +17,26 @@ interface IBubbleText {
 function BubbleText({ messageText }: IBubbleText) {
   const theme = useTheme();
 
-  const message = messageText.currentMessage?.text ?? '';
+  const message = useMemo(() => {
+    if (messageText.currentMessage) {
+      return messageText.currentMessage.text;
+    }
+
+    return '';
+  }, [messageText.currentMessage]);
 
   return (
     <Container>
-      <CommonText
-        text={message}
-        isSpecificColor
-        specificColor={theme.color.white}
-        fontSize={14}
-      />
+      {regexUrl(message ?? '') ? (
+        <LinkPreviewer url={message} />
+      ) : (
+        <CommonText
+          text={message}
+          isSpecificColor
+          specificColor={theme.color.white}
+          fontSize={14}
+        />
+      )}
     </Container>
   );
 }

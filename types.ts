@@ -47,13 +47,6 @@ export interface MessageEntity {
 
 export interface PreviewEntity {
   url: string;
-  mediaType: string;
-  contentType: string;
-  favicons: string[];
-}
-
-export interface IPreviewEntity {
-  url: string;
   title: string;
   siteName: string | undefined;
   description: string | undefined;
