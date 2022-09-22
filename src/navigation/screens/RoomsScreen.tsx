@@ -7,7 +7,7 @@ import { RowMap } from 'react-native-swipe-list-view';
 import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
 import { useRoomsLoadEffect } from '../../hooks/useRoomsLoadEffect';
 import { fulfilled } from '../../redux/posts/slice';
-import { reset } from '../../redux/chat/slice';
+import { resetChat } from '../../redux/chat/slice';
 import { fromUpdate } from '../../redux/system/slice';
 import { deleteRoom, onFavoritesRoom } from '../../firebase/posts';
 import { RootStackNavigationProp } from '../RootStack';
@@ -49,7 +49,7 @@ function RoomsScreen() {
   useBackEffect();
 
   useFocusEffect(() => {
-    dispatch(reset());
+    dispatch(resetChat());
   });
 
   const delayedModal = useCallback((isOpen: boolean) => {

@@ -99,7 +99,7 @@ function RoomScreen() {
   }, [navigation]);
 
   const onBackPress = useCallback(async () => {
-    if (chat.data && params && user && posts.data) {
+    if (chat.data && chat.data.length > 0 && params && user && posts.data) {
       const prepared = {
         ...params,
         lastMemo: chat.data[0].text,
@@ -119,9 +119,9 @@ function RoomScreen() {
       dispatch(fulfilled(updatedRooms));
 
       await onModifyRoom(user.userId, params.roomId, prepared);
-
-      conditionalBackPress();
     }
+
+    conditionalBackPress();
   }, [dispatch, chat.data, params, user, posts.data, conditionalBackPress]);
 
   const onSend = useCallback(

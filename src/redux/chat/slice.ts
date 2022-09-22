@@ -20,7 +20,7 @@ const chatSlice = createSlice({
     fulfilledChat(state, action: PayloadAction<MessageEntity[]>) {
       state.chat.data = action.payload;
     },
-    reset(state) {
+    resetChat(state) {
       state.chat.data = [];
     },
   },
@@ -28,4 +28,4 @@ const chatSlice = createSlice({
 
 export default chatSlice.reducer;
 
-export const { fulfilledChat, reset } = chatSlice.actions;
+export const { fulfilledChat, resetChat } = chatSlice.actions;
