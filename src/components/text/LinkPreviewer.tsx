@@ -1,5 +1,5 @@
 import React, { memo, useCallback, useEffect, useState } from 'react';
-import { ActivityIndicator, Pressable } from 'react-native';
+import { ActivityIndicator, Pressable, View } from 'react-native';
 import styled from '@emotion/native';
 import { getLinkPreview } from 'link-preview-js';
 import * as Clipboard from 'expo-clipboard';
@@ -10,6 +10,10 @@ import { PreviewEntity } from '../../../types';
 import { ellipsize, regexUrl } from '../../utils/text';
 import CommonText from './CommonText';
 import { ToastModal } from '../modal';
+
+const TextContainer = styled.View(() => ({
+  alignItems: 'flex-end',
+}));
 
 const ImageHolder = styled.Image(() => ({
   height: 150,
@@ -44,8 +48,6 @@ function LinkPreviewer({ url }: ILinkPreviewer) {
 
           setLoading(false);
         } catch (error) {
-          setLoading(false);
-
           console.log('error');
         }
       }
@@ -73,41 +75,45 @@ function LinkPreviewer({ url }: ILinkPreviewer) {
   return loading ? (
     <ActivityIndicator size="small" color={theme.color.card} />
   ) : (
-    <Pressable
-      onPress={data && onPress(data)}
-      onLongPress={data && onLongPress(data)}
-    >
-      {data && data.title ? (
-        <CommonText
-          text={data.title}
-          fontSize={15}
-          isSpecificColor
-          specificColor={theme.color.white}
-        />
-      ) : null}
+    <View>
+      <TextContainer>
+        {data && data.title ? (
+          <CommonText
+            text={data.title}
+            fontSize={15}
+            isSpecificColor
+            specificColor={theme.color.white}
+          />
+        ) : null}
 
-      {data && data.description ? (
-        <CommonText
-          text={ellipsize(data.description, 30)}
-          fontSize={12}
-          isSpecificColor
-          specificColor={theme.color.shadow}
-          marginTop={5}
-        />
-      ) : null}
+        {data && data.description ? (
+          <CommonText
+            text={ellipsize(data.description, 30)}
+            fontSize={12}
+            isSpecificColor
+            specificColor={theme.color.shadow}
+            marginTop={5}
+          />
+        ) : null}
 
-      {data && data.url ? (
-        <CommonText
-          text={ellipsize(data.url, 30)}
-          fontSize={12}
-          isSpecificColor
-          specificColor={theme.color.shadow}
-          marginTop={5}
-        />
-      ) : null}
+        {data && data.url ? (
+          <CommonText
+            text={ellipsize(data.url, 30)}
+            fontSize={12}
+            isSpecificColor
+            specificColor={theme.color.shadow}
+            marginTop={5}
+          />
+        ) : null}
+      </TextContainer>
 
       {data && data.images.length > 0 ? (
-        <ImageHolder source={{ uri: data.images[0] }} />
+        <Pressable
+          onPress={data && onPress(data)}
+          onLongPress={data && onLongPress(data)}
+        >
+          <ImageHolder source={{ uri: data.images[0] }} />
+        </Pressable>
       ) : null}
 
       {showToast ? (
@@ -117,7 +123,7 @@ function LinkPreviewer({ url }: ILinkPreviewer) {
           setShowToast={setShowToast}
         />
       ) : null}
-    </Pressable>
+    </View>
   );
 }
 
