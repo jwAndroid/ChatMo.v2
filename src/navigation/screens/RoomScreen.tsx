@@ -17,6 +17,7 @@ import {
   InputToolbarProps,
 } from 'react-native-gifted-chat';
 
+import { ActivityIndicator } from 'react-native';
 import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
 import { fulfilledChat } from '../../redux/chat/slice';
 import { createMessage, onModifyRoom } from '../../firebase/posts';
@@ -46,6 +47,12 @@ const Container = styled.View(({ theme }) => ({
   backgroundColor: theme.color.background,
 }));
 
+const LoadingContainer = styled.View(() => ({
+  flex: 1,
+  justifyContent: 'center',
+  alignItems: 'center',
+}));
+
 type RoomScreenRouteProp = RouteProp<RootStackParamList, 'Pin'>;
 
 function RoomScreen() {
@@ -62,6 +69,7 @@ function RoomScreen() {
   const [isOpen, setIsOpen] = useState(false);
   const [isBubblePress, setIsBubblePress] = useState(false);
   const [pickedItem, setPickedItem] = useState<MessageEntity | null>(null);
+  const [isReady, setIsReady] = useState(false);
 
   const userId = useMemo(() => {
     if (user) {
@@ -73,30 +81,21 @@ function RoomScreen() {
 
   useLayoutEffect(() => {
     (async () => {
+      setIsReady(false);
+
       if (user && params) {
         const chats = await loadMessages(user.userId, params.roomId);
 
         if (chats) {
           dispatch(fulfilledChat(chats));
+
+          setIsReady(true);
         }
       }
     })();
   }, [dispatch, user, params]);
 
   useBackEffect();
-
-  const conditionalBackPress = useCallback(() => {
-    const routes = navigation.getState()?.routes;
-    const prev = routes[routes.length - 2].name;
-
-    if (prev === 'Pin') {
-      navigation.popToTop();
-    } else if (prev === 'Search') {
-      navigation.goBack();
-    } else {
-      navigation.goBack();
-    }
-  }, [navigation]);
 
   const onBackPress = useCallback(async () => {
     if (chat.data && chat.data.length > 0 && params && user && posts.data) {
@@ -121,8 +120,17 @@ function RoomScreen() {
       await onModifyRoom(user.userId, params.roomId, prepared);
     }
 
-    conditionalBackPress();
-  }, [dispatch, chat.data, params, user, posts.data, conditionalBackPress]);
+    const routes = navigation.getState()?.routes;
+    const prev = routes[routes.length - 2].name;
+
+    if (prev === 'Pin') {
+      navigation.popToTop();
+    } else if (prev === 'Search') {
+      navigation.goBack();
+    } else {
+      navigation.goBack();
+    }
+  }, [dispatch, chat.data, params, user, posts.data, navigation]);
 
   const onSend = useCallback(
     (messages: MessageEntity[]) => {
@@ -227,7 +235,6 @@ function RoomScreen() {
   const onPressFirst = useCallback(() => {
     if (isBubblePress) {
       if (chat.data && user && params && pickedItem) {
-        console.log('delete!');
         const prepared = chat.data.filter(
           (item: MessageEntity) => item._id !== pickedItem._id
         );
@@ -241,6 +248,8 @@ function RoomScreen() {
         setPickedItem(null);
       }
     } else {
+      console.log('카메라');
+
       setIsOpen(false);
     }
   }, [dispatch, chat.data, params, user, pickedItem, isBubblePress]);
@@ -249,6 +258,8 @@ function RoomScreen() {
     if (isBubblePress) {
       setIsOpen(false);
     } else {
+      console.log('갤러리');
+
       setIsOpen(false);
     }
   }, [isBubblePress]);
@@ -262,21 +273,27 @@ function RoomScreen() {
       <IconHeader isBackword isIosTopInset onPress={onBackPress} />
 
       <SafeAreaContainer>
-        <GiftedChat
-          user={userId}
-          messages={chat.data}
-          onSend={(messages) => onSend(messages)}
-          bottomOffset={bottom === 0 ? 0 : bottom - 3}
-          wrapInSafeArea={false}
-          showUserAvatar={false}
-          scrollToBottom
-          alignTop
-          alwaysShowSend
-          renderDay={renderDay}
-          renderBubble={renderBubble}
-          renderInputToolbar={renderInputToolbar}
-          renderActions={renderActions}
-        />
+        {isReady ? (
+          <GiftedChat
+            user={userId}
+            messages={chat.data}
+            onSend={(messages) => onSend(messages)}
+            bottomOffset={bottom === 0 ? 0 : bottom - 3}
+            wrapInSafeArea={false}
+            showUserAvatar={false}
+            scrollToBottom
+            alignTop
+            alwaysShowSend
+            renderDay={renderDay}
+            renderBubble={renderBubble}
+            renderInputToolbar={renderInputToolbar}
+            renderActions={renderActions}
+          />
+        ) : (
+          <LoadingContainer>
+            <ActivityIndicator size="large" />
+          </LoadingContainer>
+        )}
       </SafeAreaContainer>
 
       {isOpen && (
