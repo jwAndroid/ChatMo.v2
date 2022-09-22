@@ -6,6 +6,7 @@ import React, {
   useMemo,
   useState,
 } from 'react';
+import { ActivityIndicator } from 'react-native';
 import styled from '@emotion/native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -17,8 +18,8 @@ import {
   InputToolbarProps,
 } from 'react-native-gifted-chat';
 
-import { ActivityIndicator } from 'react-native';
 import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
+import { fulfilled } from '../../redux/posts/slice';
 import { fulfilledChat } from '../../redux/chat/slice';
 import { createMessage, onModifyRoom } from '../../firebase/posts';
 import { RootStackNavigationProp, RootStackParamList } from '../RootStack';
@@ -40,7 +41,6 @@ import {
   IconHeader,
   SafeAreaContainer,
 } from '../../components';
-import { fulfilled } from '../../redux/posts/slice';
 
 const Container = styled.View(({ theme }) => ({
   flex: 1,
@@ -64,6 +64,7 @@ function RoomScreen() {
 
   const navigation = useNavigation<RootStackNavigationProp>();
   const { params } = useRoute<RoomScreenRouteProp>();
+
   const { bottom } = useSafeAreaInsets();
 
   const [isOpen, setIsOpen] = useState(false);
