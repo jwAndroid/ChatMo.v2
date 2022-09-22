@@ -19,7 +19,7 @@ const ImageHolder = styled.Image(() => ({
   height: 150,
   borderRadius: 10,
   marginTop: 10,
-  resizeMode: 'center',
+  resizeMode: 'cover',
 }));
 
 interface ILinkPreviewer {

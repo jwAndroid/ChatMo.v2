@@ -84,12 +84,16 @@ export async function onFavoritesRoom(userId: string, room: RoomEntity) {
   }
 }
 
-export async function onModifyRoom(userId: string, room: RoomEntity) {
+export async function onModifyRoom(
+  userId: string,
+  roomId: string,
+  room: RoomEntity
+) {
   console.log('onModifyRoom start');
 
   if (userId && room) {
     await updateDoc(
-      doc(firestore, 'posts', 'users', userId, 'rooms', 'room', room.roomId),
+      doc(firestore, 'posts', 'users', userId, 'rooms', 'room', roomId),
       { ...room }
     );
   } else {

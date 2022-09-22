@@ -114,7 +114,7 @@ function FormScreen() {
 
         dispatch(fulfilled(updatedRooms));
 
-        onModifyRoom(user.userId, { ...prepared });
+        onModifyRoom(user.userId, params.roomId, { ...prepared });
 
         setIsConfirmModalOpen(false);
 
@@ -132,7 +132,7 @@ function FormScreen() {
           isLock,
           password: isLock ? passwordValue : null,
           createdAt: getTimestamp(),
-          updatedAt: 0,
+          updatedAt: getTimestamp(),
           modifyAt: null,
           chips: chips === undefined || null ? [] : chips,
         };

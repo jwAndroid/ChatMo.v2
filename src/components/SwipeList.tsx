@@ -50,7 +50,10 @@ function SwipeList({
   const { Row, DeleteButton, FavoritButton, LockButton } = SwipeStyles();
 
   const data = useMemo(
-    () => rooms?.filter((room) => !room.isFavorites),
+    () =>
+      rooms
+        ?.filter((room) => !room.isFavorites)
+        .sort((a, b) => b.updatedAt - a.updatedAt),
     [rooms]
   );
 

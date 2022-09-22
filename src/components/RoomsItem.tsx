@@ -82,11 +82,11 @@ function RoomsItem({ item }: IRoomsItem) {
       <CountContainer>
         <CommonText text={getFormatTime(createdAt)} fontSize={10} />
 
-        {memoCount !== 0 ? (
+        {memoCount !== 0 && memoCount ? (
           <Circle>
             <CommonText
-              text={memoCount?.toString()}
-              fontSize={12}
+              text={memoCount < 100 ? memoCount.toString() : '99+'}
+              fontSize={10}
               isSpecificColor
               specificColor={theme.color.white}
             />

@@ -19,7 +19,7 @@ import {
 
 import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
 import { fulfilledChat } from '../../redux/chat/slice';
-import { createMessage } from '../../firebase/posts';
+import { createMessage, onModifyRoom } from '../../firebase/posts';
 import { RootStackNavigationProp, RootStackParamList } from '../RootStack';
 import useBackEffect from '../../hooks/useBackEffect';
 import { getTimestamp } from '../../utils/date';
@@ -39,6 +39,7 @@ import {
   IconHeader,
   SafeAreaContainer,
 } from '../../components';
+import { fulfilled } from '../../redux/posts/slice';
 
 const Container = styled.View(({ theme }) => ({
   flex: 1,
@@ -51,6 +52,7 @@ function RoomScreen() {
   const dispatch = useAppDispatch();
 
   const user = useAppSelector((state) => state.auth.user);
+  const posts = useAppSelector((state) => state.posts.posts);
   const chat = useAppSelector((state) => state.chat.chat);
 
   const navigation = useNavigation<RootStackNavigationProp>();
@@ -83,7 +85,7 @@ function RoomScreen() {
 
   useBackEffect();
 
-  const onBackPress = useCallback(() => {
+  const conditionalBackPress = useCallback(() => {
     const routes = navigation.getState()?.routes;
     const prev = routes[routes.length - 2].name;
 
@@ -95,6 +97,32 @@ function RoomScreen() {
       navigation.goBack();
     }
   }, [navigation]);
+
+  const onBackPress = useCallback(async () => {
+    if (chat.data && params && user && posts.data) {
+      const prepared = {
+        ...params,
+        lastMemo: chat.data[0].text,
+        memoCount: chat.data.length,
+        updatedAt: getTimestamp(),
+      };
+
+      const updatedRooms = posts.data.map((post) =>
+        post.roomId === params.roomId
+          ? {
+              ...post,
+              ...prepared,
+            }
+          : post
+      );
+
+      dispatch(fulfilled(updatedRooms));
+
+      await onModifyRoom(user.userId, params.roomId, prepared);
+
+      conditionalBackPress();
+    }
+  }, [dispatch, chat.data, params, user, posts.data, conditionalBackPress]);
 
   const onSend = useCallback(
     (messages: MessageEntity[]) => {
@@ -198,15 +226,8 @@ function RoomScreen() {
 
   const onPressFirst = useCallback(() => {
     if (isBubblePress) {
-      setIsOpen(false);
-    } else {
-      setIsOpen(false);
-    }
-  }, [isBubblePress]);
-
-  const onPressSecond = useCallback(() => {
-    if (isBubblePress) {
       if (chat.data && user && params && pickedItem) {
+        console.log('delete!');
         const prepared = chat.data.filter(
           (item: MessageEntity) => item._id !== pickedItem._id
         );
@@ -223,6 +244,14 @@ function RoomScreen() {
       setIsOpen(false);
     }
   }, [dispatch, chat.data, params, user, pickedItem, isBubblePress]);
+
+  const onPressSecond = useCallback(() => {
+    if (isBubblePress) {
+      setIsOpen(false);
+    } else {
+      setIsOpen(false);
+    }
+  }, [isBubblePress]);
 
   const onNegative = useCallback(() => {
     setIsOpen(false);
