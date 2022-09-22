@@ -1,15 +1,15 @@
 import React, { memo, useCallback, useEffect, useState } from 'react';
 import { ActivityIndicator, Pressable, View } from 'react-native';
+import * as Clipboard from 'expo-clipboard';
+import * as Linking from 'expo-linking';
 import styled from '@emotion/native';
 import { useTheme } from '@emotion/react';
 import { getLinkPreview } from 'link-preview-js';
-import * as Clipboard from 'expo-clipboard';
-import * as Linking from 'expo-linking';
 
-import { PreviewEntity } from '../../../types';
-import { ellipsize, regexUrl } from '../../utils/text';
+import { PreviewEntity } from '../../types';
+import { ellipsize, regexUrl } from '../utils/text';
 import CommonText from './CommonText';
-import { ToastModal } from '../modal';
+import ToastModal from './ToastModal';
 
 const TextContainer = styled.View(() => ({
   alignItems: 'flex-end',

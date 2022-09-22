@@ -2,7 +2,8 @@ import React, { memo, useEffect } from 'react';
 import { Modal } from 'react-native';
 import styled from '@emotion/native';
 import { useTheme } from '@emotion/react';
-import { CommonText } from '../text';
+
+import CommonText from './CommonText';
 
 const Container = styled.Pressable({
   flex: 1,
@@ -11,7 +12,7 @@ const Container = styled.Pressable({
   marginBottom: 30,
 });
 
-const Toast = styled.View(({ theme }) => ({
+const ToastBlock = styled.View(({ theme }) => ({
   paddingHorizontal: 30,
   paddingVertical: 10,
   justifyContent: 'center',
@@ -39,14 +40,14 @@ function ToastModal({ text, showToast, setShowToast }: IToastModal) {
   return (
     <Modal transparent visible={showToast} animationType="slide">
       <Container onPress={() => setShowToast(false)}>
-        <Toast>
+        <ToastBlock>
           <CommonText
             text={text}
             isSpecificColor
             specificColor={theme.color.white}
             fontSize={12}
           />
-        </Toast>
+        </ToastBlock>
       </Container>
     </Modal>
   );

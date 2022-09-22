@@ -7,12 +7,10 @@ import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
 import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
 import { fulfilled } from '../../redux/posts/slice';
 import { deleteRoom } from '../../firebase/posts';
-import { SafeAreaContainer } from '../../components/layout';
-import { IconHeader } from '../../components/accessory';
-import { Pin } from '../../components/common';
 import { useAnimation } from '../../hooks/useAnimation';
 import useBackEffect from '../../hooks/useBackEffect';
 import { RootStackNavigationProp, RootStackParamList } from '../RootStack';
+import { IconHeader, Pin, SafeAreaContainer } from '../../components';
 
 interface IIcon {
   isInvailed: boolean;

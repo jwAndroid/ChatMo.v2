@@ -18,27 +18,27 @@ import {
 } from 'react-native-gifted-chat';
 
 import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
+import { fulfilledChat } from '../../redux/chat/slice';
 import { createMessage } from '../../firebase/posts';
-import {
-  ActionButton,
-  ChatBubble,
-  ChatInputBar,
-  DayHeader,
-} from '../../components/room';
-import { IconHeader } from '../../components/accessory';
-import { SafeAreaContainer } from '../../components/layout';
 import { RootStackNavigationProp, RootStackParamList } from '../RootStack';
-import { getTimestamp } from '../../utils/date';
 import useBackEffect from '../../hooks/useBackEffect';
-import { ActionsModal } from '../../components/modal';
+import { getTimestamp } from '../../utils/date';
 import { actionsModal, bubbleModal } from '../../utils/constants';
 import { MessageEntity } from '../../../types';
-import { fulfilledChat } from '../../redux/chat/slice';
 import {
   deleteMessage,
   loadMessages,
   onModifyMessage,
 } from '../../firebase/room';
+import {
+  ActionButton,
+  ActionsModal,
+  ChatBubble,
+  ChatInputBar,
+  DayHeader,
+  IconHeader,
+  SafeAreaContainer,
+} from '../../components';
 
 const Container = styled.View(({ theme }) => ({
   flex: 1,

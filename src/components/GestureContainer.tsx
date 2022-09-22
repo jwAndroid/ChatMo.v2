@@ -1,8 +1,6 @@
 import React, { memo, useMemo } from 'react';
 import { StyleProp, ViewStyle } from 'react-native';
-import GestureRecognizer, {
-  GestureRecognizerConfig,
-} from 'react-native-swipe-gestures';
+import GestureRecognizer from 'react-native-swipe-gestures';
 
 interface IGestureContainer {
   children: React.ReactNode;
@@ -17,20 +15,15 @@ function GestureContainer({
 }: IGestureContainer) {
   const style = useMemo<StyleProp<ViewStyle>>(() => ({ flex: 1 }), []);
 
-  const config = useMemo<GestureRecognizerConfig>(
-    () => ({
-      velocityThreshold: 1,
-      directionalOffsetThreshold: 80,
-      gestureIsClickThreshold: 10,
-    }),
-    []
-  );
-
   return (
     <GestureRecognizer
       onSwipeLeft={onSwipeLeft}
       onSwipeRight={onSwipeRight}
-      config={config}
+      config={{
+        velocityThreshold: 1,
+        directionalOffsetThreshold: 80,
+        gestureIsClickThreshold: 10,
+      }}
       style={style}
     >
       {children}

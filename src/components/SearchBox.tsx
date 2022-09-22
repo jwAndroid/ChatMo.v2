@@ -11,7 +11,7 @@ import styled from '@emotion/native';
 import { useTheme } from '@emotion/react';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 
-import { CommonText } from '../text';
+import CommonText from './CommonText';
 
 const SearchBarContainer = styled.View(() => ({
   height: 60,

@@ -2,8 +2,9 @@ import React, { memo } from 'react';
 import { GestureResponderEvent, Modal, Platform } from 'react-native';
 import styled from '@emotion/native';
 import { useTheme } from '@emotion/react';
-import { CommonText } from '../text';
-import { ModalEntity } from '../../../types';
+
+import { ModalEntity } from '../../types';
+import CommonText from './CommonText';
 
 const Container = styled.Pressable({
   flex: 1,

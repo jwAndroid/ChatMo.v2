@@ -4,22 +4,25 @@ import { useTheme } from '@emotion/react';
 import { useFocusEffect, useNavigation } from '@react-navigation/core';
 import { RowMap } from 'react-native-swipe-list-view';
 
-import { RootStackNavigationProp } from '../RootStack';
-import { deleteRoom, onFavoritesRoom } from '../../firebase/posts';
-import { fulfilled } from '../../redux/posts/slice';
-import { RoomEntity } from '../../../types';
-import { getTimestamp } from '../../utils/date';
-import { fromUpdate } from '../../redux/system/slice';
 import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
 import { useRoomsLoadEffect } from '../../hooks/useRoomsLoadEffect';
+import { fulfilled } from '../../redux/posts/slice';
+import { reset } from '../../redux/chat/slice';
+import { fromUpdate } from '../../redux/system/slice';
+import { deleteRoom, onFavoritesRoom } from '../../firebase/posts';
+import { RootStackNavigationProp } from '../RootStack';
 import { useAnimation } from '../../hooks/useAnimation';
 import useBackEffect from '../../hooks/useBackEffect';
-import { SafeAreaContainer } from '../../components/layout';
-import { IconHeader, ListPlaceholder } from '../../components/accessory';
-import { SwipeList } from '../../components/common';
-import { NotificationModal } from '../../components/modal';
-import { FloatingButton } from '../../components/button';
-import { reset } from '../../redux/chat/slice';
+import { getTimestamp } from '../../utils/date';
+import { RoomEntity } from '../../../types';
+import {
+  FloatingButton,
+  IconHeader,
+  ListPlaceholder,
+  NotificationModal,
+  SafeAreaContainer,
+  SwipeList,
+} from '../../components';
 
 function RoomsScreen() {
   const dispatch = useAppDispatch();

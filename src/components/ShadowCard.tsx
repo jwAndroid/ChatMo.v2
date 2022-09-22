@@ -3,11 +3,11 @@ import { Dimensions, Platform, Pressable } from 'react-native';
 import styled from '@emotion/native';
 import { useTheme } from '@emotion/react';
 
+import { RoomEntity } from '../../types';
+import { ellipsize, lineBreak } from '../utils/text';
+import { getFormatTime } from '../utils/date';
+import CommonText from './CommonText';
 import Chip from './Chip';
-import { RoomEntity } from '../../../types';
-import { CommonText } from '../text';
-import { ellipsize, lineBreak } from '../../utils/text';
-import { getFormatTime } from '../../utils/date';
 
 const { width, height } = Dimensions.get('screen');
 

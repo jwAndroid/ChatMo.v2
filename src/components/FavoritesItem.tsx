@@ -2,14 +2,15 @@ import React, { memo, useCallback, useMemo } from 'react';
 import { FlatList, LayoutAnimation, ListRenderItem } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 
-import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
-import { fromUpdate } from '../../redux/system/slice';
-import { fulfilled } from '../../redux/posts/slice';
-import { onFavoritesRoom } from '../../firebase/posts';
-import { RootStackNavigationProp } from '../../navigation/RootStack';
-import { ShadowCard } from '../accessory';
-import { RoomEntity } from '../../../types';
-import { getTimestamp } from '../../utils/date';
+import { useAppDispatch, useAppSelector } from '../hooks/useRedux';
+import { fromUpdate } from '../redux/system/slice';
+import { fulfilled } from '../redux/posts/slice';
+import { onFavoritesRoom } from '../firebase/posts';
+import { RootStackNavigationProp } from '../navigation/RootStack';
+
+import { RoomEntity } from '../../types';
+import { getTimestamp } from '../utils/date';
+import ShadowCard from './ShadowCard';
 
 interface IFavoritesItem {
   rooms: RoomEntity[] | null;

@@ -3,8 +3,9 @@ import styled from '@emotion/native';
 import { useTheme } from '@emotion/react';
 import { IMessage, MessageTextProps } from 'react-native-gifted-chat';
 
-import { CommonText, LinkPreviewer } from '../text';
-import { regexUrl } from '../../utils/text';
+import { regexUrl } from '../utils/text';
+import LinkPreviewer from './LinkPreviewer';
+import CommonText from './CommonText';
 
 const Container = styled.View(() => ({
   paddingVertical: 3,

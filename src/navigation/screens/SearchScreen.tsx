@@ -13,16 +13,19 @@ import { useNavigation } from '@react-navigation/core';
 
 import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
 import { fromUpdate } from '../../redux/system/slice';
+import { loadPosts } from '../../firebase/posts';
 import historyStorage from '../../storages/historyStorage';
 import deduplicationStorage from '../../storages/deduplicationStorage';
 import { RootStackNavigationProp } from '../RootStack';
-import { loadPosts } from '../../firebase/posts';
 import useBackEffect from '../../hooks/useBackEffect';
-import { RoomsItem } from '../../components/item';
-import { CommonText } from '../../components/text';
-import { SafeAreaContainer } from '../../components/layout';
-import { Chip, SearchBox } from '../../components/accessory';
 import { ChipEntity, RoomEntity } from '../../../types';
+import {
+  Chip,
+  CommonText,
+  RoomsItem,
+  SafeAreaContainer,
+  SearchBox,
+} from '../../components';
 
 const HistoryContainer = styled.View(({ theme }) => ({
   justifyContent: 'center',
