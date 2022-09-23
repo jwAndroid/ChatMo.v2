@@ -1,15 +1,17 @@
-import React from 'react';
-import { Provider } from 'react-redux';
+import React, { memo } from 'react';
+// import { Provider } from 'react-redux';
 
-import { store } from './src/redux/store';
-import Main from './Main';
+// import { store } from './src/redux/store';
+// import Main from './Main';
+import { CameraModal } from './src/components';
 
 function App() {
   return (
-    <Provider store={store}>
-      <Main />
-    </Provider>
+    <CameraModal />
+    // <Provider store={store}>
+    //   <Main />
+    // </Provider>
   );
 }
 
-export default App;
+export default memo(App);

@@ -3,6 +3,7 @@ export { default as ActionsModal } from './ActionsModal';
 export { default as BubbleText } from './BubbleText';
 export { default as BubbleTicks } from './BubbleTicks';
 export { default as ButtonBar } from './ButtonBar';
+export { default as CameraModal } from './CameraModal';
 export { default as ChatBubble } from './ChatBubble';
 export { default as ChatInput } from './ChatInput';
 export { default as ChatInputBar } from './ChatInputBar';
