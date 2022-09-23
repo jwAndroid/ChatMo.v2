@@ -72,16 +72,17 @@ function RoomScreen() {
   const [isOpen, setIsOpen] = useState(false);
   const [isCameraOpen, setIsCameraOpen] = useState(false);
   const [isBubblePress, setIsBubblePress] = useState(false);
-  const [pickedItem, setPickedItem] = useState<MessageEntity | null>(null);
   const [isReady, setIsReady] = useState(false);
 
-  const userId = useMemo(() => {
-    if (user) {
-      return {
-        _id: user.userId,
-      };
-    }
-  }, [user]);
+  const [pickedItem, setPickedItem] = useState<MessageEntity | null>(null);
+  const [firstLength, setFirstLength] = useState<number>();
+
+  const userId = useMemo(
+    () => (user ? { _id: user.userId } : undefined),
+    [user]
+  );
+
+  useBackEffect();
 
   useLayoutEffect(() => {
     (async () => {
@@ -94,34 +95,36 @@ function RoomScreen() {
           dispatch(fulfilledChat(chats));
 
           setIsReady(true);
+
+          setFirstLength(chats.length);
         }
       }
     })();
   }, [dispatch, user, params]);
 
-  useBackEffect();
-
   const onBackPress = useCallback(async () => {
     if (chat.data && chat.data.length > 0 && params && user && posts.data) {
-      const prepared = {
-        ...params,
-        lastMemo: chat.data[0].text,
-        memoCount: chat.data.length,
-        updatedAt: getTimestamp(),
-      };
+      if (firstLength !== chat.data.length) {
+        const prepared = {
+          ...params,
+          lastMemo: chat.data[0].text,
+          memoCount: chat.data.length,
+          updatedAt: getTimestamp(),
+        };
 
-      const updatedRooms = posts.data.map((post) =>
-        post.roomId === params.roomId
-          ? {
-              ...post,
-              ...prepared,
-            }
-          : post
-      );
+        const updatedRooms = posts.data.map((post) =>
+          post.roomId === params.roomId
+            ? {
+                ...post,
+                ...prepared,
+              }
+            : post
+        );
 
-      dispatch(fulfilled(updatedRooms));
+        dispatch(fulfilled(updatedRooms));
 
-      await onModifyRoom(user.userId, params.roomId, prepared);
+        await onModifyRoom(user.userId, params.roomId, prepared);
+      }
     }
 
     const routes = navigation.getState()?.routes;
@@ -134,7 +137,7 @@ function RoomScreen() {
     } else {
       navigation.goBack();
     }
-  }, [dispatch, chat.data, params, user, posts.data, navigation]);
+  }, [dispatch, chat.data, params, user, posts.data, navigation, firstLength]);
 
   const onSend = useCallback(
     (messages: MessageEntity[]) => {

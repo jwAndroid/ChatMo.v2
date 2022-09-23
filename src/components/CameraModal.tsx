@@ -130,9 +130,11 @@ function CameraModal({ isOpen, setIsOpen, room }: ICameraModal) {
         await createMessage(user.userId, room.roomId, message);
 
         dispatch(fulfilledChat([message, ...chat.data]));
+
+        setIsOpen(false);
       }
     }
-  }, [dispatch, chat.data, user, imageSource, room.roomId]);
+  }, [dispatch, chat.data, user, imageSource, room.roomId, setIsOpen]);
 
   const onExit = useCallback(() => {
     setIsOpen(false);
