@@ -35,6 +35,7 @@ import {
 import {
   ActionButton,
   ActionsModal,
+  CameraModal,
   ChatBubble,
   ChatInputBar,
   DayHeader,
@@ -68,6 +69,7 @@ function RoomScreen() {
   const { bottom } = useSafeAreaInsets();
 
   const [isOpen, setIsOpen] = useState(false);
+  const [isCameraOpen, setIsCameraOpen] = useState(false);
   const [isBubblePress, setIsBubblePress] = useState(false);
   const [pickedItem, setPickedItem] = useState<MessageEntity | null>(null);
   const [isReady, setIsReady] = useState(false);
@@ -249,7 +251,7 @@ function RoomScreen() {
         setPickedItem(null);
       }
     } else {
-      console.log('카메라');
+      setIsCameraOpen(true);
 
       setIsOpen(false);
     }
@@ -297,7 +299,7 @@ function RoomScreen() {
         )}
       </SafeAreaContainer>
 
-      {isOpen && (
+      {isOpen ? (
         <ActionsModal
           items={isBubblePress ? bubbleModal : actionsModal}
           isOpen
@@ -305,7 +307,11 @@ function RoomScreen() {
           onPressFirst={onPressFirst}
           onPressSecond={onPressSecond}
         />
-      )}
+      ) : null}
+
+      {isCameraOpen ? (
+        <CameraModal isOpen={isCameraOpen} setIsOpen={setIsCameraOpen} />
+      ) : null}
     </Container>
   );
 }

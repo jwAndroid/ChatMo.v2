@@ -6,11 +6,12 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { StyleProp, Text, View, ViewStyle } from 'react-native';
+import { Modal, StyleProp, Text, ViewStyle } from 'react-native';
 import { Camera, CameraType, FlashMode } from 'expo-camera';
 import styled from '@emotion/native';
+import SafeAreaContainer from './SafeAreaContainer';
 
-// import SafeAreaContainer from './SafeAreaContainer';
+const Container = styled.View(() => ({ flex: 1 }));
 
 const ButtonContainer = styled.View(() => ({
   height: 70,
@@ -24,8 +25,11 @@ const PicturedImage = styled.Image(() => ({
   flex: 1,
 }));
 
-function CameraModal() {
-  // const [permission, requestPermission] = Camera.useCameraPermissions();
+interface ICameraModal {
+  isOpen: boolean;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+function CameraModal({ isOpen, setIsOpen }: ICameraModal) {
   const [permission, setPermission] = useState<boolean>(false);
   const [type, setType] = useState(CameraType.back);
   const [flash, setFlash] = useState(FlashMode.off);
@@ -54,17 +58,14 @@ function CameraModal() {
         const data = await ref.current.takePictureAsync({
           quality: 0.5,
           base64: true,
+          exif: false,
           skipProcessing: true,
         });
-        const source = data.uri;
-
-        if (data && source) {
-          console.log(source);
-
-          setImageSource(source);
+        if (data) {
+          setImageSource(data.uri);
         }
-      } catch (error) {
-        console.log(error);
+      } catch (message) {
+        console.log(message);
       }
     }
   }, []);
@@ -79,46 +80,76 @@ function CameraModal() {
     );
   }, []);
 
-  const onSave = useCallback(() => {
-    console.log(imageSource);
+  const onCancel = useCallback(() => {
+    if (imageSource) {
+      setImageSource(null);
+    }
   }, [imageSource]);
 
-  if (permission === false || permission === null) {
-    return <Text>카메라 접근권한을 허용해주세요.</Text>;
-  }
+  const onSave = useCallback(() => {
+    console.log(imageSource);
 
-  return (
-    <View style={{ flex: 1 }}>
-      {imageSource ? (
-        <PicturedImage source={{ uri: imageSource }} />
-      ) : (
-        <Camera
-          style={cameraStyle}
-          type={type}
-          flashMode={flash}
-          ref={ref}
-          onMountError={(error) => {
-            console.log('cammera error', error);
-          }}
-        />
-      )}
+    // TODO: 1.chat redux dispatch,
+    // TODO: 2.firestore db save
+    // TODO: 3.storage save
+  }, [imageSource]);
 
-      {imageSource ? (
-        <ButtonContainer>
-          <Text onPress={() => setImageSource(null)}>취소</Text>
+  const onExit = useCallback(() => {
+    setIsOpen(false);
+  }, [setIsOpen]);
 
-          <Text onPress={onSave}>저장</Text>
-        </ButtonContainer>
-      ) : (
-        <ButtonContainer>
-          <Text onPress={takePicture}>촬영</Text>
+  return permission ? (
+    <Modal transparent visible={isOpen} animationType="slide">
+      <SafeAreaContainer>
+        {imageSource ? (
+          <PicturedImage source={{ uri: imageSource }} />
+        ) : (
+          <Camera
+            style={cameraStyle}
+            type={type}
+            flashMode={flash}
+            ref={ref}
+            onMountError={(error) => {
+              console.log('error!', error);
+            }}
+          />
+        )}
 
-          <Text onPress={toggleCameraType}>뒤집기</Text>
+        {imageSource ? (
+          <ButtonContainer>
+            <Text onPress={onCancel} style={{ color: 'white' }}>
+              취소
+            </Text>
 
-          <Text onPress={onFlash}>플레쉬</Text>
-        </ButtonContainer>
-      )}
-    </View>
+            <Text onPress={onSave} style={{ color: 'white' }}>
+              저장
+            </Text>
+          </ButtonContainer>
+        ) : (
+          <ButtonContainer>
+            <Text onPress={takePicture} style={{ color: 'white' }}>
+              촬영
+            </Text>
+
+            <Text onPress={toggleCameraType} style={{ color: 'white' }}>
+              뒤집기
+            </Text>
+
+            <Text onPress={onFlash} style={{ color: 'white' }}>
+              플레쉬
+            </Text>
+
+            <Text onPress={onExit} style={{ color: 'white' }}>
+              취소
+            </Text>
+          </ButtonContainer>
+        )}
+      </SafeAreaContainer>
+    </Modal>
+  ) : (
+    <Container>
+      <Text>카메라 접근권한을 허용해주세요.</Text>
+    </Container>
   );
 }
 
