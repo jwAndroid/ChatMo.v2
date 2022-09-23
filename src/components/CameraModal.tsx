@@ -6,12 +6,25 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { Modal, StyleProp, Text, ViewStyle } from 'react-native';
+import { Modal, Pressable, StyleProp, Text, ViewStyle } from 'react-native';
 import { Camera, CameraType, FlashMode } from 'expo-camera';
+import { manipulateAsync, SaveFormat } from 'expo-image-manipulator';
 import styled from '@emotion/native';
-import SafeAreaContainer from './SafeAreaContainer';
+import uuid from 'react-native-uuid';
 
-const Container = styled.View(() => ({ flex: 1 }));
+import { useAppDispatch, useAppSelector } from '../hooks/useRedux';
+import { uploadStorage } from '../firebase/storage';
+import SafeAreaContainer from './SafeAreaContainer';
+import { getTimestamp } from '../utils/date';
+import { RoomEntity } from '../../types';
+import { createMessage } from '../firebase/posts';
+import { fulfilledChat } from '../redux/chat/slice';
+
+const Container = styled.View(() => ({
+  flex: 1,
+  justifyContent: 'center',
+  alignItems: 'center',
+}));
 
 const ButtonContainer = styled.View(() => ({
   height: 70,
@@ -28,8 +41,14 @@ const PicturedImage = styled.Image(() => ({
 interface ICameraModal {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  room: RoomEntity;
 }
-function CameraModal({ isOpen, setIsOpen }: ICameraModal) {
+function CameraModal({ isOpen, setIsOpen, room }: ICameraModal) {
+  const dispatch = useAppDispatch();
+
+  const user = useAppSelector((state) => state.auth.user);
+  const chat = useAppSelector((state) => state.chat.chat);
+
   const [permission, setPermission] = useState<boolean>(false);
   const [type, setType] = useState(CameraType.back);
   const [flash, setFlash] = useState(FlashMode.off);
@@ -86,20 +105,41 @@ function CameraModal({ isOpen, setIsOpen }: ICameraModal) {
     }
   }, [imageSource]);
 
-  const onSave = useCallback(() => {
-    console.log(imageSource);
+  const onSave = useCallback(async () => {
+    if (imageSource && user && user.userId && chat.data) {
+      const compressed = await manipulateAsync(
+        imageSource,
+        [{ resize: { width: 800 } }],
+        { base64: false, compress: 0.9, format: SaveFormat.JPEG }
+      );
 
-    // TODO: 1.chat redux dispatch,
-    // TODO: 2.firestore db save
-    // TODO: 3.storage save
-  }, [imageSource]);
+      const downloadURL = await uploadStorage(user.userId, compressed.uri);
+
+      if (downloadURL && compressed.uri) {
+        const message = {
+          _id: uuid.v4().toString(),
+          text: '',
+          createdAt: getTimestamp(),
+          received: false,
+          image: downloadURL,
+          user: {
+            _id: user.userId,
+          },
+        };
+
+        await createMessage(user.userId, room.roomId, message);
+
+        dispatch(fulfilledChat([message, ...chat.data]));
+      }
+    }
+  }, [dispatch, chat.data, user, imageSource, room.roomId]);
 
   const onExit = useCallback(() => {
     setIsOpen(false);
   }, [setIsOpen]);
 
   return permission ? (
-    <Modal transparent visible={isOpen} animationType="slide">
+    <Modal visible={isOpen} animationType="slide">
       <SafeAreaContainer>
         {imageSource ? (
           <PicturedImage source={{ uri: imageSource }} />
@@ -121,9 +161,9 @@ function CameraModal({ isOpen, setIsOpen }: ICameraModal) {
               취소
             </Text>
 
-            <Text onPress={onSave} style={{ color: 'white' }}>
-              저장
-            </Text>
+            <Pressable onPress={onSave} hitSlop={10}>
+              <Text style={{ color: 'white' }}>저장</Text>
+            </Pressable>
           </ButtonContainer>
         ) : (
           <ButtonContainer>
@@ -147,9 +187,11 @@ function CameraModal({ isOpen, setIsOpen }: ICameraModal) {
       </SafeAreaContainer>
     </Modal>
   ) : (
-    <Container>
-      <Text>카메라 접근권한을 허용해주세요.</Text>
-    </Container>
+    <SafeAreaContainer>
+      <Container>
+        <Text>카메라 접근권한을 허용해주세요.</Text>
+      </Container>
+    </SafeAreaContainer>
   );
 }
 

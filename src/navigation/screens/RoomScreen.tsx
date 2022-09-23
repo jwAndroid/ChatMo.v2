@@ -6,7 +6,7 @@ import React, {
   useMemo,
   useState,
 } from 'react';
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, Image } from 'react-native';
 import styled from '@emotion/native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -16,6 +16,7 @@ import {
   DayProps,
   GiftedChat,
   InputToolbarProps,
+  MessageImageProps,
 } from 'react-native-gifted-chat';
 
 import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
@@ -224,6 +225,19 @@ function RoomScreen() {
     []
   );
 
+  const renderMessageImage = useCallback(
+    (
+      props: Readonly<MessageImageProps<MessageEntity>> &
+        Readonly<{ children?: ReactNode }>
+    ) => (
+      <Image
+        style={{ width: 150, height: 150, margin: 10, borderRadius: 8 }}
+        source={{ uri: props.currentMessage?.image }}
+      />
+    ),
+    []
+  );
+
   const onPressAction = useCallback(() => {
     setIsBubblePress(false);
 
@@ -287,6 +301,7 @@ function RoomScreen() {
             scrollToBottom
             alignTop
             alwaysShowSend
+            renderMessageImage={renderMessageImage}
             renderDay={renderDay}
             renderBubble={renderBubble}
             renderInputToolbar={renderInputToolbar}
@@ -309,8 +324,12 @@ function RoomScreen() {
         />
       ) : null}
 
-      {isCameraOpen ? (
-        <CameraModal isOpen={isCameraOpen} setIsOpen={setIsCameraOpen} />
+      {isCameraOpen && params ? (
+        <CameraModal
+          isOpen={isCameraOpen}
+          setIsOpen={setIsCameraOpen}
+          room={params}
+        />
       ) : null}
     </Container>
   );
