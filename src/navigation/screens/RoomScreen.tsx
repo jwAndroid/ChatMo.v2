@@ -6,7 +6,7 @@ import React, {
   useMemo,
   useState,
 } from 'react';
-import { ActivityIndicator, Image } from 'react-native';
+import { ActivityIndicator } from 'react-native';
 import styled from '@emotion/native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -19,6 +19,7 @@ import {
   MessageImageProps,
 } from 'react-native-gifted-chat';
 
+import { useTheme } from '@emotion/react';
 import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
 import { fulfilled } from '../../redux/posts/slice';
 import { fulfilledChat } from '../../redux/chat/slice';
@@ -36,7 +37,6 @@ import {
 import {
   ActionButton,
   ActionsModal,
-  CameraModal,
   ChatBubble,
   ChatInputBar,
   DayHeader,
@@ -55,6 +55,13 @@ const LoadingContainer = styled.View(() => ({
   alignItems: 'center',
 }));
 
+const ImageHolder = styled.Image(() => ({
+  width: 180,
+  height: 280,
+  marginVertical: 5,
+  borderRadius: 10,
+}));
+
 type RoomScreenRouteProp = RouteProp<RootStackParamList, 'Pin'>;
 
 function RoomScreen() {
@@ -64,13 +71,14 @@ function RoomScreen() {
   const posts = useAppSelector((state) => state.posts.posts);
   const chat = useAppSelector((state) => state.chat.chat);
 
+  const theme = useTheme();
+
   const navigation = useNavigation<RootStackNavigationProp>();
   const { params } = useRoute<RoomScreenRouteProp>();
 
   const { bottom } = useSafeAreaInsets();
 
   const [isOpen, setIsOpen] = useState(false);
-  const [isCameraOpen, setIsCameraOpen] = useState(false);
   const [isBubblePress, setIsBubblePress] = useState(false);
   const [isReady, setIsReady] = useState(false);
 
@@ -232,12 +240,7 @@ function RoomScreen() {
     (
       props: Readonly<MessageImageProps<MessageEntity>> &
         Readonly<{ children?: ReactNode }>
-    ) => (
-      <Image
-        style={{ width: 150, height: 150, margin: 10, borderRadius: 8 }}
-        source={{ uri: props.currentMessage?.image }}
-      />
-    ),
+    ) => <ImageHolder source={{ uri: props.currentMessage?.image }} />,
     []
   );
 
@@ -268,11 +271,21 @@ function RoomScreen() {
         setPickedItem(null);
       }
     } else {
-      setIsCameraOpen(true);
+      if (params) {
+        navigation.navigate('Camera', params);
+      }
 
       setIsOpen(false);
     }
-  }, [dispatch, chat.data, params, user, pickedItem, isBubblePress]);
+  }, [
+    dispatch,
+    chat.data,
+    params,
+    user,
+    pickedItem,
+    isBubblePress,
+    navigation,
+  ]);
 
   const onPressSecond = useCallback(() => {
     if (isBubblePress) {
@@ -312,7 +325,7 @@ function RoomScreen() {
           />
         ) : (
           <LoadingContainer>
-            <ActivityIndicator size="large" />
+            <ActivityIndicator size="large" color={theme.color.chip} />
           </LoadingContainer>
         )}
       </SafeAreaContainer>
@@ -324,14 +337,6 @@ function RoomScreen() {
           onNegative={onNegative}
           onPressFirst={onPressFirst}
           onPressSecond={onPressSecond}
-        />
-      ) : null}
-
-      {isCameraOpen && params ? (
-        <CameraModal
-          isOpen={isCameraOpen}
-          setIsOpen={setIsCameraOpen}
-          room={params}
         />
       ) : null}
     </Container>

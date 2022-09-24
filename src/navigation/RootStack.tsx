@@ -6,6 +6,7 @@ import {
 } from '@react-navigation/native-stack';
 
 import {
+  CameraScreen,
   FormScreen,
   PinScreen,
   RoomScreen,
@@ -24,6 +25,7 @@ export type RootStackParamList = {
   Pin: RoomEntity | undefined;
   Form: RoomEntity | undefined;
   Search: undefined;
+  Camera: RoomEntity;
 };
 
 export type RootStackNavigationProp =
@@ -73,6 +75,11 @@ function RootStack() {
         name="Search"
         component={SearchScreen}
         options={{ animation: 'fade' }}
+      />
+      <Screen
+        name="Camera"
+        component={CameraScreen}
+        options={{ animation: 'slide_from_bottom' }}
       />
     </Navigator>
   );
