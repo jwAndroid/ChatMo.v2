@@ -1,5 +1,6 @@
 export { default as CameraScreen } from './CameraScreen';
 export { default as FormScreen } from './FormScreen';
+export { default as GalleryScreen } from './GalleryScreen';
 export { default as PinScreen } from './PinScreen';
 export { default as RoomScreen } from './RoomScreen';
 export { default as RoomsScreen } from './RoomsScreen';

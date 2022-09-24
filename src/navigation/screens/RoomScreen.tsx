@@ -165,7 +165,7 @@ function RoomScreen() {
             _id: user.userId,
           },
         };
-        // asd
+
         createMessage(user.userId, params.roomId, message);
 
         if (message && chat.data) {
@@ -291,11 +291,13 @@ function RoomScreen() {
     if (isBubblePress) {
       setIsOpen(false);
     } else {
-      console.log('갤러리');
+      if (params) {
+        navigation.navigate('Gallery', params);
+      }
 
       setIsOpen(false);
     }
-  }, [isBubblePress]);
+  }, [navigation, isBubblePress, params]);
 
   const onNegative = useCallback(() => {
     setIsOpen(false);

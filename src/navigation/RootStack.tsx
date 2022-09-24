@@ -8,6 +8,7 @@ import {
 import {
   CameraScreen,
   FormScreen,
+  GalleryScreen,
   PinScreen,
   RoomScreen,
   RoomsScreen,
@@ -26,6 +27,7 @@ export type RootStackParamList = {
   Form: RoomEntity | undefined;
   Search: undefined;
   Camera: RoomEntity;
+  Gallery: RoomEntity;
 };
 
 export type RootStackNavigationProp =
@@ -79,6 +81,11 @@ function RootStack() {
       <Screen
         name="Camera"
         component={CameraScreen}
+        options={{ animation: 'slide_from_bottom' }}
+      />
+      <Screen
+        name="Gallery"
+        component={GalleryScreen}
         options={{ animation: 'slide_from_bottom' }}
       />
     </Navigator>
