@@ -48,7 +48,7 @@ function LinkPreviewer({ url }: ILinkPreviewer) {
 
           setLoading(false);
         } catch (error) {
-          console.log('error');
+          console.log(`linkpreviewer error: ${error}`);
         }
       }
     })();
@@ -107,7 +107,7 @@ function LinkPreviewer({ url }: ILinkPreviewer) {
         ) : null}
       </TextContainer>
 
-      {data && data.images.length > 0 ? (
+      {data && data.images && data.images.length > 0 ? (
         <Pressable
           onPress={data && onPress(data)}
           onLongPress={data && onLongPress(data)}

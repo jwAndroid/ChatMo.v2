@@ -16,11 +16,5 @@ export function regexUrl(url?: string) {
     return regex.test(url);
   }
 
-  return undefined;
-}
-
-export function regexBase64(text: string) {
-  const regex = /^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$/;
-
-  return regex.test(text);
+  return false;
 }
