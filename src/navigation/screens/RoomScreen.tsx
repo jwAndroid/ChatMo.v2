@@ -165,7 +165,7 @@ function RoomScreen() {
             _id: user.userId,
           },
         };
-
+        // asd
         createMessage(user.userId, params.roomId, message);
 
         if (message && chat.data) {
