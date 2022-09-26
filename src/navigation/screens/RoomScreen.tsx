@@ -34,8 +34,8 @@ import {
   loadMessages,
   onModifyMessage,
 } from '../../firebase/room';
+
 import {
-  ActionButton,
   ChatBubble,
   ChatInputBar,
   DayHeader,
@@ -43,6 +43,7 @@ import {
   SafeAreaContainer,
 } from '../../components';
 import { ActionsModal } from '../../components/modal';
+import { ActionButton } from '../../components/button';
 
 const Container = styled.View(({ theme }) => ({
   flex: 1,

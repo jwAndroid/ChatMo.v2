@@ -8,12 +8,8 @@ import { changeTheme } from '../../redux/system/slice';
 import themeStorage from '../../storages/themeStorage';
 import useBackEffect from '../../hooks/useBackEffect';
 import { RootStackNavigationProp } from '../RootStack';
-import {
-  CommonText,
-  IconHeader,
-  SafeAreaContainer,
-  SettingSwitch,
-} from '../../components';
+import { CommonText, IconHeader, SafeAreaContainer } from '../../components';
+import { SettingSwitch } from '../../components/button';
 
 const Container = styled.View(() => ({
   flexDirection: 'row',

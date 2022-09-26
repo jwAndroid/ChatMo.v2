@@ -10,7 +10,7 @@ import {
 } from 'react-native-gifted-chat';
 
 import ChatInput from './ChatInput';
-import SendButton from './SendButton';
+import { SendButton } from './button';
 
 interface IChatInputBar {
   props: Readonly<InputToolbarProps<IMessage>>;

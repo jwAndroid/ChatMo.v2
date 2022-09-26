@@ -15,13 +15,10 @@ import { useAnimation } from '../../hooks/useAnimation';
 import useBackEffect from '../../hooks/useBackEffect';
 import { getTimestamp } from '../../utils/date';
 import { RoomEntity } from '../../../types';
-import {
-  FloatingButton,
-  IconHeader,
-  SafeAreaContainer,
-  SwipeList,
-} from '../../components';
+
+import { IconHeader, SafeAreaContainer, SwipeList } from '../../components';
 import { NotificationModal } from '../../components/modal';
+import { FloatingButton } from '../../components/button';
 
 function RoomsScreen() {
   const dispatch = useAppDispatch();

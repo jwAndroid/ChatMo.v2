@@ -14,7 +14,6 @@ import { ChipEntity } from '../../../types';
 import { getTimestamp } from '../../utils/date';
 import { ellipsize } from '../../utils/text';
 import {
-  ButtonBar,
   Chip,
   CommonText,
   Icon,
@@ -22,10 +21,10 @@ import {
   KeyboardContainer,
   PasswordInput,
   SafeAreaContainer,
-  SettingSwitch,
   TitleInput,
 } from '../../components';
 import { NotificationModal, InputModal } from '../../components/modal';
+import { ButtonBar, SettingSwitch } from '../../components/button';
 
 const Container = styled.View(() => ({
   flex: 1,
