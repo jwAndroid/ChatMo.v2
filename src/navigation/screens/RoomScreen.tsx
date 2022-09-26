@@ -38,15 +38,11 @@ import {
   onModifyMessage,
 } from '../../firebase/room';
 
-import {
-  ChatBubble,
-  DayHeader,
-  IconHeader,
-  SafeAreaContainer,
-} from '../../components';
+import { ChatBubble, DayHeader, IconHeader } from '../../components';
 import { ActionsModal, Carousell, ToastModal } from '../../components/modal';
 import { ActionButton } from '../../components/button';
 import { ChatInputBar } from '../../components/input';
+import { SafeAreaContainer } from '../../components/layout';
 
 const Container = styled.View(({ theme }) => ({
   flex: 1,

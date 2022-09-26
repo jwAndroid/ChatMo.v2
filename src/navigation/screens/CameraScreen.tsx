@@ -18,7 +18,7 @@ import { createMessage } from '../../firebase/posts';
 import { compressed } from '../../utils/compress';
 import { getFormatTime, getTimestamp } from '../../utils/date';
 import { RootStackNavigationProp, RootStackParamList } from '../RootStack';
-import { SafeAreaContainer } from '../../components';
+import { SafeAreaContainer } from '../../components/layout';
 
 const Container = styled.View(() => ({
   flex: 1,

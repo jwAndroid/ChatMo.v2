@@ -7,12 +7,8 @@ import { useNavigation } from '@react-navigation/core';
 import { RootStackNavigationProp } from '../RootStack';
 import useBackEffect from '../../hooks/useBackEffect';
 import { SettingEntity } from '../../../types';
-import {
-  CommonText,
-  Divider,
-  IconHeader,
-  SafeAreaContainer,
-} from '../../components';
+import { CommonText, Divider, IconHeader } from '../../components';
+import { SafeAreaContainer } from '../../components/layout';
 
 const StyledPressable = styled.Pressable(() => ({
   paddingHorizontal: 20,

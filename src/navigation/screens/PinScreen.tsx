@@ -10,7 +10,8 @@ import { deleteRoom } from '../../firebase/posts';
 import { useAnimation } from '../../hooks/useAnimation';
 import useBackEffect from '../../hooks/useBackEffect';
 import { RootStackNavigationProp, RootStackParamList } from '../RootStack';
-import { IconHeader, Pin, SafeAreaContainer } from '../../components';
+import { IconHeader, Pin } from '../../components';
+import { SafeAreaContainer } from '../../components/layout';
 
 interface IIcon {
   isInvailed: boolean;

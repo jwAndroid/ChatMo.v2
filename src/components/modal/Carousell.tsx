@@ -2,7 +2,8 @@ import React, { memo, useCallback } from 'react';
 import { Modal, Pressable } from 'react-native';
 import styled from '@emotion/native';
 import { useTheme } from '@emotion/react';
-import SafeAreaContainer from '../SafeAreaContainer';
+
+import { SafeAreaContainer } from '../layout';
 
 const Gallery = styled.Image(() => ({
   flex: 1,

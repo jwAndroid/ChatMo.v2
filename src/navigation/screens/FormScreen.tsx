@@ -13,17 +13,11 @@ import { RootStackNavigationProp, RootStackParamList } from '../RootStack';
 import { ChipEntity } from '../../../types';
 import { getTimestamp } from '../../utils/date';
 import { ellipsize } from '../../utils/text';
-import {
-  Chip,
-  CommonText,
-  Icon,
-  IconHeader,
-  KeyboardContainer,
-  SafeAreaContainer,
-} from '../../components';
+import { Chip, CommonText, Icon, IconHeader } from '../../components';
 import { NotificationModal, InputModal } from '../../components/modal';
 import { ButtonBar, SettingSwitch } from '../../components/button';
 import { PasswordInput, TitleInput } from '../../components/input';
+import { KeyboardContainer, SafeAreaContainer } from '../../components/layout';
 
 const Container = styled.View(() => ({
   flex: 1,

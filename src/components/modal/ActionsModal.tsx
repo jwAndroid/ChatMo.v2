@@ -27,7 +27,7 @@ const ShadowButton = styled.Pressable<IButton>(({ theme, marginTop = 10 }) => {
       shadowRadius: 1,
     },
     android: {
-      elevation: 5,
+      elevation: 1,
       shadowColor: theme.color.shadow,
     },
   });

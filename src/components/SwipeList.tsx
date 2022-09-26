@@ -8,7 +8,7 @@ import { RoomEntity } from '../../types';
 import { SwipeStyles } from '../utils/styles';
 import RoomsItem from './RoomsItem';
 import FavoritesItem from './FavoritesItem';
-import EmptyContainer from './EmptyContainer';
+import { EmptyContainer } from './layout';
 
 const RowBack = styled.View(({ theme }) => ({
   flex: 1,

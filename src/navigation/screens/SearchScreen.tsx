@@ -19,13 +19,9 @@ import deduplicationStorage from '../../storages/deduplicationStorage';
 import { RootStackNavigationProp } from '../RootStack';
 import useBackEffect from '../../hooks/useBackEffect';
 import { ChipEntity, RoomEntity } from '../../../types';
-import {
-  Chip,
-  CommonText,
-  RoomsItem,
-  SafeAreaContainer,
-} from '../../components';
+import { Chip, CommonText, RoomsItem } from '../../components';
 import { SearchBox } from '../../components/input';
+import { SafeAreaContainer } from '../../components/layout';
 
 const HistoryContainer = styled.View(({ theme }) => ({
   justifyContent: 'center',
@@ -89,9 +85,9 @@ function SearchScreen() {
         const posts = await loadPosts(user.userId).catch();
 
         if (posts) {
-          setRenderData(posts);
+          setRenderData(posts.sort((a, b) => b.updatedAt - a.updatedAt));
 
-          setMasterData(posts);
+          setMasterData(posts.sort((a, b) => b.updatedAt - a.updatedAt));
         }
       }
     })();

@@ -17,9 +17,10 @@ import useBackEffect from '../../hooks/useBackEffect';
 import { getTimestamp } from '../../utils/date';
 import { RoomEntity } from '../../../types';
 
-import { IconHeader, SafeAreaContainer, SwipeList } from '../../components';
+import { IconHeader, SwipeList } from '../../components';
 import { NotificationModal } from '../../components/modal';
 import { FloatingButton } from '../../components/button';
+import { SafeAreaContainer } from '../../components/layout';
 
 const LoadingContainer = styled.View(() => ({
   flex: 1,

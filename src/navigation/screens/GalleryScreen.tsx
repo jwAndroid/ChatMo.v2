@@ -25,10 +25,11 @@ import { fulfilledChat } from '../../redux/chat/slice';
 import { uploadStorage } from '../../firebase/storage';
 
 import { RootStackNavigationProp, RootStackParamList } from '../RootStack';
-import { IconHeader, SafeAreaContainer } from '../../components';
+import { IconHeader } from '../../components';
 import { compressed } from '../../utils/compress';
 import { getFormatTime, getTimestamp } from '../../utils/date';
 import { createMessage } from '../../firebase/posts';
+import { SafeAreaContainer } from '../../components/layout';
 
 const ItemContainer = styled.View({
   margin: 2,
