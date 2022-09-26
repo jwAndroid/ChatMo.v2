@@ -26,3 +26,4 @@ GoogleService-Info.plist
 #config
 app.json
 package.json
+app.config.js
