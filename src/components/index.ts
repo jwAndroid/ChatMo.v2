@@ -19,7 +19,6 @@ export { default as IconHeader } from './IconHeader';
 export { default as InputModal } from './InputModal';
 export { default as KeyboardContainer } from './KeyboardContainer';
 export { default as LinkPreviewer } from './LinkPreviewer';
-export { default as ListPlaceholder } from './ListPlaceholder';
 export { default as NotificationModal } from './NotificationModal';
 export { default as PasswordInput } from './PasswordInput';
 export { default as Pin } from './Pin';

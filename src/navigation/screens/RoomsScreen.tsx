@@ -18,7 +18,6 @@ import { RoomEntity } from '../../../types';
 import {
   FloatingButton,
   IconHeader,
-  ListPlaceholder,
   NotificationModal,
   SafeAreaContainer,
   SwipeList,
@@ -198,7 +197,7 @@ function RoomsScreen() {
           onEndReached={onLoadMore}
         />
       ) : (
-        <ListPlaceholder />
+        <ActivityIndicator size="small" color={theme.color.sky_300} />
       )}
 
       {isDeleteModalOpen && (
