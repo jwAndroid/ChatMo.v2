@@ -1,11 +1,4 @@
-import React, {
-  memo,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import React, { memo, useCallback, useMemo, useRef, useState } from 'react';
 import {
   ActivityIndicator,
   Pressable,
@@ -121,7 +114,6 @@ function CameraScreen() {
   const navigation = useNavigation<RootStackNavigationProp>();
   const { params } = useRoute<CameraScreenRouteProp>();
 
-  const [permission, setPermission] = useState<boolean>(false);
   const [type, setType] = useState(CameraType.back);
   const [flash, setFlash] = useState(FlashMode.off);
   const [imageSource, setImageSource] = useState<string | null>('');
@@ -135,14 +127,6 @@ function CameraScreen() {
     }),
     []
   );
-
-  useEffect(() => {
-    (async () => {
-      const { status } = await Camera.requestCameraPermissionsAsync();
-
-      setPermission(status === 'granted');
-    })();
-  }, []);
 
   const takePicture = useCallback(async () => {
     if (ref.current) {
@@ -213,7 +197,7 @@ function CameraScreen() {
     navigation.pop();
   }, [navigation]);
 
-  return permission ? (
+  return (
     <SafeAreaContainer>
       {imageSource ? (
         <Container>
@@ -263,10 +247,6 @@ function CameraScreen() {
           </ButtonContainer>
         </Container>
       )}
-    </SafeAreaContainer>
-  ) : (
-    <SafeAreaContainer>
-      <StyledText>카메라 접근권한을 허용해주세요.</StyledText>
     </SafeAreaContainer>
   );
 }

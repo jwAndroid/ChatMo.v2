@@ -67,7 +67,6 @@ function GalleryScreen() {
 
   const theme = useTheme();
 
-  const [hasPermission, setHasPermission] = useState(false);
   const [assets, setAssets] = useState<MediaLibrary.Asset[]>([]);
   const [selectedItem, setSelectedItem] = useState<string[]>([]);
   const [width, setWidth] = useState(0);
@@ -86,14 +85,6 @@ function GalleryScreen() {
     }),
     []
   );
-
-  useLayoutEffect(() => {
-    (async () => {
-      const permission = await MediaLibrary.requestPermissionsAsync();
-
-      setHasPermission(permission.granted);
-    })();
-  }, []);
 
   useLayoutEffect(() => {
     (async () => {
@@ -232,19 +223,17 @@ function GalleryScreen() {
         onPressCheck={onPressConfirm}
       />
 
-      {hasPermission ? (
-        <FlatList
-          data={assets}
-          renderItem={renderItem}
-          keyExtractor={keyExtractor}
-          numColumns={3}
-          windowSize={5}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={contentContainerStyle}
-          onEndReached={onEndReached}
-          onLayout={onLayout}
-        />
-      ) : null}
+      <FlatList
+        data={assets}
+        renderItem={renderItem}
+        keyExtractor={keyExtractor}
+        numColumns={3}
+        windowSize={5}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={contentContainerStyle}
+        onEndReached={onEndReached}
+        onLayout={onLayout}
+      />
 
       {pageLoading ? (
         <ActivityIndicator size="small" color={theme.color.chip} />

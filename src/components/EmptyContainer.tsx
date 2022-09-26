@@ -3,10 +3,8 @@ import { Dimensions } from 'react-native';
 import styled from '@emotion/native';
 import { useTheme } from '@emotion/react';
 
-const { height } = Dimensions.get('screen');
-
 const Container = styled.View(() => ({
-  height: height / 1.5,
+  height: Dimensions.get('screen').height / 1.5,
   position: 'relative',
   justifyContent: 'center',
   alignItems: 'center',

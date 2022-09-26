@@ -2,11 +2,12 @@ import React, {
   memo,
   ReactNode,
   useCallback,
+  useEffect,
   useLayoutEffect,
   useMemo,
   useState,
 } from 'react';
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, Pressable } from 'react-native';
 import styled from '@emotion/native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -18,6 +19,8 @@ import {
   InputToolbarProps,
   MessageImageProps,
 } from 'react-native-gifted-chat';
+import * as MediaLibrary from 'expo-media-library';
+import { Camera } from 'expo-camera';
 
 import { useTheme } from '@emotion/react';
 import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
@@ -41,7 +44,7 @@ import {
   IconHeader,
   SafeAreaContainer,
 } from '../../components';
-import { ActionsModal } from '../../components/modal';
+import { ActionsModal, Carousell, ToastModal } from '../../components/modal';
 import { ActionButton } from '../../components/button';
 import { ChatInputBar } from '../../components/input';
 
@@ -79,12 +82,19 @@ function RoomScreen() {
 
   const { bottom } = useSafeAreaInsets();
 
-  const [isOpen, setIsOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [isActionsOpen, setIsActionsOpen] = useState(false);
+  const [isToastOpen, setIsToastOpen] = useState(false);
+  const [isCaroucellOpen, setIsCaroucellOpen] = useState(false);
+  const [imageSource, setImageSource] = useState('');
   const [isBubblePress, setIsBubblePress] = useState(false);
-  const [isReady, setIsReady] = useState(false);
 
   const [pickedItem, setPickedItem] = useState<MessageEntity | null>(null);
   const [firstLength, setFirstLength] = useState<number>();
+
+  const [hasGalleryPermission, setHasGalleryPermission] = useState(false);
+  const [hasCameraPermission, setHasCameraPermission] = useState(false);
 
   const userId = useMemo(
     () => (user ? { _id: user.userId } : undefined),
@@ -93,9 +103,25 @@ function RoomScreen() {
 
   useBackEffect();
 
+  useEffect(() => {
+    (async () => {
+      const { granted } = await MediaLibrary.requestPermissionsAsync();
+
+      setHasGalleryPermission(granted);
+    })();
+  }, []);
+
+  useEffect(() => {
+    (async () => {
+      const { granted } = await Camera.requestCameraPermissionsAsync();
+
+      setHasCameraPermission(granted);
+    })();
+  }, []);
+
   useLayoutEffect(() => {
     (async () => {
-      setIsReady(false);
+      setIsLoading(false);
 
       if (user && params) {
         const chats = await loadMessages(user.userId, params.roomId);
@@ -103,7 +129,7 @@ function RoomScreen() {
         if (chats) {
           dispatch(fulfilledChat(chats));
 
-          setIsReady(true);
+          setIsLoading(true);
 
           setFirstLength(chats.length);
         }
@@ -211,7 +237,7 @@ function RoomScreen() {
 
       setPickedItem(message);
 
-      setIsOpen(true);
+      setIsActionsOpen(true);
     }
   }, []);
 
@@ -237,18 +263,39 @@ function RoomScreen() {
     []
   );
 
+  const onPressImage = useCallback(
+    (source: string) => () => {
+      setImageSource(source);
+
+      setIsCaroucellOpen(true);
+    },
+    []
+  );
+
   const renderMessageImage = useCallback(
     (
       props: Readonly<MessageImageProps<MessageEntity>> &
         Readonly<{ children?: ReactNode }>
-    ) => <ImageHolder source={{ uri: props.currentMessage?.image }} />,
-    []
+    ) => {
+      if (props.currentMessage && props.currentMessage.image) {
+        const { image } = props.currentMessage;
+
+        return (
+          <Pressable onPress={onPressImage(image)}>
+            <ImageHolder source={{ uri: image }} />
+          </Pressable>
+        );
+      }
+
+      return null;
+    },
+    [onPressImage]
   );
 
   const onPressAction = useCallback(() => {
     setIsBubblePress(false);
 
-    setIsOpen(true);
+    setIsActionsOpen(true);
   }, []);
 
   const renderActions = useCallback(
@@ -267,16 +314,16 @@ function RoomScreen() {
 
         deleteMessage(user.userId, params, pickedItem);
 
-        setIsOpen(false);
+        setIsActionsOpen(false);
 
         setPickedItem(null);
       }
     } else {
-      if (params) {
+      if (params && hasCameraPermission) {
         navigation.navigate('Camera', params);
       }
 
-      setIsOpen(false);
+      setIsActionsOpen(false);
     }
   }, [
     dispatch,
@@ -286,22 +333,23 @@ function RoomScreen() {
     pickedItem,
     isBubblePress,
     navigation,
+    hasCameraPermission,
   ]);
 
   const onPressSecond = useCallback(() => {
     if (isBubblePress) {
-      setIsOpen(false);
+      setIsActionsOpen(false);
     } else {
-      if (params) {
+      if (params && hasGalleryPermission) {
         navigation.navigate('Gallery', params);
       }
 
-      setIsOpen(false);
+      setIsActionsOpen(false);
     }
-  }, [navigation, isBubblePress, params]);
+  }, [navigation, isBubblePress, params, hasGalleryPermission]);
 
   const onNegative = useCallback(() => {
-    setIsOpen(false);
+    setIsActionsOpen(false);
   }, []);
 
   return (
@@ -309,7 +357,7 @@ function RoomScreen() {
       <IconHeader isBackword isIosTopInset onPress={onBackPress} />
 
       <SafeAreaContainer>
-        {isReady ? (
+        {isLoading ? (
           <GiftedChat
             user={userId}
             messages={chat.data}
@@ -333,13 +381,29 @@ function RoomScreen() {
         )}
       </SafeAreaContainer>
 
-      {isOpen ? (
+      {isActionsOpen ? (
         <ActionsModal
           items={isBubblePress ? bubbleModal : actionsModal}
           isOpen
           onNegative={onNegative}
           onPressFirst={onPressFirst}
           onPressSecond={onPressSecond}
+        />
+      ) : null}
+
+      {isToastOpen ? (
+        <ToastModal
+          text="카메라 또는 앨범 권한을 허용해주세요."
+          showToast={isToastOpen}
+          setShowToast={setIsToastOpen}
+        />
+      ) : null}
+
+      {isCaroucellOpen ? (
+        <Carousell
+          isOpen={isCaroucellOpen}
+          setIsOpen={setIsCaroucellOpen}
+          source={imageSource}
         />
       ) : null}
     </Container>

@@ -1,6 +1,7 @@
 import React, { memo, useCallback, useMemo, useState } from 'react';
 import { ActivityIndicator } from 'react-native';
 import { useTheme } from '@emotion/react';
+import styled from '@emotion/native';
 import { useFocusEffect, useNavigation } from '@react-navigation/core';
 import { RowMap } from 'react-native-swipe-list-view';
 
@@ -19,6 +20,12 @@ import { RoomEntity } from '../../../types';
 import { IconHeader, SafeAreaContainer, SwipeList } from '../../components';
 import { NotificationModal } from '../../components/modal';
 import { FloatingButton } from '../../components/button';
+
+const LoadingContainer = styled.View(() => ({
+  flex: 1,
+  justifyContent: 'center',
+  alignItems: 'center',
+}));
 
 function RoomsScreen() {
   const dispatch = useAppDispatch();
@@ -194,7 +201,9 @@ function RoomsScreen() {
           onEndReached={onLoadMore}
         />
       ) : (
-        <ActivityIndicator size="small" color={theme.color.sky_300} />
+        <LoadingContainer>
+          <ActivityIndicator size="large" color={theme.color.chip} />
+        </LoadingContainer>
       )}
 
       {isDeleteModalOpen && (
