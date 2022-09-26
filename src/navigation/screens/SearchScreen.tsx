@@ -102,6 +102,8 @@ function SearchScreen() {
     })();
   }, []);
 
+  const keyExtractor = useCallback((item: RoomEntity) => `${item.roomId}`, []);
+
   const onBackPress = useCallback(() => {
     navigation.goBack();
   }, [navigation]);
@@ -170,7 +172,9 @@ function SearchScreen() {
   }, [value, chips]);
 
   const onSubmitEditing = useCallback(() => {
-    deduplicationStorage(value, chips);
+    if (chips) {
+      deduplicationStorage(value, chips);
+    }
 
     Keyboard.dismiss();
   }, [value, chips]);
@@ -224,7 +228,7 @@ function SearchScreen() {
         onSubmitEditing={onSubmitEditing}
       />
 
-      {chips.length > 0 ? (
+      {chips ? (
         <HistoryContainer>
           <Row>
             <CommonText
@@ -244,33 +248,35 @@ function SearchScreen() {
             </Pressable>
           </Row>
 
-          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            <ChipContainer>
-              {chips.map((chip) => (
-                <InsetsContainer key={chip.id}>
-                  <Chip isRow marginLeft={0} onPress={onPressChip(chip)}>
-                    <CommonText
-                      text={chip.title}
-                      fontSize={13}
-                      isSpecificColor
-                      specificColor={theme.color.text}
-                    />
+          {chips ? (
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+              <ChipContainer>
+                {chips.map((chip) => (
+                  <InsetsContainer key={chip.id}>
+                    <Chip isRow marginLeft={0} onPress={onPressChip(chip)}>
+                      <CommonText
+                        text={chip.title}
+                        fontSize={13}
+                        isSpecificColor
+                        specificColor={theme.color.text}
+                      />
 
-                    <Pressable onPress={onPressChipDelete(chip)} hitSlop={10}>
-                      <Icon source={theme.icon.cancel} />
-                    </Pressable>
-                  </Chip>
-                </InsetsContainer>
-              ))}
-            </ChipContainer>
-          </ScrollView>
+                      <Pressable onPress={onPressChipDelete(chip)} hitSlop={10}>
+                        <Icon source={theme.icon.cancel} />
+                      </Pressable>
+                    </Chip>
+                  </InsetsContainer>
+                ))}
+              </ChipContainer>
+            </ScrollView>
+          ) : null}
         </HistoryContainer>
       ) : null}
 
       <ResultsContainer>
         <FlatList
           data={renderData}
-          keyExtractor={(item) => item.roomId}
+          keyExtractor={keyExtractor}
           bounces={false}
           ListHeaderComponent={ListHeaderComponent}
           ListFooterComponent={ListFooterComponent}

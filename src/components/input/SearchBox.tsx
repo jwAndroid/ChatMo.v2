@@ -56,12 +56,10 @@ interface ISearchBox {
   onBackPress: ((event: GestureResponderEvent) => void) | null | undefined;
   onCancelPress: ((event: GestureResponderEvent) => void) | null | undefined;
   onChangeText: ((text: string) => void) | undefined;
-  onEndEditing:
-    | ((e: NativeSyntheticEvent<TextInputEndEditingEventData>) => void)
-    | undefined;
-  onSubmitEditing:
-    | ((e: NativeSyntheticEvent<TextInputEndEditingEventData>) => void)
-    | undefined;
+  onEndEditing: (e: NativeSyntheticEvent<TextInputEndEditingEventData>) => void;
+  onSubmitEditing: (
+    e: NativeSyntheticEvent<TextInputEndEditingEventData>
+  ) => void;
 }
 
 function SearchBox({

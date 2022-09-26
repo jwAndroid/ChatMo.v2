@@ -13,13 +13,19 @@ export default function deduplicationStorage(
   };
 
   if (prepared.title && prepared.id) {
-    const deduplication = [prepared, ...chips].filter(
-      (arr, index, callback) =>
-        index === callback.findIndex((t) => t.title === arr.title)
-    );
+    if (chips) {
+      const deduplication = [prepared, ...chips].filter(
+        (arr, index, callback) =>
+          index === callback.findIndex((t) => t.title === arr.title)
+      );
 
-    historyStorage.set(deduplication);
+      historyStorage.set(deduplication);
 
-    return deduplication;
+      return deduplication;
+    }
+
+    historyStorage.set([prepared]);
+
+    return [prepared];
   }
 }
