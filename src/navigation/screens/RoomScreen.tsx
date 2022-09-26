@@ -7,7 +7,12 @@ import React, {
   useMemo,
   useState,
 } from 'react';
-import { ActivityIndicator, Pressable } from 'react-native';
+import {
+  ActivityIndicator,
+  Pressable,
+  StyleProp,
+  ViewStyle,
+} from 'react-native';
 import styled from '@emotion/native';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/core';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -62,6 +67,13 @@ const ImageHolder = styled.Image(() => ({
   borderRadius: 10,
 }));
 
+const ScrollToBottom = styled.Image(({ theme }) => ({
+  width: 25,
+  height: 25,
+  transform: [{ rotate: '270deg' }],
+  tintColor: theme.color.white,
+}));
+
 type RoomScreenRouteProp = RouteProp<RootStackParamList, 'Pin'>;
 
 function RoomScreen() {
@@ -95,6 +107,16 @@ function RoomScreen() {
   const userId = useMemo(
     () => (user ? { _id: user.userId } : undefined),
     [user]
+  );
+
+  const ScrollToBottomStyle = useMemo<StyleProp<ViewStyle>>(
+    () => ({
+      width: 35,
+      height: 35,
+      marginRight: 4,
+      backgroundColor: theme.color.divider,
+    }),
+    [theme]
   );
 
   useBackEffect();
@@ -171,7 +193,7 @@ function RoomScreen() {
   }, [dispatch, chat.data, params, user, posts.data, navigation, firstLength]);
 
   const onSend = useCallback(
-    (messages: MessageEntity[]) => {
+    async (messages: MessageEntity[]) => {
       if (
         user &&
         params &&
@@ -189,7 +211,7 @@ function RoomScreen() {
           },
         };
 
-        createMessage(user.userId, params.roomId, message);
+        await createMessage(user.userId, params.roomId, message);
 
         if (message && chat.data) {
           dispatch(fulfilledChat([message, ...chat.data]));
@@ -348,6 +370,11 @@ function RoomScreen() {
     setIsActionsOpen(false);
   }, []);
 
+  const scrollToBottomComponent = useCallback(
+    () => <ScrollToBottom source={theme.icon.backward} />,
+    [theme.icon.backward]
+  );
+
   return (
     <Container>
       <IconHeader isBackword isIosTopInset onPress={onBackPress} />
@@ -357,18 +384,20 @@ function RoomScreen() {
           <GiftedChat
             user={userId}
             messages={chat.data}
-            onSend={(messages) => onSend(messages)}
-            bottomOffset={bottom === 0 ? 0 : bottom - 3}
+            onSend={onSend}
+            alignTop
+            scrollToBottom
+            alwaysShowSend
             wrapInSafeArea={false}
             showUserAvatar={false}
-            scrollToBottom
-            alignTop
-            alwaysShowSend
-            renderMessageImage={renderMessageImage}
             renderDay={renderDay}
             renderBubble={renderBubble}
-            renderInputToolbar={renderInputToolbar}
             renderActions={renderActions}
+            renderInputToolbar={renderInputToolbar}
+            renderMessageImage={renderMessageImage}
+            scrollToBottomStyle={ScrollToBottomStyle}
+            scrollToBottomComponent={scrollToBottomComponent}
+            bottomOffset={bottom === 0 ? 0 : bottom - 3}
           />
         ) : (
           <LoadingContainer>
