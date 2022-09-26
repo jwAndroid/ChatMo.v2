@@ -18,10 +18,10 @@ import { RoomEntity } from '../../../types';
 import {
   FloatingButton,
   IconHeader,
-  NotificationModal,
   SafeAreaContainer,
   SwipeList,
 } from '../../components';
+import { NotificationModal } from '../../components/modal';
 
 function RoomsScreen() {
   const dispatch = useAppDispatch();

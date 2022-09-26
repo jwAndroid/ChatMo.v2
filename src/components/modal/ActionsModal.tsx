@@ -3,8 +3,7 @@ import { GestureResponderEvent, Modal, Platform } from 'react-native';
 import styled from '@emotion/native';
 import { useTheme } from '@emotion/react';
 
-import { ModalEntity } from '../../types';
-import CommonText from './CommonText';
+import CommonText from '../CommonText';
 
 const Container = styled.Pressable({
   flex: 1,
@@ -44,6 +43,11 @@ const ShadowButton = styled.Pressable<IButton>(({ theme, marginTop = 10 }) => {
     ...shadow,
   };
 });
+
+interface ModalEntity {
+  id: number;
+  text: string;
+}
 
 interface IActionsModal {
   items: ModalEntity[];

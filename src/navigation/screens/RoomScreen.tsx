@@ -36,13 +36,13 @@ import {
 } from '../../firebase/room';
 import {
   ActionButton,
-  ActionsModal,
   ChatBubble,
   ChatInputBar,
   DayHeader,
   IconHeader,
   SafeAreaContainer,
 } from '../../components';
+import { ActionsModal } from '../../components/modal';
 
 const Container = styled.View(({ theme }) => ({
   flex: 1,

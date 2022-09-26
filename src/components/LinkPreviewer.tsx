@@ -9,7 +9,7 @@ import { getLinkPreview } from 'link-preview-js';
 import { PreviewEntity } from '../../types';
 import { ellipsize, regexUrl } from '../utils/text';
 import CommonText from './CommonText';
-import ToastModal from './ToastModal';
+import { ToastModal } from './modal';
 
 const TextContainer = styled.View(() => ({
   alignItems: 'flex-end',

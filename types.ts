@@ -28,11 +28,6 @@ export interface RoomEntity {
   chips: ChipEntity[] | null;
 }
 
-export interface ModalEntity {
-  id: number;
-  text: string;
-}
-
 export interface User {
   _id: string;
 }

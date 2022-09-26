@@ -3,7 +3,7 @@ import { Modal } from 'react-native';
 import styled from '@emotion/native';
 import { useTheme } from '@emotion/react';
 
-import CommonText from './CommonText';
+import CommonText from '../CommonText';
 
 const Container = styled.Pressable({
   flex: 1,
