@@ -13,8 +13,12 @@ import themeStorage from './src/storages/themeStorage';
 import { cacheFonts, cacheImages } from './src/utils/cache';
 import { darkTheme, font, icon, lightTheme } from './src/theme';
 import Splash from './Splash';
+import { ToastModal } from './src/components/modal';
 
-function Main() {
+interface IMain {
+  isConnected: boolean | null;
+}
+function Main({ isConnected }: IMain) {
   const dispatch = useAppDispatch();
 
   const isDark = useAppSelector((state) => state.system.isDark);
@@ -23,6 +27,7 @@ function Main() {
   useAuthLoadEffect();
 
   const [appReady, setAppReady] = useState(false);
+  const [showToast, setShowToast] = useState(false);
 
   useLayoutEffect(() => {
     (async () => {
@@ -46,7 +51,7 @@ function Main() {
 
   return (
     <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
-      {appReady && user ? (
+      {appReady && user && isConnected ? (
         <NavigationContainer>
           <StatusBar style={isDark ? 'light' : 'dark'} />
 
@@ -54,6 +59,14 @@ function Main() {
         </NavigationContainer>
       ) : (
         <Splash />
+      )}
+
+      {!isConnected && isConnected !== null && (
+        <ToastModal
+          text="인터넷 연결을 확인해 주세요."
+          showToast={showToast}
+          setShowToast={setShowToast}
+        />
       )}
     </ThemeProvider>
   );
