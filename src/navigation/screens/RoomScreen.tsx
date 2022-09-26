@@ -37,13 +37,13 @@ import {
 
 import {
   ChatBubble,
-  ChatInputBar,
   DayHeader,
   IconHeader,
   SafeAreaContainer,
 } from '../../components';
 import { ActionsModal } from '../../components/modal';
 import { ActionButton } from '../../components/button';
+import { ChatInputBar } from '../../components/input';
 
 const Container = styled.View(({ theme }) => ({
   flex: 1,

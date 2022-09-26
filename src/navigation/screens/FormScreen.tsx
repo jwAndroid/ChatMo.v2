@@ -19,12 +19,11 @@ import {
   Icon,
   IconHeader,
   KeyboardContainer,
-  PasswordInput,
   SafeAreaContainer,
-  TitleInput,
 } from '../../components';
 import { NotificationModal, InputModal } from '../../components/modal';
 import { ButtonBar, SettingSwitch } from '../../components/button';
+import { PasswordInput, TitleInput } from '../../components/input';
 
 const Container = styled.View(() => ({
   flex: 1,

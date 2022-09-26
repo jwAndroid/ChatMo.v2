@@ -24,8 +24,8 @@ import {
   CommonText,
   RoomsItem,
   SafeAreaContainer,
-  SearchBox,
 } from '../../components';
+import { SearchBox } from '../../components/input';
 
 const HistoryContainer = styled.View(({ theme }) => ({
   justifyContent: 'center',
