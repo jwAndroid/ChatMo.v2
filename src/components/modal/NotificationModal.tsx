@@ -61,7 +61,6 @@ interface INotificationModal {
   onPostive: (event: GestureResponderEvent) => void;
   error?: boolean;
 }
-
 function NotificationModal({
   isOpen,
   notification,

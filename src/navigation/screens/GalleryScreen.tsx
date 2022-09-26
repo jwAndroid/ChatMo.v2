@@ -30,6 +30,7 @@ import { compressed } from '../../utils/compress';
 import { getFormatTime, getTimestamp } from '../../utils/date';
 import { createMessage } from '../../firebase/posts';
 import { SafeAreaContainer } from '../../components/layout';
+import { LoadingModal } from '../../components/modal';
 
 const ItemContainer = styled.View({
   margin: 2,
@@ -240,9 +241,7 @@ function GalleryScreen() {
         <ActivityIndicator size="small" color={theme.color.chip} />
       ) : null}
 
-      {uploadLoading ? (
-        <ActivityIndicator size="small" color={theme.color.chip} />
-      ) : null}
+      {uploadLoading ? <LoadingModal isOpen={uploadLoading} /> : null}
     </SafeAreaContainer>
   );
 }
