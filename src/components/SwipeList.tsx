@@ -6,9 +6,8 @@ import { RowMap, SwipeListView } from 'react-native-swipe-list-view';
 
 import { RoomEntity } from '../../types';
 import { SwipeStyles } from '../utils/styles';
-import RoomsItem from './RoomsItem';
-import FavoritesItem from './FavoritesItem';
 import { EmptyContainer } from './layout';
+import { FavoritesItem, RoomsItem } from './item';
 
 const RowBack = styled.View(({ theme }) => ({
   flex: 1,

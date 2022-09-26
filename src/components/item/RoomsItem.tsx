@@ -2,10 +2,10 @@ import React, { memo } from 'react';
 import styled from '@emotion/native';
 import { useTheme } from '@emotion/react';
 
-import { RoomEntity } from '../../types';
-import { ellipsize } from '../utils/text';
-import { getFormatTime } from '../utils/date';
-import CommonText from './CommonText';
+import { RoomEntity } from '../../../types';
+import { ellipsize } from '../../utils/text';
+import { getFormatTime } from '../../utils/date';
+import CommonText from '../CommonText';
 
 const Container = styled.View(() => ({
   flex: 1,

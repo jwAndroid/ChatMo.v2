@@ -1,4 +1,6 @@
 import React, { memo, ReactNode, useCallback } from 'react';
+import styled from '@emotion/native';
+import { useTheme } from '@emotion/react';
 import {
   Bubble,
   BubbleProps,
@@ -10,7 +12,20 @@ import {
 
 import { ChatBubbleStyle } from '../utils/styles';
 import BubbleText from './BubbleText';
-import BubbleTicks from './BubbleTicks';
+
+const Container = styled.View(() => ({
+  marginLeft: 3,
+  marginRight: -3,
+  justifyContent: 'center',
+  alignItems: 'center',
+}));
+
+const Tick = styled.Image(({ theme }) => ({
+  width: 15,
+  height: 15,
+  marginBottom: 1.5,
+  tintColor: theme.color.black,
+}));
 
 interface IChatBubble {
   props: Readonly<BubbleProps<IMessage>> & Readonly<{ children?: ReactNode }>;
@@ -18,6 +33,8 @@ interface IChatBubble {
   onLongPressBubble: (context?: any, message?: any) => void;
 }
 function ChatBubble({ props, onPressBubble, onLongPressBubble }: IChatBubble) {
+  const theme = useTheme();
+
   const {
     BottomContainerStyle,
     ContainerStyle,
@@ -43,8 +60,12 @@ function ChatBubble({ props, onPressBubble, onLongPressBubble }: IChatBubble) {
 
   const renderTicks = useCallback(
     (currentMessage: IMessage & Readonly<{ children?: ReactNode }>) =>
-      currentMessage.received && <BubbleTicks />,
-    []
+      currentMessage.received && (
+        <Container>
+          <Tick source={theme.icon.check_circle} />
+        </Container>
+      ),
+    [theme.icon.check_circle]
   );
 
   const renderMessageText = useCallback(

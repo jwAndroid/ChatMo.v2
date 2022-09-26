@@ -19,9 +19,10 @@ import deduplicationStorage from '../../storages/deduplicationStorage';
 import { RootStackNavigationProp } from '../RootStack';
 import useBackEffect from '../../hooks/useBackEffect';
 import { ChipEntity, RoomEntity } from '../../../types';
-import { Chip, CommonText, RoomsItem } from '../../components';
+import { CommonText } from '../../components';
 import { SearchBox } from '../../components/input';
 import { SafeAreaContainer } from '../../components/layout';
+import { Chip, RoomsItem } from '../../components/item';
 
 const HistoryContainer = styled.View(({ theme }) => ({
   justifyContent: 'center',

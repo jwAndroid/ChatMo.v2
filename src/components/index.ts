@@ -1,15 +1,10 @@
 export { default as BubbleText } from './BubbleText';
-export { default as BubbleTicks } from './BubbleTicks';
 export { default as ChatBubble } from './ChatBubble';
-export { default as Chip } from './Chip';
 export { default as CommonText } from './CommonText';
 export { default as DayHeader } from './DayHeader';
 export { default as Divider } from './Divider';
-export { default as FavoritesItem } from './FavoritesItem';
 export { default as Icon } from './Icon';
 export { default as IconHeader } from './IconHeader';
 export { default as LinkPreviewer } from './LinkPreviewer';
 export { default as Pin } from './Pin';
-export { default as RoomsItem } from './RoomsItem';
-export { default as ShadowCard } from './ShadowCard';
 export { default as SwipeList } from './SwipeList';

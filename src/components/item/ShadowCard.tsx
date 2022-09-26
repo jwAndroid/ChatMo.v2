@@ -3,10 +3,10 @@ import { Dimensions, Platform, Pressable } from 'react-native';
 import styled from '@emotion/native';
 import { useTheme } from '@emotion/react';
 
-import { RoomEntity } from '../../types';
-import { ellipsize, lineBreak } from '../utils/text';
-import { getFormatTime } from '../utils/date';
-import CommonText from './CommonText';
+import { ellipsize, lineBreak } from '../../utils/text';
+import { getFormatTime } from '../../utils/date';
+import { RoomEntity } from '../../../types';
+import CommonText from '../CommonText';
 import Chip from './Chip';
 
 const { width, height } = Dimensions.get('screen');
@@ -23,7 +23,7 @@ const ShadowContainer = styled.Pressable(({ theme }) => {
       shadowRadius: 2,
     },
     android: {
-      elevation: 7,
+      elevation: 2,
       shadowColor: theme.color.shadow,
     },
   });
