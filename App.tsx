@@ -2,6 +2,7 @@ import React, { memo, useLayoutEffect, useState } from 'react';
 import { Provider } from 'react-redux';
 import NetInfo from '@react-native-community/netinfo';
 
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { store } from './src/redux/store';
 import Main from './Main';
 
@@ -19,9 +20,11 @@ function App() {
   }, [isConnected]);
 
   return (
-    <Provider store={store}>
-      <Main isConnected={isConnected} />
-    </Provider>
+    <SafeAreaProvider>
+      <Provider store={store}>
+        <Main isConnected={isConnected} />
+      </Provider>
+    </SafeAreaProvider>
   );
 }
 

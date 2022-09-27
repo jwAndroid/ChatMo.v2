@@ -388,7 +388,6 @@ function RoomScreen() {
             alignTop
             scrollToBottom
             alwaysShowSend
-            wrapInSafeArea={false}
             showUserAvatar={false}
             renderDay={renderDay}
             renderBubble={renderBubble}
