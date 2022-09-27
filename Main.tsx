@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import * as SystemUI from 'expo-system-ui';
 import { StatusBar } from 'expo-status-bar';
 import { ThemeProvider } from '@emotion/react';
+import { useFonts } from 'expo-font';
 
 import { useAppDispatch, useAppSelector } from './src/hooks/useRedux';
 import useAuthLoadEffect from './src/hooks/useAuthLoadEffect';
@@ -10,7 +11,7 @@ import { changeTheme } from './src/redux/system/slice';
 
 import RootStack from './src/navigation/RootStack';
 import themeStorage from './src/storages/themeStorage';
-import { cacheFonts, cacheImages } from './src/utils/cache';
+import { cacheImages } from './src/utils/cache';
 import { darkTheme, font, icon, lightTheme } from './src/theme';
 import Splash from './Splash';
 import { ToastModal } from './src/components/modal';
@@ -29,15 +30,7 @@ function Main({ isConnected }: IMain) {
   const [appReady, setAppReady] = useState(false);
   const [showToast, setShowToast] = useState(false);
 
-  useLayoutEffect(() => {
-    (async () => {
-      await Promise.all([cacheFonts(font), ...cacheImages(icon)]).then(() => {
-        setTimeout(() => {
-          setAppReady(true);
-        }, 3000);
-      });
-    })();
-  }, []);
+  const [loaded] = useFonts(font);
 
   useLayoutEffect(() => {
     (async () => {
@@ -48,6 +41,12 @@ function Main({ isConnected }: IMain) {
       await SystemUI.setBackgroundColorAsync(storage ? '#000000' : '#ffffff');
     })();
   }, [dispatch]);
+
+  useLayoutEffect(() => {
+    if (cacheImages(icon).length > 0 && loaded) {
+      setAppReady(true);
+    }
+  }, [loaded]);
 
   return (
     <ThemeProvider theme={isDark ? darkTheme : lightTheme}>

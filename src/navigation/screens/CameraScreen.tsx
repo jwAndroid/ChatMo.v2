@@ -18,7 +18,7 @@ import { createMessage } from '../../firebase/posts';
 import { compressed } from '../../utils/compress';
 import { getFormatTime, getTimestamp } from '../../utils/date';
 import { RootStackNavigationProp, RootStackParamList } from '../RootStack';
-import { Icon } from '../../components';
+import { Icon, StyledText } from '../../components';
 
 const SafeContainer = styled.SafeAreaView(({ theme }) => ({
   flex: 1,
@@ -79,12 +79,6 @@ const FlashIcon = styled.Image<IFlashIcon>(({ theme, isFlash }) => ({
   width: 22,
   height: 22,
   tintColor: isFlash ? theme.color.yellow : theme.color.white,
-}));
-
-const StyledText = styled.Text(({ theme }) => ({
-  fontSize: 17,
-  fontWeight: '600',
-  color: theme.color.white,
 }));
 
 const PicturedImage = styled.Image(() => ({
@@ -202,11 +196,19 @@ function CameraScreen() {
 
           <ButtonContainer>
             <Pressable onPress={onCancel} hitSlop={10} disabled={!!isLoading}>
-              <StyledText>취소</StyledText>
+              <StyledText
+                text="취소"
+                fontSize={17}
+                specificColor={theme.color.white}
+              />
             </Pressable>
 
             <Pressable onPress={onSave} hitSlop={10} disabled={!!isLoading}>
-              <StyledText>사진 사용</StyledText>
+              <StyledText
+                text="사진 사용"
+                fontSize={17}
+                specificColor={theme.color.white}
+              />
             </Pressable>
           </ButtonContainer>
         </Container>

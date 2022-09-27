@@ -1,13 +1,15 @@
 import { Image } from 'react-native';
-import * as Font from 'expo-font';
 import { Asset } from 'expo-asset';
+import * as Font from 'expo-font';
 
-export const cacheFonts = (font: { [fontFamily: string]: Font.FontSource }) =>
-  Font.loadAsync(font);
+export function cacheFonts(font: { [fontFamily: string]: Font.FontSource }) {
+  return Font.loadAsync(font);
+}
 
-export const cacheImages = (source: { [name: string]: string | number }) =>
-  Object.values(source).map((value) =>
+export function cacheImages(source: { [name: string]: string | number }) {
+  return Object.values(source).map((value) =>
     typeof value === 'string'
       ? Image.prefetch(value)
       : Asset.fromModule(value).downloadAsync()
   );
+}

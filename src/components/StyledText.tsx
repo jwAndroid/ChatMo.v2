@@ -25,6 +25,7 @@ const EmotionText = styled.Text<IEmotionText>(
     marginTop,
     marginBottom,
     includeFontPadding: false,
+    fontFamily: theme.font.SUIT_Regular,
     color: specificColor !== '' ? specificColor : theme.color.text,
   })
 );

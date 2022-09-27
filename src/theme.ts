@@ -1,15 +1,15 @@
 import { Theme } from '@emotion/react';
 
 export const font = {
-  SUIT_Bold: require('../assets/font/SUIT_Bold.otf'),
-  SUIT_ExtraBold: require('../assets/font/SUIT_ExtraBold.otf'),
-  SUIT_ExtraLight: require('../assets/font/SUIT_ExtraLight.otf'),
-  SUIT_Heavy: require('../assets/font/SUIT_Heavy.otf'),
-  SUIT_Light: require('../assets/font/SUIT_Light.otf'),
-  SUIT_Medium: require('../assets/font/SUIT_Medium.otf'),
-  SUIT_Regular: require('../assets/font/SUIT_Regular.otf'),
-  SUIT_SemiBold: require('../assets/font/SUIT_SemiBold.otf'),
-  SUIT_Thin: require('../assets/font/SUIT_Thin.otf'),
+  SUIT_Bold: require('../assets/fonts/SUIT_Bold.otf'),
+  SUIT_ExtraBold: require('../assets/fonts/SUIT_ExtraBold.otf'),
+  SUIT_ExtraLight: require('../assets/fonts/SUIT_ExtraLight.otf'),
+  SUIT_Heavy: require('../assets/fonts/SUIT_Heavy.otf'),
+  SUIT_Light: require('../assets/fonts/SUIT_Light.otf'),
+  SUIT_Medium: require('../assets/fonts/SUIT_Medium.otf'),
+  SUIT_Regular: require('../assets/fonts/SUIT_Regular.otf'),
+  SUIT_SemiBold: require('../assets/fonts/SUIT_SemiBold.otf'),
+  SUIT_Thin: require('../assets/fonts/SUIT_Thin.otf'),
 };
 
 export const icon = {
