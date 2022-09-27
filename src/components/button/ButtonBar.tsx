@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import styled from '@emotion/native';
 import { useTheme } from '@emotion/react';
 
-import CommonText from '../CommonText';
+import StyledText from '../StyledText';
 
 const Block = styled.View(() => ({
   width: '100%',
@@ -35,11 +35,11 @@ function ButtonBar({ onCancel, onConfirm }: IButtonBar) {
   return (
     <Block>
       <Button backgroundColor={theme.color.placeholder} onPress={onCancel}>
-        <CommonText text="취소" fontSize={14} />
+        <StyledText text="취소" fontSize={14} />
       </Button>
 
       <Button backgroundColor={theme.color.sky_300} onPress={onConfirm}>
-        <CommonText text="확인" fontSize={14} />
+        <StyledText text="확인" fontSize={14} />
       </Button>
     </Block>
   );

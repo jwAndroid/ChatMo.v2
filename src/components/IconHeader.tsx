@@ -4,7 +4,7 @@ import styled from '@emotion/native';
 import { useTheme } from '@emotion/react';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 
-import CommonText from './CommonText';
+import StyledText from './StyledText';
 
 const Container = styled.View(() => ({
   flexDirection: 'row',
@@ -36,7 +36,7 @@ interface IIcon {
   size?: number;
   marginRight?: number;
 }
-const Icon = styled.Image<IIcon>(({ theme, size = 20, marginRight = 0 }) => ({
+const Icon = styled.Image<IIcon>(({ theme, size = 23, marginRight = 0 }) => ({
   width: size,
   height: size,
   marginRight,
@@ -49,9 +49,9 @@ interface IIconHeader {
   isSettings?: boolean;
   isIosTopInset?: boolean;
   isCheck?: boolean;
+  isSearch?: boolean;
   onPress: () => void;
   onPressCheck?: () => void;
-  isSearch?: boolean;
   onPressSearch?: () => void;
 }
 
@@ -61,9 +61,9 @@ function IconHeader({
   isSettings,
   isIosTopInset,
   isCheck,
+  isSearch,
   onPress,
   onPressCheck,
-  isSearch,
   onPressSearch,
 }: IIconHeader) {
   const theme = useTheme();
@@ -77,13 +77,13 @@ function IconHeader({
           </Pressable>
         )}
 
-        <CommonText fontSize={20} text={title} marginLeft={3} />
+        <StyledText fontSize={20} text={title} marginLeft={10} />
       </Container>
 
       <IconContainer>
         {isSearch && (
           <Pressable onPress={onPressSearch} hitSlop={10}>
-            <Icon marginRight={15} source={theme.icon.search} size={18} />
+            <Icon marginRight={15} source={theme.icon.search} />
           </Pressable>
         )}
 

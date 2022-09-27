@@ -19,7 +19,7 @@ import deduplicationStorage from '../../storages/deduplicationStorage';
 import { RootStackNavigationProp } from '../RootStack';
 import useBackEffect from '../../hooks/useBackEffect';
 import { ChipEntity, RoomEntity } from '../../../types';
-import { CommonText } from '../../components';
+import { StyledText } from '../../components';
 import { SearchBox } from '../../components/input';
 import { SafeAreaContainer } from '../../components/layout';
 import { Chip, RoomsItem } from '../../components/item';
@@ -187,7 +187,7 @@ function SearchScreen() {
 
   const ListHeaderComponent = useCallback(
     () => (
-      <CommonText
+      <StyledText
         text="검색 결과"
         fontSize={16}
         marginLeft={15}
@@ -231,7 +231,7 @@ function SearchScreen() {
       {chips ? (
         <HistoryContainer>
           <Row>
-            <CommonText
+            <StyledText
               text="최근 검색"
               fontSize={16}
               marginBottom={7}
@@ -239,7 +239,7 @@ function SearchScreen() {
             />
 
             <Pressable onPress={onPressClearHistory} hitSlop={10}>
-              <CommonText
+              <StyledText
                 text="전체 삭제"
                 fontSize={13}
                 marginBottom={7}
@@ -254,10 +254,9 @@ function SearchScreen() {
                 {chips.map((chip) => (
                   <InsetsContainer key={chip.id}>
                     <Chip isRow marginLeft={0} onPress={onPressChip(chip)}>
-                      <CommonText
+                      <StyledText
                         text={chip.title}
                         fontSize={13}
-                        isSpecificColor
                         specificColor={theme.color.text}
                       />
 

@@ -5,7 +5,7 @@ import { useTheme } from '@emotion/react';
 import { RoomEntity } from '../../../types';
 import { ellipsize } from '../../utils/text';
 import { getFormatTime } from '../../utils/date';
-import CommonText from '../CommonText';
+import StyledText from '../StyledText';
 
 const Container = styled.View(() => ({
   flex: 1,
@@ -59,19 +59,19 @@ function RoomsItem({ item }: IRoomsItem) {
     <Container>
       <ContentsContainer>
         <TitleContainer>
-          <CommonText text={ellipsize(title, 17)} fontSize={16} />
+          <StyledText text={ellipsize(title, 17)} fontSize={16} />
 
           {isLock && <Icon source={theme.icon.lock} />}
         </TitleContainer>
 
         {lastMemo ? (
-          <CommonText
+          <StyledText
             text={ellipsize(lastMemo ?? '', 20)}
             fontSize={12}
             marginTop={3}
           />
         ) : (
-          <CommonText
+          <StyledText
             text="작성된 메모가 존재하지 않습니다."
             fontSize={12}
             marginTop={3}
@@ -80,14 +80,13 @@ function RoomsItem({ item }: IRoomsItem) {
       </ContentsContainer>
 
       <CountContainer>
-        <CommonText text={getFormatTime(createdAt)} fontSize={10} />
+        <StyledText text={getFormatTime(createdAt)} fontSize={10} />
 
         {memoCount !== 0 && memoCount ? (
           <Circle>
-            <CommonText
+            <StyledText
               text={memoCount < 100 ? memoCount.toString() : '99+'}
               fontSize={10}
-              isSpecificColor
               specificColor={theme.color.white}
             />
           </Circle>

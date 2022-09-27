@@ -3,7 +3,7 @@ import { GestureResponderEvent, Modal } from 'react-native';
 import styled from '@emotion/native';
 import { useTheme } from '@emotion/react';
 
-import CommonText from '../CommonText';
+import StyledText from '../StyledText';
 import Divider from '../Divider';
 
 const Container = styled.Pressable({
@@ -79,10 +79,9 @@ function InputModal({
     >
       <Container onPress={onNegative}>
         <ContentContainer>
-          <CommonText
+          <StyledText
             fontSize={13}
             text="속성 추가"
-            isSpecificColor
             specificColor={theme.color.shadow}
             marginBottom={10}
           />
@@ -96,10 +95,9 @@ function InputModal({
           />
 
           {value.length >= 15 ? (
-            <CommonText
+            <StyledText
               fontSize={12}
               text="제목은 15자 까지 입력 가능 합니다."
-              isSpecificColor
               specificColor={theme.color.shadow}
               marginTop={5}
             />
@@ -110,10 +108,9 @@ function InputModal({
 
         <ButtonContainer>
           <StyledButton onPress={onNegative}>
-            <CommonText
+            <StyledText
               fontSize={14}
               text="취소"
-              isSpecificColor
               specificColor={theme.color.shadow}
             />
           </StyledButton>
@@ -121,10 +118,9 @@ function InputModal({
           <Divider isVertical />
 
           <StyledButton onPress={onPostive}>
-            <CommonText
+            <StyledText
               fontSize={14}
               text="확인"
-              isSpecificColor
               specificColor={theme.color.shadow}
             />
           </StyledButton>

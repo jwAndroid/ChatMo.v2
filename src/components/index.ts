@@ -1,6 +1,6 @@
 export { default as BubbleText } from './BubbleText';
 export { default as ChatBubble } from './ChatBubble';
-export { default as CommonText } from './CommonText';
+export { default as StyledText } from './StyledText';
 export { default as DayHeader } from './DayHeader';
 export { default as Divider } from './Divider';
 export { default as Icon } from './Icon';

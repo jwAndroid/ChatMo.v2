@@ -6,8 +6,8 @@ import { useTheme } from '@emotion/react';
 import { ellipsize, lineBreak } from '../../utils/text';
 import { getFormatTime } from '../../utils/date';
 import { RoomEntity } from '../../../types';
-import CommonText from '../CommonText';
 import Chip from './Chip';
+import StyledText from '../StyledText';
 
 const { width, height } = Dimensions.get('screen');
 
@@ -90,7 +90,7 @@ function ShadowCard({ item, onPressCard, onPressFavorit }: IShadowCard) {
   return (
     <ShadowContainer onPress={onPressCard(item)}>
       <TitleContainer>
-        <CommonText text={ellipsize(item.title, 10)} fontSize={15} />
+        <StyledText text={ellipsize(item.title, 10)} fontSize={15} />
 
         {item.isLock ? (
           <Icon
@@ -101,7 +101,7 @@ function ShadowCard({ item, onPressCard, onPressFavorit }: IShadowCard) {
         ) : null}
       </TitleContainer>
 
-      <CommonText
+      <StyledText
         text={getFormatTime(item.createdAt, true)}
         fontSize={12}
         marginLeft={10}
@@ -111,7 +111,7 @@ function ShadowCard({ item, onPressCard, onPressFavorit }: IShadowCard) {
         <ChipContainer>
           {item.chips.map((chip) => (
             <Chip key={chip.id}>
-              <CommonText text={ellipsize(chip.title, 10)} fontSize={12} />
+              <StyledText text={ellipsize(chip.title, 10)} fontSize={12} />
             </Chip>
           ))}
         </ChipContainer>
@@ -119,7 +119,7 @@ function ShadowCard({ item, onPressCard, onPressFavorit }: IShadowCard) {
 
       <ContentsContainer>
         <LeftContainer>
-          <CommonText
+          <StyledText
             text={lineBreak(ellipsize(item.lastMemo ?? '', 50))}
             fontSize={13}
             marginTop={3}

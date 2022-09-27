@@ -4,7 +4,7 @@ import styled from '@emotion/native';
 import { useTheme } from '@emotion/react';
 
 import Divider from '../Divider';
-import CommonText from '../CommonText';
+import StyledText from '../StyledText';
 
 const Container = styled.Pressable({
   flex: 1,
@@ -90,10 +90,9 @@ function NotificationModal({
 
         <ButtonContainer>
           <StyledButton onPress={onNegative}>
-            <CommonText
+            <StyledText
               fontSize={14}
               text="아니요"
-              isSpecificColor
               specificColor={theme.color.shadow}
             />
           </StyledButton>
@@ -101,10 +100,9 @@ function NotificationModal({
           <Divider isVertical />
 
           <StyledButton onPress={onPostive}>
-            <CommonText
+            <StyledText
               fontSize={14}
               text="예"
-              isSpecificColor
               specificColor={theme.color.shadow}
             />
           </StyledButton>

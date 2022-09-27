@@ -18,14 +18,19 @@ import { createMessage } from '../../firebase/posts';
 import { compressed } from '../../utils/compress';
 import { getFormatTime, getTimestamp } from '../../utils/date';
 import { RootStackNavigationProp, RootStackParamList } from '../RootStack';
-import { SafeAreaContainer } from '../../components/layout';
+import { Icon } from '../../components';
+
+const SafeContainer = styled.SafeAreaView(({ theme }) => ({
+  flex: 1,
+  backgroundColor: theme.color.black,
+}));
 
 const Container = styled.View(() => ({
   flex: 1,
 }));
 
-const CameraHeader = styled.View(({ theme }) => ({
-  height: 120,
+const Header = styled.View(({ theme }) => ({
+  height: 100,
   paddingHorizontal: 20,
   paddingTop: 20,
   justifyContent: 'center',
@@ -37,7 +42,7 @@ const ButtonContainer = styled.View(({ theme }) => ({
   justifyContent: 'space-between',
   alignItems: 'center',
   flexDirection: 'row',
-  paddingHorizontal: 25,
+  paddingHorizontal: 30,
   backgroundColor: theme.color.black,
 }));
 
@@ -60,36 +65,21 @@ const IinnerLine = styled.View(({ theme }) => ({
   width: 60,
   height: 60,
   borderRadius: 30,
-  borderWidth: 2,
+  borderWidth: 1.5,
+  justifyContent: 'center',
+  alignItems: 'center',
   borderColor: theme.color.gray,
   backgroundColor: theme.color.white,
 }));
 
-const CameraTypeButton = styled.Pressable(({ theme }) => ({
-  width: 50,
-  height: 50,
-  borderRadius: 25,
-  justifyContent: 'center',
-  alignItems: 'center',
-  backgroundColor: theme.color.gray,
-}));
-
-const CameraTypeIcon = styled.Image(({ theme }) => ({
-  width: 35,
-  height: 35,
-  tintColor: theme.color.white,
-}));
-
-interface ICameraFlashIcon {
+interface IFlashIcon {
   isFlash: boolean;
 }
-const CameraFlashIcon = styled.Image<ICameraFlashIcon>(
-  ({ theme, isFlash }) => ({
-    width: 35,
-    height: 35,
-    tintColor: isFlash ? theme.color.red : theme.color.white,
-  })
-);
+const FlashIcon = styled.Image<IFlashIcon>(({ theme, isFlash }) => ({
+  width: 22,
+  height: 22,
+  tintColor: isFlash ? theme.color.yellow : theme.color.white,
+}));
 
 const StyledText = styled.Text(({ theme }) => ({
   fontSize: 17,
@@ -137,6 +127,7 @@ function CameraScreen() {
           exif: false,
           skipProcessing: true,
         });
+
         if (data) {
           setImageSource(data.uri);
         }
@@ -198,14 +189,14 @@ function CameraScreen() {
   }, [navigation]);
 
   return (
-    <SafeAreaContainer>
+    <SafeContainer>
       {imageSource ? (
         <Container>
-          <CameraHeader>
+          <Header>
             {isLoading ? (
               <ActivityIndicator size="large" color={theme.color.chip} />
             ) : null}
-          </CameraHeader>
+          </Header>
 
           <PicturedImage source={{ uri: imageSource }} />
 
@@ -221,9 +212,9 @@ function CameraScreen() {
         </Container>
       ) : (
         <Container>
-          <CameraHeader>
+          <Header>
             <Pressable onPress={onFlash}>
-              <CameraFlashIcon
+              <FlashIcon
                 source={
                   flash === FlashMode.on
                     ? theme.icon.flash_on
@@ -232,26 +223,39 @@ function CameraScreen() {
                 isFlash={flash === FlashMode.on}
               />
             </Pressable>
-          </CameraHeader>
+          </Header>
 
           <Camera ref={ref} type={type} flashMode={flash} style={cameraStyle} />
 
           <ButtonContainer>
-            <Pressable onPress={onExit} hitSlop={10}>
-              <StyledText>닫기</StyledText>
-            </Pressable>
+            <Icon
+              source={theme.icon.cancel}
+              size={30}
+              tintColor={theme.color.white}
+              onPress={onExit}
+            />
 
-            <ShootingButton onPress={takePicture} marginLeft={7}>
-              <IinnerLine />
+            <ShootingButton>
+              <IinnerLine>
+                <Icon
+                  source={theme.icon.photo_camera}
+                  size={30}
+                  tintColor={theme.color.gray}
+                  onPress={takePicture}
+                />
+              </IinnerLine>
             </ShootingButton>
 
-            <CameraTypeButton onPress={toggleCameraType}>
-              <CameraTypeIcon source={theme.icon.check_circle} />
-            </CameraTypeButton>
+            <Icon
+              source={theme.icon.flip_camera}
+              size={30}
+              tintColor={theme.color.white}
+              onPress={toggleCameraType}
+            />
           </ButtonContainer>
         </Container>
       )}
-    </SafeAreaContainer>
+    </SafeContainer>
   );
 }
 

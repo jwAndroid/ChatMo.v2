@@ -8,7 +8,7 @@ import { changeTheme } from '../../redux/system/slice';
 import themeStorage from '../../storages/themeStorage';
 import useBackEffect from '../../hooks/useBackEffect';
 import { RootStackNavigationProp } from '../RootStack';
-import { CommonText, IconHeader } from '../../components';
+import { StyledText, IconHeader } from '../../components';
 import { SettingSwitch } from '../../components/button';
 import { SafeAreaContainer } from '../../components/layout';
 
@@ -58,7 +58,7 @@ function ThemeScreen() {
       <IconHeader isBackword onPress={onBackPress} />
 
       <Container>
-        <CommonText text={isDark ? '화이트 테마' : '다크 테마'} fontSize={16} />
+        <StyledText text={isDark ? '화이트 테마' : '다크 테마'} fontSize={16} />
 
         <SettingSwitch onValueChange={onValueChange} isEnabled={isDark} />
       </Container>

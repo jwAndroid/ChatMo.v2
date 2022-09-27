@@ -8,7 +8,7 @@ import { getLinkPreview } from 'link-preview-js';
 
 import { PreviewEntity } from '../../types';
 import { ellipsize, regexUrl } from '../utils/text';
-import CommonText from './CommonText';
+import StyledText from './StyledText';
 import { ToastModal } from './modal';
 
 const TextContainer = styled.View(() => ({
@@ -78,29 +78,26 @@ function LinkPreviewer({ url }: ILinkPreviewer) {
     <View>
       <TextContainer>
         {data && data.title ? (
-          <CommonText
+          <StyledText
             text={data.title}
             fontSize={15}
-            isSpecificColor
             specificColor={theme.color.white}
           />
         ) : null}
 
         {data && data.description ? (
-          <CommonText
+          <StyledText
             text={ellipsize(data.description, 30)}
             fontSize={12}
-            isSpecificColor
             specificColor={theme.color.shadow}
             marginTop={5}
           />
         ) : null}
 
         {data && data.url ? (
-          <CommonText
+          <StyledText
             text={ellipsize(data.url, 30)}
             fontSize={12}
-            isSpecificColor
             specificColor={theme.color.shadow}
             marginTop={5}
           />

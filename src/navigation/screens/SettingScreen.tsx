@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/core';
 import { RootStackNavigationProp } from '../RootStack';
 import useBackEffect from '../../hooks/useBackEffect';
 import { SettingEntity } from '../../../types';
-import { CommonText, Divider, IconHeader } from '../../components';
+import { StyledText, Divider, IconHeader } from '../../components';
 import { SafeAreaContainer } from '../../components/layout';
 
 const StyledPressable = styled.Pressable(() => ({
@@ -62,7 +62,7 @@ function SettingScreen() {
   const renderItem = useCallback<ListRenderItem<SettingEntity>>(
     ({ item }) => (
       <StyledPressable onPress={onPress(item)}>
-        <CommonText text={item.title} fontSize={16} />
+        <StyledText text={item.title} fontSize={16} />
       </StyledPressable>
     ),
     [onPress]
@@ -83,9 +83,8 @@ function SettingScreen() {
       />
 
       <VersionContainer>
-        <CommonText
+        <StyledText
           text="version: 1.0.0"
-          isSpecificColor
           specificColor={theme.color.shadow}
           fontSize={12}
           marginBottom={10}

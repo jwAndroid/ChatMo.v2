@@ -11,7 +11,7 @@ import styled from '@emotion/native';
 import { useTheme } from '@emotion/react';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 
-import CommonText from '../CommonText';
+import StyledText from '../StyledText';
 
 const SearchBarContainer = styled.View(() => ({
   height: 60,
@@ -100,12 +100,12 @@ function SearchBox({
         />
 
         <Pressable onPress={onCancelPress}>
-          <Icon source={theme.icon.cancel} size={20} />
+          <Icon source={theme.icon.cancel} />
         </Pressable>
       </SearchBar>
 
       <StyledPressable onPress={onBackPress}>
-        <CommonText text="취소" fontSize={15} marginLeft={5} marginRight={5} />
+        <StyledText text="취소" fontSize={13} marginLeft={5} marginRight={5} />
       </StyledPressable>
     </SearchBarContainer>
   );

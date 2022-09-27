@@ -1,9 +1,9 @@
-import React, { memo, useEffect } from 'react';
+import React, { memo, useCallback, useEffect } from 'react';
 import { Modal } from 'react-native';
 import styled from '@emotion/native';
 import { useTheme } from '@emotion/react';
 
-import CommonText from '../CommonText';
+import StyledText from '../StyledText';
 
 const Container = styled.Pressable({
   flex: 1,
@@ -37,13 +37,16 @@ function ToastModal({ text, showToast, setShowToast }: IToastModal) {
     }, 2000);
   }, [setShowToast]);
 
+  const onPress = useCallback(() => {
+    setShowToast(false);
+  }, [setShowToast]);
+
   return (
     <Modal transparent visible={showToast} animationType="slide">
-      <Container onPress={() => setShowToast(false)}>
+      <Container onPress={onPress}>
         <ToastBlock>
-          <CommonText
+          <StyledText
             text={text}
-            isSpecificColor
             specificColor={theme.color.white}
             fontSize={12}
           />

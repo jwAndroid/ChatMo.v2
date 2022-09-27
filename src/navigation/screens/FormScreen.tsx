@@ -13,7 +13,7 @@ import { RootStackNavigationProp, RootStackParamList } from '../RootStack';
 import { ChipEntity } from '../../../types';
 import { getTimestamp } from '../../utils/date';
 import { ellipsize } from '../../utils/text';
-import { CommonText, Icon, IconHeader } from '../../components';
+import { StyledText, Icon, IconHeader } from '../../components';
 import { NotificationModal, InputModal } from '../../components/modal';
 import { ButtonBar, SettingSwitch } from '../../components/button';
 import { PasswordInput, TitleInput } from '../../components/input';
@@ -206,11 +206,11 @@ function FormScreen() {
           <IconHeader isBackword onPress={onBackPress} />
 
           <Container>
-            <CommonText text="제목" fontSize={15} />
+            <StyledText text="제목" fontSize={15} />
 
             <TitleInput value={titleValue} onChangeText={setTitleValue} />
 
-            <CommonText text="패스워드" fontSize={15} marginTop={20} />
+            <StyledText text="패스워드" fontSize={15} marginTop={20} />
 
             <ContentContainer>
               {isLock ? (
@@ -220,19 +220,17 @@ function FormScreen() {
                     onChangeText={setPasswordValue}
                   />
 
-                  <CommonText
+                  <StyledText
                     text="비밀번호는 찾을수 없으니, 신중하게 결정 해주세요."
                     fontSize={12}
-                    isSpecificColor
                     specificColor={theme.color.shadow}
                     marginTop={5}
                   />
                 </Block>
               ) : (
-                <CommonText
+                <StyledText
                   text="패스워드가 존재하지 않습니다."
                   fontSize={13}
-                  isSpecificColor
                   specificColor={theme.color.shadow}
                 />
               )}
@@ -241,14 +239,13 @@ function FormScreen() {
             </ContentContainer>
 
             <ChipTitleContainer>
-              <CommonText text="속성" fontSize={15} />
+              <StyledText text="속성" fontSize={15} />
 
               {chips && (
-                <CommonText
+                <StyledText
                   text={`${chips.length}/3`}
                   fontSize={12}
                   marginLeft={5}
-                  isSpecificColor
                   specificColor={
                     chips.length >= 3 ? theme.color.red : theme.color.text
                   }
@@ -261,7 +258,7 @@ function FormScreen() {
                 {chips &&
                   chips.map((chip) => (
                     <Chip isRow key={chip.id}>
-                      <CommonText
+                      <StyledText
                         text={ellipsize(chip.title, 10)}
                         fontSize={13}
                       />
@@ -278,11 +275,10 @@ function FormScreen() {
 
                 {chips === undefined ||
                   (chips && chips.length === 0 && (
-                    <CommonText
+                    <StyledText
                       text="속성이 없습니다."
                       fontSize={12}
                       marginLeft={5}
-                      isSpecificColor
                       specificColor={theme.color.shadow}
                     />
                   ))}

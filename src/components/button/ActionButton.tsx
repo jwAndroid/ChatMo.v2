@@ -7,6 +7,7 @@ const ButtonContainer = styled.Pressable(({ theme }) => ({
   height: 30,
   borderRadius: 15,
   marginHorizontal: 5,
+  paddingBottom: 2,
   justifyContent: 'center',
   alignItems: 'center',
   backgroundColor: theme.color.sky_300,
@@ -26,7 +27,7 @@ function ActionButton({ onPress }: IActionButton) {
 
   return (
     <ButtonContainer onPress={onPress} hitSlop={5}>
-      <Icon source={theme.icon.add} />
+      <Icon source={theme.icon.img_stack} />
     </ButtonContainer>
   );
 }

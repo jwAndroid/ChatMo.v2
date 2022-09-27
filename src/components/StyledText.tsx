@@ -1,17 +1,15 @@
 import React, { memo } from 'react';
 import styled from '@emotion/native';
 
-interface IStyledText {
+interface IEmotionText {
   fontSize?: number;
   marginLeft?: number;
   marginRight?: number;
   marginTop?: number;
   marginBottom?: number;
-  isSpecificColor?: boolean;
   specificColor?: string;
 }
-
-const StyledText = styled.Text<IStyledText>(
+const EmotionText = styled.Text<IEmotionText>(
   ({
     theme,
     fontSize,
@@ -19,8 +17,7 @@ const StyledText = styled.Text<IStyledText>(
     marginRight,
     marginTop,
     marginBottom,
-    isSpecificColor,
-    specificColor,
+    specificColor = '',
   }) => ({
     fontSize,
     marginLeft,
@@ -28,54 +25,50 @@ const StyledText = styled.Text<IStyledText>(
     marginTop,
     marginBottom,
     includeFontPadding: false,
-    color: isSpecificColor ? specificColor : theme.color.text,
+    color: specificColor !== '' ? specificColor : theme.color.text,
   })
 );
 
-interface ICommonText {
+interface IStyledText {
   text: string | undefined;
   fontSize?: number;
   marginLeft?: number;
   marginRight?: number;
   marginTop?: number;
   marginBottom?: number;
-  isSpecificColor?: boolean;
   specificColor?: string;
 }
 
-function CommonText({
+function StyledText({
   text,
   fontSize,
   marginLeft,
   marginRight,
   marginTop,
   marginBottom,
-  isSpecificColor,
   specificColor,
-}: ICommonText) {
+}: IStyledText) {
   return (
-    <StyledText
+    <EmotionText
       fontSize={fontSize}
       marginLeft={marginLeft}
       marginRight={marginRight}
       marginTop={marginTop}
       marginBottom={marginBottom}
-      isSpecificColor={isSpecificColor}
       specificColor={specificColor}
     >
       {text}
-    </StyledText>
+    </EmotionText>
   );
 }
 
-CommonText.defaultProps = {
+StyledText.defaultProps = {
   fontSize: 20,
   marginLeft: 0,
   marginRight: 0,
   marginTop: 0,
   marginBottom: 0,
-  isSpecificColor: false,
-  specificColor: '#000000',
+  specificColor: '',
 };
 
-export default memo(CommonText);
+export default memo(StyledText);

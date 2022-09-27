@@ -5,7 +5,7 @@ import { IMessage, MessageTextProps } from 'react-native-gifted-chat';
 
 import { regexUrl } from '../utils/text';
 import LinkPreviewer from './LinkPreviewer';
-import CommonText from './CommonText';
+import StyledText from './StyledText';
 
 const Container = styled.View(() => ({
   paddingVertical: 3,
@@ -31,9 +31,8 @@ function BubbleText({ messageText }: IBubbleText) {
       {regexUrl(message ?? '') ? (
         <LinkPreviewer url={message} />
       ) : (
-        <CommonText
+        <StyledText
           text={message}
-          isSpecificColor
           specificColor={theme.color.white}
           fontSize={14}
         />

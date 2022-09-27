@@ -1,7 +1,7 @@
 import React, { memo } from 'react';
 import styled from '@emotion/native';
 import { useTheme } from '@emotion/react';
-import CommonText from '../CommonText';
+import StyledText from '../StyledText';
 
 const Container = styled.View(() => ({
   position: 'relative',
@@ -22,7 +22,7 @@ function EmptyContainer() {
     <Container>
       <Icon source={theme.icon.warning_sign} />
 
-      <CommonText
+      <StyledText
         text="데이터가 존재하지 않습니다."
         fontSize={16}
         marginTop={10}

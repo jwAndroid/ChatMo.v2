@@ -3,7 +3,7 @@ import { GestureResponderEvent, Modal, Platform } from 'react-native';
 import styled from '@emotion/native';
 import { useTheme } from '@emotion/react';
 
-import CommonText from '../CommonText';
+import StyledText from '../StyledText';
 
 const Container = styled.Pressable({
   flex: 1,
@@ -21,7 +21,7 @@ const ShadowButton = styled.Pressable<IButton>(({ theme, marginTop = 10 }) => {
       shadowColor: theme.color.shadow,
       shadowOffset: {
         width: 1,
-        height: 2,
+        height: 1,
       },
       shadowOpacity: 0.3,
       shadowRadius: 1,
@@ -76,14 +76,13 @@ function ActionsModal({
       {items.length === 2 ? (
         <Container onPress={onNegative}>
           <ShadowButton onPress={onPressFirst}>
-            <CommonText text={items[0].text} fontSize={14} />
+            <StyledText text={items[0].text} fontSize={14} />
           </ShadowButton>
 
           <ShadowButton onPress={onNegative} marginTop={20}>
-            <CommonText
+            <StyledText
               text={items[1].text}
               fontSize={14}
-              isSpecificColor
               specificColor={theme.color.red}
             />
           </ShadowButton>
@@ -91,18 +90,17 @@ function ActionsModal({
       ) : (
         <Container onPress={onNegative}>
           <ShadowButton onPress={onPressFirst}>
-            <CommonText text={items[0].text} fontSize={14} />
+            <StyledText text={items[0].text} fontSize={14} />
           </ShadowButton>
 
           <ShadowButton onPress={onPressSecond}>
-            <CommonText text={items[1].text} fontSize={14} />
+            <StyledText text={items[1].text} fontSize={14} />
           </ShadowButton>
 
           <ShadowButton onPress={onNegative} marginTop={20}>
-            <CommonText
+            <StyledText
               text={items[2].text}
               fontSize={14}
-              isSpecificColor
               specificColor={theme.color.red}
             />
           </ShadowButton>
