@@ -10,10 +10,8 @@ function App() {
 
   useLayoutEffect(() => {
     const unsubscribe = NetInfo.addEventListener(async (state) => {
-      if (state && state.isConnected !== null && state.isConnected) {
-        setIsConnected(true);
-      } else {
-        setIsConnected(false);
+      if (state && state.isConnected !== null) {
+        setIsConnected(state.isConnected);
       }
     });
 
