@@ -31,7 +31,7 @@ export function SwipeStyles() {
     [theme]
   );
 
-  const LockButton = useMemo<StyleProp<ViewStyle>>(
+  const ModifyButton = useMemo<StyleProp<ViewStyle>>(
     () => ({
       position: 'absolute',
       bottom: 0,
@@ -62,7 +62,7 @@ export function SwipeStyles() {
   return {
     Row,
     FavoritButton,
-    LockButton,
+    ModifyButton,
     DeleteButton,
   };
 }

@@ -32,7 +32,7 @@ function SendButton({ props }: ISendButton) {
 
   return (
     <Send {...props} containerStyle={ContainerStyle}>
-      <Icon source={theme.icon.edit} />
+      <Icon source={theme.icon.send_message} />
     </Send>
   );
 }

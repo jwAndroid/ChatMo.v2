@@ -53,7 +53,7 @@ function FloatingButton({ onPress }: IFloatingButton) {
   return (
     <ShadowContainer>
       <Container onPress={onPress}>
-        <Icon source={theme.icon.plus} />
+        <Icon source={theme.icon.add} />
       </Container>
     </ShadowContainer>
   );

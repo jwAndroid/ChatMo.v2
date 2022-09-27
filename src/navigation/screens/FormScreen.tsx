@@ -292,7 +292,7 @@ function FormScreen() {
                 isCircle
                 onPress={onCreateChips}
                 size={15}
-                source={theme.icon.plus}
+                source={theme.icon.add}
                 tintColor={theme.color.white}
               />
             </ContentContainer>

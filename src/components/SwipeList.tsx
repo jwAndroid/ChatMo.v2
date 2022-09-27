@@ -46,7 +46,7 @@ function SwipeList({
 }: ISwipeList) {
   const theme = useTheme();
 
-  const { Row, DeleteButton, FavoritButton, LockButton } = SwipeStyles();
+  const { Row, DeleteButton, FavoritButton, ModifyButton } = SwipeStyles();
 
   const data = useMemo(
     () =>
@@ -78,12 +78,14 @@ function SwipeList({
         <Pressable style={FavoritButton} onPress={onFavorit(rowMap, item)}>
           <ButtonIcon
             source={
-              item.isFavorites ? theme.icon.favoritesfill : theme.icon.favorites
+              item.isFavorites
+                ? theme.icon.favorite_border
+                : theme.icon.favorite
             }
           />
         </Pressable>
 
-        <Pressable style={LockButton} onPress={onModify(rowMap, item)}>
+        <Pressable style={ModifyButton} onPress={onModify(rowMap, item)}>
           <ButtonIcon source={theme.icon.edit} />
         </Pressable>
 
@@ -94,7 +96,7 @@ function SwipeList({
     ),
     [
       FavoritButton,
-      LockButton,
+      ModifyButton,
       DeleteButton,
       onFavorit,
       onModify,

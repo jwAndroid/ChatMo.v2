@@ -1,29 +1,54 @@
 import { Theme } from '@emotion/react';
 
 export const font = {
-  // YoonGothicRegular: require('../assets/font/YoonGothicRegular.otf'),
+  SUIT_Bold: require('../assets/font/SUIT_Bold.otf'),
+  SUIT_ExtraBold: require('../assets/font/SUIT_ExtraBold.otf'),
+  SUIT_ExtraLight: require('../assets/font/SUIT_ExtraLight.otf'),
+  SUIT_Heavy: require('../assets/font/SUIT_Heavy.otf'),
+  SUIT_Light: require('../assets/font/SUIT_Light.otf'),
+  SUIT_Medium: require('../assets/font/SUIT_Medium.otf'),
+  SUIT_Regular: require('../assets/font/SUIT_Regular.otf'),
+  SUIT_SemiBold: require('../assets/font/SUIT_SemiBold.otf'),
+  SUIT_Thin: require('../assets/font/SUIT_Thin.otf'),
 };
 
 export const icon = {
+  add: require('../assets/icons/add.png'),
   backward: require('../assets/icons/backward.png'),
-  check_circle: require('../assets/icons/check_circle.png'),
-  splash: require('../assets/icons/splash.png'),
-  edit: require('../assets/icons/edit.png'),
-  favorites: require('../assets/icons/favorites.png'),
-  favoritesfill: require('../assets/icons/favoritesfill.png'),
-  lock: require('../assets/icons/lock.png'),
   cancel: require('../assets/icons/cancel.png'),
+  check_circle: require('../assets/icons/check_circle.png'),
+  check: require('../assets/icons/check.png'),
   delete: require('../assets/icons/delete.png'),
-  empty: require('../assets/icons/empty.png'),
-  plus: require('../assets/icons/plus.png'),
+  edit: require('../assets/icons/edit.png'),
+  favorite_border: require('../assets/icons/favorite_border.png'),
+  favorite: require('../assets/icons/favorite.png'),
+  flash_off: require('../assets/icons/flash_off.png'),
+  flash_on: require('../assets/icons/flash_on.png'),
+  flip_camera: require('../assets/icons/flip_camera.png'),
+  img_stack: require('../assets/icons/img_stack.png'),
+  lock_open: require('../assets/icons/lock_open.png'),
+  lock: require('../assets/icons/lock.png'),
+  more_vert: require('../assets/icons/more_vert.png'),
+  photo_camera: require('../assets/icons/photo_camera.png'),
   search: require('../assets/icons/search.png'),
-  settings: require('../assets/icons/settings.png'),
+  send_message: require('../assets/icons/send_message.png'),
+  setting: require('../assets/icons/setting.png'),
+  splash: require('../assets/icons/splash.png'),
+  warning_sign: require('../assets/icons/warning_sign.png'),
 };
 
 export const lightTheme: Theme = {
   name: 'lightTheme',
   font: {
-    // YoonGothicRegular: 'YoonGothicRegular',
+    SUIT_Bold: 'SUIT_Bold',
+    SUIT_ExtraBold: 'SUIT_ExtraBold',
+    SUIT_ExtraLight: 'SUIT_ExtraLight',
+    SUIT_Heavy: 'SUIT_Heavy',
+    SUIT_Light: 'SUIT_Light',
+    SUIT_Medium: 'SUIT_Medium',
+    SUIT_Regular: 'SUIT_Regular',
+    SUIT_SemiBold: 'SUIT_SemiBold',
+    SUIT_Thin: 'SUIT_Thin',
   },
   color: {
     black: '#000',
@@ -51,7 +76,15 @@ export const lightTheme: Theme = {
 export const darkTheme: Theme = {
   name: 'darkTheme',
   font: {
-    // YoonGothicRegular: 'YoonGothicRegular',
+    SUIT_Bold: 'SUIT_Bold',
+    SUIT_ExtraBold: 'SUIT_ExtraBold',
+    SUIT_ExtraLight: 'SUIT_ExtraLight',
+    SUIT_Heavy: 'SUIT_Heavy',
+    SUIT_Light: 'SUIT_Light',
+    SUIT_Medium: 'SUIT_Medium',
+    SUIT_Regular: 'SUIT_Regular',
+    SUIT_SemiBold: 'SUIT_SemiBold',
+    SUIT_Thin: 'SUIT_Thin',
   },
   color: {
     black: '#000',

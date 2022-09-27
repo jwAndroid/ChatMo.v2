@@ -224,7 +224,11 @@ function CameraScreen() {
           <CameraHeader>
             <Pressable onPress={onFlash}>
               <CameraFlashIcon
-                source={theme.icon.favorites}
+                source={
+                  flash === FlashMode.on
+                    ? theme.icon.flash_on
+                    : theme.icon.flash_off
+                }
                 isFlash={flash === FlashMode.on}
               />
             </Pressable>

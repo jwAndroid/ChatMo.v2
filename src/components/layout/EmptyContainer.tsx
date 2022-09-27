@@ -1,18 +1,17 @@
 import React, { memo } from 'react';
-import { Dimensions } from 'react-native';
 import styled from '@emotion/native';
 import { useTheme } from '@emotion/react';
+import CommonText from '../CommonText';
 
 const Container = styled.View(() => ({
-  height: Dimensions.get('screen').height / 1.5,
   position: 'relative',
-  justifyContent: 'center',
   alignItems: 'center',
+  marginTop: 10,
 }));
 
 const Icon = styled.Image(({ theme }) => ({
-  width: 200,
-  height: 200,
+  width: 30,
+  height: 30,
   tintColor: theme.color.icon,
 }));
 
@@ -21,7 +20,13 @@ function EmptyContainer() {
 
   return (
     <Container>
-      <Icon source={theme.icon.empty} />
+      <Icon source={theme.icon.warning_sign} />
+
+      <CommonText
+        text="데이터가 존재하지 않습니다."
+        fontSize={16}
+        marginTop={10}
+      />
     </Container>
   );
 }

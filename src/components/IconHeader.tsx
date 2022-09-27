@@ -89,7 +89,7 @@ function IconHeader({
 
         {isSettings && (
           <Pressable onPress={onPress} hitSlop={10}>
-            <Icon source={theme.icon.settings} />
+            <Icon source={theme.icon.setting} />
           </Pressable>
         )}
 

@@ -135,7 +135,7 @@ function ShadowCard({ item, onPressCard, onPressFavorit }: IShadowCard) {
             <Icon
               size={20}
               tintColor={theme.color.chip}
-              source={theme.icon.favoritesfill}
+              source={theme.icon.favorite}
             />
           </Pressable>
         </RightContainer>

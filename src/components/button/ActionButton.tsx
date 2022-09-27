@@ -26,7 +26,7 @@ function ActionButton({ onPress }: IActionButton) {
 
   return (
     <ButtonContainer onPress={onPress} hitSlop={5}>
-      <Icon source={theme.icon.plus} />
+      <Icon source={theme.icon.add} />
     </ButtonContainer>
   );
 }

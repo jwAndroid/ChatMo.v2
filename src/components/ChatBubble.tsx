@@ -62,10 +62,10 @@ function ChatBubble({ props, onPressBubble, onLongPressBubble }: IChatBubble) {
     (currentMessage: IMessage & Readonly<{ children?: ReactNode }>) =>
       currentMessage.received && (
         <Container>
-          <Tick source={theme.icon.check_circle} />
+          <Tick source={theme.icon.check} />
         </Container>
       ),
-    [theme.icon.check_circle]
+    [theme.icon.check]
   );
 
   const renderMessageText = useCallback(
