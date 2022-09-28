@@ -3,7 +3,7 @@ import styled from '@emotion/native';
 import { useTheme } from '@emotion/react';
 
 const StyledInput = styled.TextInput(({ theme }) => ({
-  width: 60,
+  width: 80,
   borderBottomWidth: 1,
   textAlign: 'center',
   fontSize: 15,

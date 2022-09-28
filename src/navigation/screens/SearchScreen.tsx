@@ -228,7 +228,7 @@ function SearchScreen() {
         onSubmitEditing={onSubmitEditing}
       />
 
-      {chips ? (
+      {chips && chips !== undefined && chips.length > 0 ? (
         <HistoryContainer>
           <Row>
             <StyledText
@@ -248,27 +248,25 @@ function SearchScreen() {
             </Pressable>
           </Row>
 
-          {chips ? (
-            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-              <ChipContainer>
-                {chips.map((chip) => (
-                  <InsetsContainer key={chip.id}>
-                    <Chip isRow marginLeft={0} onPress={onPressChip(chip)}>
-                      <StyledText
-                        text={chip.title}
-                        fontSize={13}
-                        specificColor={theme.color.text}
-                      />
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            <ChipContainer>
+              {chips.map((chip) => (
+                <InsetsContainer key={chip.id}>
+                  <Chip isRow marginLeft={0} onPress={onPressChip(chip)}>
+                    <StyledText
+                      text={chip.title}
+                      fontSize={13}
+                      specificColor={theme.color.text}
+                    />
 
-                      <Pressable onPress={onPressChipDelete(chip)} hitSlop={10}>
-                        <Icon source={theme.icon.cancel} />
-                      </Pressable>
-                    </Chip>
-                  </InsetsContainer>
-                ))}
-              </ChipContainer>
-            </ScrollView>
-          ) : null}
+                    <Pressable onPress={onPressChipDelete(chip)} hitSlop={10}>
+                      <Icon source={theme.icon.cancel} />
+                    </Pressable>
+                  </Chip>
+                </InsetsContainer>
+              ))}
+            </ChipContainer>
+          </ScrollView>
         </HistoryContainer>
       ) : null}
 

@@ -221,7 +221,7 @@ function FormScreen() {
                   />
 
                   <StyledText
-                    text="비밀번호는 찾을수 없으니, 신중하게 결정 해주세요."
+                    text="비밀번호는 찾을 수 없으니, 신중하게 결정해주세요."
                     fontSize={12}
                     specificColor={theme.color.shadow}
                     marginTop={5}

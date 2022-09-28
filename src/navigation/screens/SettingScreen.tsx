@@ -24,14 +24,7 @@ function SettingScreen() {
 
   const navigation = useNavigation<RootStackNavigationProp>();
 
-  const settings = useMemo(
-    () => [
-      { id: 1, title: '테마설정' },
-      { id: 2, title: '이용약관' },
-      { id: 3, title: '개인정보보호' },
-    ],
-    []
-  );
+  const settings = useMemo(() => [{ id: 1, title: '테마설정' }], []);
 
   const style = useMemo<StyleProp<ViewStyle>>(
     () => ({

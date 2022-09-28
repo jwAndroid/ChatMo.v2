@@ -41,19 +41,6 @@ const StyledButton = styled.Pressable(() => ({
   alignItems: 'center',
 }));
 
-const ModalText = styled.Text(({ theme }) => ({
-  includeFontPadding: false,
-  textAlign: 'center',
-  fontSize: 14,
-  color: theme.color.shadow,
-}));
-
-const ErrorText = styled.Text(({ theme }) => ({
-  textAlign: 'center',
-  fontSize: 13,
-  color: theme.color.red,
-}));
-
 interface INotificationModal {
   isOpen: boolean;
   notification: string;
@@ -79,10 +66,15 @@ function NotificationModal({
     >
       <Container onPress={onNegative}>
         <TextContainer>
-          <ModalText>{notification}</ModalText>
+          <StyledText text={notification} fontSize={14} isTextAlignCenter />
 
           {error ? (
-            <ErrorText>비밀번호 4자리 또는 제목을 입력해주세요</ErrorText>
+            <StyledText
+              text="비밀번호 4자리 또는 제목을 입력해주세요."
+              fontSize={13}
+              specificColor={theme.color.red}
+              marginTop={3}
+            />
           ) : null}
         </TextContainer>
 
@@ -90,21 +82,13 @@ function NotificationModal({
 
         <ButtonContainer>
           <StyledButton onPress={onNegative}>
-            <StyledText
-              fontSize={14}
-              text="아니요"
-              specificColor={theme.color.shadow}
-            />
+            <StyledText fontSize={14} text="아니요" />
           </StyledButton>
 
           <Divider isVertical />
 
           <StyledButton onPress={onPostive}>
-            <StyledText
-              fontSize={14}
-              text="예"
-              specificColor={theme.color.shadow}
-            />
+            <StyledText fontSize={14} text="예" />
           </StyledButton>
         </ButtonContainer>
       </Container>

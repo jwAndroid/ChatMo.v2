@@ -10,15 +10,7 @@ declare module '@emotion/react' {
   export interface Theme {
     name: string;
     font: {
-      SUIT_Bold: string;
-      SUIT_ExtraBold: string;
-      SUIT_ExtraLight: string;
-      SUIT_Heavy: string;
-      SUIT_Light: string;
-      SUIT_Medium: string;
       SUIT_Regular: string;
-      SUIT_SemiBold: string;
-      SUIT_Thin: string;
     };
     image: typeof image;
     icon: typeof icon;

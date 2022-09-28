@@ -8,6 +8,7 @@ interface IEmotionText {
   marginTop?: number;
   marginBottom?: number;
   specificColor?: string;
+  isTextAlignCenter?: boolean;
 }
 const EmotionText = styled.Text<IEmotionText>(
   ({
@@ -18,12 +19,14 @@ const EmotionText = styled.Text<IEmotionText>(
     marginTop,
     marginBottom,
     specificColor = '',
+    isTextAlignCenter,
   }) => ({
     fontSize,
     marginLeft,
     marginRight,
     marginTop,
     marginBottom,
+    textAlign: isTextAlignCenter ? 'center' : undefined,
     includeFontPadding: false,
     fontFamily: theme.font.SUIT_Regular,
     color: specificColor !== '' ? specificColor : theme.color.text,
@@ -38,6 +41,7 @@ interface IStyledText {
   marginTop?: number;
   marginBottom?: number;
   specificColor?: string;
+  isTextAlignCenter?: boolean;
 }
 
 function StyledText({
@@ -48,6 +52,7 @@ function StyledText({
   marginTop,
   marginBottom,
   specificColor,
+  isTextAlignCenter,
 }: IStyledText) {
   return (
     <EmotionText
@@ -57,6 +62,7 @@ function StyledText({
       marginTop={marginTop}
       marginBottom={marginBottom}
       specificColor={specificColor}
+      isTextAlignCenter={isTextAlignCenter}
     >
       {text}
     </EmotionText>
@@ -70,6 +76,7 @@ StyledText.defaultProps = {
   marginTop: 0,
   marginBottom: 0,
   specificColor: '',
+  isTextAlignCenter: false,
 };
 
 export default memo(StyledText);

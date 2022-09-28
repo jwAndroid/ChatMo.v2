@@ -1,15 +1,7 @@
 import { Theme } from '@emotion/react';
 
 export const font = {
-  SUIT_Bold: require('../assets/fonts/SUIT_Bold.otf'),
-  SUIT_ExtraBold: require('../assets/fonts/SUIT_ExtraBold.otf'),
-  SUIT_ExtraLight: require('../assets/fonts/SUIT_ExtraLight.otf'),
-  SUIT_Heavy: require('../assets/fonts/SUIT_Heavy.otf'),
-  SUIT_Light: require('../assets/fonts/SUIT_Light.otf'),
-  SUIT_Medium: require('../assets/fonts/SUIT_Medium.otf'),
   SUIT_Regular: require('../assets/fonts/SUIT_Regular.otf'),
-  SUIT_SemiBold: require('../assets/fonts/SUIT_SemiBold.otf'),
-  SUIT_Thin: require('../assets/fonts/SUIT_Thin.otf'),
 };
 
 export const image = {
@@ -42,15 +34,7 @@ export const icon = {
 export const lightTheme: Theme = {
   name: 'lightTheme',
   font: {
-    SUIT_Bold: 'SUIT_Bold',
-    SUIT_ExtraBold: 'SUIT_ExtraBold',
-    SUIT_ExtraLight: 'SUIT_ExtraLight',
-    SUIT_Heavy: 'SUIT_Heavy',
-    SUIT_Light: 'SUIT_Light',
-    SUIT_Medium: 'SUIT_Medium',
     SUIT_Regular: 'SUIT_Regular',
-    SUIT_SemiBold: 'SUIT_SemiBold',
-    SUIT_Thin: 'SUIT_Thin',
   },
   image,
   icon,
@@ -80,15 +64,7 @@ export const lightTheme: Theme = {
 export const darkTheme: Theme = {
   name: 'darkTheme',
   font: {
-    SUIT_Bold: 'SUIT_Bold',
-    SUIT_ExtraBold: 'SUIT_ExtraBold',
-    SUIT_ExtraLight: 'SUIT_ExtraLight',
-    SUIT_Heavy: 'SUIT_Heavy',
-    SUIT_Light: 'SUIT_Light',
-    SUIT_Medium: 'SUIT_Medium',
     SUIT_Regular: 'SUIT_Regular',
-    SUIT_SemiBold: 'SUIT_SemiBold',
-    SUIT_Thin: 'SUIT_Thin',
   },
   image,
   icon,

@@ -52,7 +52,9 @@ function Main() {
 
   useLayoutEffect(() => {
     if (cacheImages(icon).length > 0 && loaded) {
-      setAppReady(true);
+      setTimeout(() => {
+        setAppReady(true);
+      }, 1500);
     }
   }, [loaded]);
 
