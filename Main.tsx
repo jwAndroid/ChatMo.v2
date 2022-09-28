@@ -1,25 +1,22 @@
 import React, { memo, useLayoutEffect, useState } from 'react';
+import { ThemeProvider } from '@emotion/react';
 import { NavigationContainer } from '@react-navigation/native';
 import * as SystemUI from 'expo-system-ui';
 import { StatusBar } from 'expo-status-bar';
-import { ThemeProvider } from '@emotion/react';
 import { useFonts } from 'expo-font';
+import NetInfo from '@react-native-community/netinfo';
 
 import { useAppDispatch, useAppSelector } from './src/hooks/useRedux';
 import useAuthLoadEffect from './src/hooks/useAuthLoadEffect';
 import { changeTheme } from './src/redux/system/slice';
-
-import RootStack from './src/navigation/RootStack';
 import themeStorage from './src/storages/themeStorage';
+import RootStack from './src/navigation/RootStack';
 import { cacheImages } from './src/utils/cache';
 import { darkTheme, font, icon, lightTheme } from './src/theme';
 import Splash from './Splash';
 import { ToastModal } from './src/components/modal';
 
-interface IMain {
-  isConnected: boolean | null;
-}
-function Main({ isConnected }: IMain) {
+function Main() {
   const dispatch = useAppDispatch();
 
   const isDark = useAppSelector((state) => state.system.isDark);
@@ -27,6 +24,7 @@ function Main({ isConnected }: IMain) {
 
   const [appReady, setAppReady] = useState(false);
   const [showToast, setShowToast] = useState(false);
+  const [isConnected, setIsConnected] = useState<boolean | null>(null);
 
   const [loaded] = useFonts(font);
 
@@ -43,6 +41,16 @@ function Main({ isConnected }: IMain) {
   }, [dispatch]);
 
   useLayoutEffect(() => {
+    const unsubscribe = NetInfo.addEventListener(async (state) => {
+      if (state && state.isConnected !== null) {
+        setIsConnected(state.isConnected);
+      }
+    });
+
+    return () => unsubscribe();
+  }, [isConnected]);
+
+  useLayoutEffect(() => {
     if (cacheImages(icon).length > 0 && loaded) {
       setAppReady(true);
     }
@@ -50,7 +58,11 @@ function Main({ isConnected }: IMain) {
 
   return (
     <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
-      {appReady && user && isConnected ? (
+      {appReady &&
+      user &&
+      user !== null &&
+      isConnected &&
+      isConnected !== null ? (
         <NavigationContainer>
           <StatusBar style={isDark ? 'light' : 'dark'} />
 

@@ -1,28 +1,15 @@
-import React, { memo, useLayoutEffect, useState } from 'react';
+import React, { memo } from 'react';
 import { Provider } from 'react-redux';
-import NetInfo from '@react-native-community/netinfo';
 
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { store } from './src/redux/store';
 import Main from './Main';
 
 function App() {
-  const [isConnected, setIsConnected] = useState<boolean | null>(null);
-
-  useLayoutEffect(() => {
-    const unsubscribe = NetInfo.addEventListener(async (state) => {
-      if (state && state.isConnected !== null) {
-        setIsConnected(state.isConnected);
-      }
-    });
-
-    return () => unsubscribe();
-  }, [isConnected]);
-
   return (
     <SafeAreaProvider>
       <Provider store={store}>
-        <Main isConnected={isConnected} />
+        <Main />
       </Provider>
     </SafeAreaProvider>
   );
