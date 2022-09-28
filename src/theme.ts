@@ -12,6 +12,11 @@ export const font = {
   SUIT_Thin: require('../assets/fonts/SUIT_Thin.otf'),
 };
 
+export const image = {
+  logo: require('../assets/image/logo.png'),
+  splash: require('../assets/image/splash.png'),
+};
+
 export const icon = {
   add: require('../assets/icons/add.png'),
   backward: require('../assets/icons/backward.png'),
@@ -31,7 +36,6 @@ export const icon = {
   search: require('../assets/icons/search.png'),
   send_message: require('../assets/icons/send_message.png'),
   setting: require('../assets/icons/setting.png'),
-  splash: require('../assets/icons/splash.png'),
   warning_sign: require('../assets/icons/warning_sign.png'),
 };
 
@@ -48,6 +52,8 @@ export const lightTheme: Theme = {
     SUIT_SemiBold: 'SUIT_SemiBold',
     SUIT_Thin: 'SUIT_Thin',
   },
+  image,
+  icon,
   color: {
     black: '#000',
     white: '#fff',
@@ -69,7 +75,6 @@ export const lightTheme: Theme = {
     bar: '#ebebeb',
     placeholder: '#cccccc',
   },
-  icon,
 };
 
 export const darkTheme: Theme = {
@@ -85,6 +90,8 @@ export const darkTheme: Theme = {
     SUIT_SemiBold: 'SUIT_SemiBold',
     SUIT_Thin: 'SUIT_Thin',
   },
+  image,
+  icon,
   color: {
     black: '#000',
     white: '#fff',
@@ -106,5 +113,4 @@ export const darkTheme: Theme = {
     bar: '#313131',
     placeholder: '#1B2430',
   },
-  icon,
 };

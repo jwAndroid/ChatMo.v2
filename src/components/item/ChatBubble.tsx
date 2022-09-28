@@ -10,8 +10,8 @@ import {
   TimeProps,
 } from 'react-native-gifted-chat';
 
-import { ChatBubbleStyle } from '../utils/styles';
 import BubbleText from './BubbleText';
+import { ChatBubbleStyle } from '../../utils/styles';
 
 const Container = styled.View(() => ({
   marginLeft: 3,

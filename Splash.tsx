@@ -20,7 +20,7 @@ function Splash() {
 
   return (
     <Container>
-      <Logo source={theme.icon.splash} />
+      <Logo source={theme.image.splash} />
     </Container>
   );
 }

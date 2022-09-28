@@ -25,12 +25,12 @@ function Main({ isConnected }: IMain) {
   const isDark = useAppSelector((state) => state.system.isDark);
   const user = useAppSelector((state) => state.auth.user);
 
-  useAuthLoadEffect();
-
   const [appReady, setAppReady] = useState(false);
   const [showToast, setShowToast] = useState(false);
 
   const [loaded] = useFonts(font);
+
+  useAuthLoadEffect();
 
   useLayoutEffect(() => {
     (async () => {

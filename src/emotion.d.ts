@@ -1,6 +1,6 @@
 import '@emotion/react';
 
-import { icon } from './theme';
+import { icon, image } from './theme';
 
 declare module '*.png';
 declare module '*.jpg';
@@ -20,6 +20,8 @@ declare module '@emotion/react' {
       SUIT_SemiBold: string;
       SUIT_Thin: string;
     };
+    image: typeof image;
+    icon: typeof icon;
     color: {
       black: string;
       white: string;
@@ -41,6 +43,5 @@ declare module '@emotion/react' {
       bar: string;
       placeholder: string;
     };
-    icon: typeof icon;
   }
 }
