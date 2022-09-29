@@ -77,7 +77,7 @@ function SettingScreen() {
 
       <VersionContainer>
         <StyledText
-          text="version: 1.0.0"
+          text="version: 1.0.1"
           specificColor={theme.color.shadow}
           fontSize={12}
           marginBottom={10}
