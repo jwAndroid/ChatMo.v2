@@ -1,7 +1,7 @@
 import { Theme } from '@emotion/react';
 
 export const font = {
-  SUIT_Regular: require('../assets/fonts/SUIT_Regular.otf'),
+  NotoSans_Regular: require('../assets/fonts/NotoSans_Regular.otf'),
 };
 
 export const image = {
@@ -34,7 +34,7 @@ export const icon = {
 export const lightTheme: Theme = {
   name: 'lightTheme',
   font: {
-    SUIT_Regular: 'SUIT_Regular',
+    NotoSans_Regular: 'NotoSans_Regular',
   },
   image,
   icon,
@@ -64,7 +64,7 @@ export const lightTheme: Theme = {
 export const darkTheme: Theme = {
   name: 'darkTheme',
   font: {
-    SUIT_Regular: 'SUIT_Regular',
+    NotoSans_Regular: 'NotoSans_Regular',
   },
   image,
   icon,

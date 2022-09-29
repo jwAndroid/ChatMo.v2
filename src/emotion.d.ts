@@ -10,7 +10,7 @@ declare module '@emotion/react' {
   export interface Theme {
     name: string;
     font: {
-      SUIT_Regular: string;
+      NotoSans_Regular: string;
     };
     image: typeof image;
     icon: typeof icon;
