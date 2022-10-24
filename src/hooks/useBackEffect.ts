@@ -5,9 +5,7 @@ export default function useBackEffect() {
   useEffect(() => {
     const handler = BackHandler.addEventListener(
       'hardwareBackPress',
-      () =>
-        // some todo navigation back actions
-        true
+      () => true
     );
 
     return () => handler.remove();
