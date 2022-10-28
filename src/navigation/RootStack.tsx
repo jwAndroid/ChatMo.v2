@@ -39,7 +39,7 @@ function RootStack() {
   const screenOptions = useMemo<NativeStackNavigationOptions>(
     () => ({
       headerShown: false,
-      gestureEnabled: true,
+      gestureEnabled: false,
     }),
     []
   );
