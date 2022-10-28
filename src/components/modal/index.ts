@@ -3,4 +3,5 @@ export { default as Carousell } from './Carousell';
 export { default as InputModal } from './InputModal';
 export { default as LoadingModal } from './LoadingModal';
 export { default as NotificationModal } from './NotificationModal';
+export { default as PinModal } from './PinModal';
 export { default as ToastModal } from './ToastModal';
