@@ -5,8 +5,6 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { store } from './src/redux/store';
 import Main from './Main';
 
-// Published: 2022 10 10
-
 function App() {
   return (
     <SafeAreaProvider>

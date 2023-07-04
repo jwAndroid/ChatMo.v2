@@ -18,8 +18,8 @@ import { RoomEntity } from '../redux/posts/type';
 export function useRoomsLoadEffect() {
   const dispatch = useAppDispatch();
 
-  const user = useAppSelector((state) => state.auth.user);
-  const posts = useAppSelector((state) => state.posts.posts);
+  const user = useAppSelector(state => state.auth.user);
+  const posts = useAppSelector(state => state.posts.posts);
 
   const [lastDoc, setLastDoc] = useState<QueryDocumentSnapshot<DocumentData>>();
   const [isloadFirst, setIsloadFirst] = useState(false);
@@ -28,17 +28,15 @@ export function useRoomsLoadEffect() {
   useEffect(() => {
     (async () => {
       if (user) {
-        console.log('useRoomsLoadEffect start');
-
         const ref = query(
           collection(firestore, 'posts', 'users', user.userId, 'rooms', 'room'),
           orderBy('createdAt', 'desc'),
-          limit(20)
+          limit(20),
         );
 
         const snapshot = await getDocs(ref);
 
-        const first = snapshot.docs.map((doc) => doc.data() as RoomEntity, []);
+        const first = snapshot.docs.map(doc => doc.data() as RoomEntity, []);
 
         dispatch(fulfilled(first));
 
@@ -61,12 +59,12 @@ export function useRoomsLoadEffect() {
         collection(firestore, 'posts', 'users', user.userId, 'rooms', 'room'),
         orderBy('createdAt', 'desc'),
         startAfter(lastDoc),
-        limit(20)
+        limit(20),
       );
 
       const snapshot = await getDocs(next);
 
-      const prepared = snapshot.docs.map((doc) => doc.data() as RoomEntity, []);
+      const prepared = snapshot.docs.map(doc => doc.data() as RoomEntity, []);
 
       dispatch(fulfilled([...posts.data, ...prepared]));
 
